@@ -1,6 +1,6 @@
 {
   "framework": null,
-  "installCommand": "npm i -g pnpm@9.0.0 && pnpm install",
+  "installCommand": "corepack enable && pnpm install",
   "buildCommand": "pnpm build",
   "outputDirectory": "apps/playground/dist"
 }
