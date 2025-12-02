@@ -1,6 +1,6 @@
 # rics for VS Code
 
-Syntax highlighting for [rics](https://github.com/ricss/ricss) - a lightweight SCSS-like CSS preprocessor.
+Syntax highlighting for rics - a lightweight SCSS-like CSS preprocessor.
 
 ## Features
 
@@ -63,3 +63,7 @@ $primary: #f43f5e;
 ## License
 
 MIT
+
+---
+
+Built by [Better Lyrics](https://better-lyrics.boidu.dev)

@@ -1,6 +1,9 @@
-# rics
+<h1 align="center"><img src="images/logo.svg" alt="rics" width="128" height="128"></h1>
 
-A fast, lightweight SCSS-like preprocessor that runs anywhere JavaScript runs. Built for real-time compilation in browsers, editors, and build tools.
+<p align="center">
+  A fast, lightweight SCSS-like preprocessor that runs anywhere JavaScript runs.<br>
+  Built for real-time compilation in browsers, editors, and build tools.
+</p>
 
 ## Why rics?
 
@@ -14,16 +17,16 @@ A fast, lightweight SCSS-like preprocessor that runs anywhere JavaScript runs. B
 
 ## Packages
 
-| Package | Description | Size |
-|---------|-------------|------|
-| [rics](https://www.npmjs.com/package/rics) | Core compiler | ~40KB |
-| [rics-cli](https://www.npmjs.com/package/rics-cli) | Command-line interface | ~2KB |
-| [vite-plugin-rics](https://www.npmjs.com/package/vite-plugin-rics) | Vite plugin | ~1KB |
-| [webpack-loader-rics](https://www.npmjs.com/package/webpack-loader-rics) | Webpack loader | ~0.5KB |
-| [codemirror-lang-rics](https://www.npmjs.com/package/codemirror-lang-rics) | CodeMirror 6 support | ~3KB |
-| [prettier-plugin-rics](https://www.npmjs.com/package/prettier-plugin-rics) | Prettier formatter | ~1KB |
-| [eslint-plugin-rics](https://www.npmjs.com/package/eslint-plugin-rics) | ESLint plugin | ~2KB |
-| [rics-vscode](https://marketplace.visualstudio.com/) | VS Code extension | - |
+| Package                                                                    | Description            | Size   |
+| -------------------------------------------------------------------------- | ---------------------- | ------ |
+| [rics](https://www.npmjs.com/package/rics)                                 | Core compiler          | ~40KB  |
+| [rics-cli](https://www.npmjs.com/package/rics-cli)                         | Command-line interface | ~2KB   |
+| [vite-plugin-rics](https://www.npmjs.com/package/vite-plugin-rics)         | Vite plugin            | ~1KB   |
+| [webpack-loader-rics](https://www.npmjs.com/package/webpack-loader-rics)   | Webpack loader         | ~0.5KB |
+| [codemirror-lang-rics](https://www.npmjs.com/package/codemirror-lang-rics) | CodeMirror 6 support   | ~3KB   |
+| [prettier-plugin-rics](https://www.npmjs.com/package/prettier-plugin-rics) | Prettier formatter     | ~1KB   |
+| [eslint-plugin-rics](https://www.npmjs.com/package/eslint-plugin-rics)     | ESLint plugin          | ~2KB   |
+| [rics-vscode](https://marketplace.visualstudio.com/)                       | VS Code extension      | -      |
 
 ## Installation
 
@@ -125,11 +128,7 @@ import { EditorView, basicSetup } from "codemirror";
 import { ricsLanguage, ricsLinter } from "codemirror-lang-rics";
 
 const editor = new EditorView({
-  extensions: [
-    basicSetup,
-    ricsLanguage(),
-    ricsLinter({ delay: 300 }),
-  ],
+  extensions: [basicSetup, ricsLanguage(), ricsLinter({ delay: 300 })],
   parent: document.getElementById("editor"),
 });
 ```
@@ -167,8 +166,8 @@ $base: 4px;
 $primary: #f43f5e;
 
 .element {
-  padding: $base * 4;           // 16px
-  margin: $base * 2 $base * 3;  // 8px 12px
+  padding: $base * 4; // 16px
+  margin: $base * 2 $base * 3; // 8px 12px
   width: 100% - 20px;
   color: $primary;
 }
@@ -180,13 +179,21 @@ $primary: #f43f5e;
 .card {
   padding: 16px;
 
-  &:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-  &--featured { border: 2px solid gold; }
-  &__title { font-size: 24px; }
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  &--featured {
+    border: 2px solid gold;
+  }
+  &__title {
+    font-size: 24px;
+  }
 
   .icon {
     margin-right: 8px;
-    &.left { margin-left: 0; }
+    &.left {
+      margin-left: 0;
+    }
   }
 }
 ```
@@ -206,8 +213,12 @@ $primary: #f43f5e;
   }
 }
 
-.btn-primary { @include button(#f43f5e); }
-.btn-secondary { @include button(#6366f1, white, 8px); }
+.btn-primary {
+  @include button(#f43f5e);
+}
+.btn-secondary {
+  @include button(#6366f1, white, 8px);
+}
 ```
 
 ### Custom Functions
@@ -222,9 +233,9 @@ $primary: #f43f5e;
 }
 
 .text {
-  font-size: #{rem(18)};      // 1.125rem
-  padding: spacing(4);         // 16px
-  margin-bottom: spacing(6);   // 24px
+  font-size: #{rem(18)}; // 1.125rem
+  padding: spacing(4); // 16px
+  margin-bottom: spacing(6); // 24px
 }
 ```
 
@@ -233,19 +244,33 @@ $primary: #f43f5e;
 ```scss
 // Generate utility classes
 @for $i from 1 through 8 {
-  .gap-#{$i} { gap: #{$i * 4}px; }
-  .p-#{$i} { padding: #{$i * 4}px; }
-  .m-#{$i} { margin: #{$i * 4}px; }
+  .gap-#{$i} {
+    gap: #{$i * 4}px;
+  }
+  .p-#{$i} {
+    padding: #{$i * 4}px;
+  }
+  .m-#{$i} {
+    margin: #{$i * 4}px;
+  }
 }
 
 // Iterate maps
-$colors: (primary: #f43f5e, success: #22c55e, warning: #f59e0b);
+$colors: (
+  primary: #f43f5e,
+  success: #22c55e,
+  warning: #f59e0b,
+);
 
 @each $name, $color in $colors {
-  .text-#{$name} { color: $color; }
+  .text-#{$name} {
+    color: $color;
+  }
   .bg-#{$name} {
     background: $color;
-    &:hover { background: darken($color, 10%); }
+    &:hover {
+      background: darken($color, 10%);
+    }
   }
 }
 ```
@@ -325,9 +350,9 @@ Returns full compilation result with errors, warnings, and stats:
 const result = compileWithDetails(scss);
 
 console.log(result.css);
-console.log(result.errors);      // CompileError[]
-console.log(result.warnings);    // CompileWarning[]
-console.log(result.stats);       // { duration, rules, iterations, inputSize, outputSize }
+console.log(result.errors); // CompileError[]
+console.log(result.warnings); // CompileWarning[]
+console.log(result.stats); // { duration, rules, iterations, inputSize, outputSize }
 ```
 
 ### compileAsync(input, config?)
@@ -342,11 +367,11 @@ const result = await compileAsync(largeStylesheet);
 
 ```typescript
 compile(scss, {
-  timeout: 5000,           // Max compilation time (ms)
-  maxIterations: 10000,    // Max loop iterations
-  maxNestingDepth: 64,     // Max selector nesting
-  minify: false,           // Minify output
-  strictMode: false,       // Throw on first error
+  timeout: 5000, // Max compilation time (ms)
+  maxIterations: 10000, // Max loop iterations
+  maxNestingDepth: 64, // Max selector nesting
+  minify: false, // Minify output
+  strictMode: false, // Throw on first error
 });
 ```
 
@@ -384,3 +409,7 @@ Modern CSS features work unchanged:
 ## License
 
 MIT
+
+---
+
+Built by [Better Lyrics](https://better-lyrics.boidu.dev)

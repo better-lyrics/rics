@@ -1,6 +1,6 @@
 {
   "name": "rics-cli",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Command-line interface for rics CSS preprocessor",
   "type": "module",
   "bin": {

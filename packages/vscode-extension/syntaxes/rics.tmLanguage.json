@@ -3,15 +3,13 @@
   "name": "rics",
   "scopeName": "source.rics",
   "patterns": [
-    { "include": "#comments" },
-    { "include": "#at-rules" },
-    { "include": "#variables" },
-    { "include": "#interpolation" },
-    { "include": "#selectors" },
-    { "include": "#property-list" }
+    { "include": "#comment" },
+    { "include": "#at-rule" },
+    { "include": "#variable-declaration" },
+    { "include": "#ruleset" }
   ],
   "repository": {
-    "comments": {
+    "comment": {
       "patterns": [
         {
           "name": "comment.line.double-slash.rics",
@@ -24,269 +22,187 @@
         }
       ]
     },
-    "variables": {
+    "variable-declaration": {
+      "begin": "(\\$[a-zA-Z_][a-zA-Z0-9_-]*)\\s*(:)",
+      "beginCaptures": {
+        "1": { "name": "variable.scss.rics" },
+        "2": { "name": "punctuation.separator.key-value.scss.rics" }
+      },
+      "end": ";",
+      "endCaptures": {
+        "0": { "name": "punctuation.terminator.rule.css.rics" }
+      },
       "patterns": [
-        {
-          "name": "variable.other.rics",
-          "match": "\\$[a-zA-Z_][a-zA-Z0-9_-]*"
-        }
+        { "include": "#value" }
       ]
+    },
+    "variable": {
+      "name": "variable.scss.rics",
+      "match": "\\$[a-zA-Z_][a-zA-Z0-9_-]*"
     },
     "interpolation": {
+      "name": "meta.interpolation.rics",
+      "begin": "#\\{",
+      "beginCaptures": {
+        "0": { "name": "punctuation.section.interpolation.begin.rics" }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": { "name": "punctuation.section.interpolation.end.rics" }
+      },
       "patterns": [
-        {
-          "name": "meta.interpolation.rics",
-          "begin": "#\\{",
-          "beginCaptures": {
-            "0": { "name": "punctuation.section.interpolation.begin.rics" }
-          },
-          "end": "\\}",
-          "endCaptures": {
-            "0": { "name": "punctuation.section.interpolation.end.rics" }
-          },
-          "patterns": [
-            { "include": "#variables" },
-            { "include": "#functions" },
-            { "include": "#operators" },
-            { "include": "#numbers" },
-            { "include": "#strings" }
-          ]
-        }
+        { "include": "#variable" },
+        { "include": "#numeric" },
+        { "include": "#operator" },
+        { "include": "#function" }
       ]
     },
-    "at-rules": {
+    "at-rule": {
       "patterns": [
         {
-          "name": "meta.at-rule.mixin.rics",
-          "begin": "(@mixin)\\s+([a-zA-Z_][a-zA-Z0-9_-]*)",
+          "begin": "(@)(mixin|function)\\s+([a-zA-Z_][a-zA-Z0-9_-]*)",
           "beginCaptures": {
-            "1": { "name": "keyword.control.at-rule.mixin.rics" },
-            "2": { "name": "entity.name.function.mixin.rics" }
+            "1": { "name": "punctuation.definition.keyword.scss.rics" },
+            "2": { "name": "keyword.control.at-rule.scss.rics" },
+            "3": { "name": "entity.name.function.scss.rics" }
           },
           "end": "(?=\\{)",
           "patterns": [
-            { "include": "#mixin-params" }
+            { "include": "#function-parameters" }
           ]
         },
         {
-          "name": "meta.at-rule.function.rics",
-          "begin": "(@function)\\s+([a-zA-Z_][a-zA-Z0-9_-]*)",
+          "begin": "(@)(include)\\s+([a-zA-Z_][a-zA-Z0-9_-]*)",
           "beginCaptures": {
-            "1": { "name": "keyword.control.at-rule.function.rics" },
-            "2": { "name": "entity.name.function.rics" }
-          },
-          "end": "(?=\\{)",
-          "patterns": [
-            { "include": "#mixin-params" }
-          ]
-        },
-        {
-          "name": "meta.at-rule.include.rics",
-          "begin": "(@include)\\s+([a-zA-Z_][a-zA-Z0-9_-]*)",
-          "beginCaptures": {
-            "1": { "name": "keyword.control.at-rule.include.rics" },
-            "2": { "name": "entity.name.function.mixin.rics" }
+            "1": { "name": "punctuation.definition.keyword.scss.rics" },
+            "2": { "name": "keyword.control.at-rule.scss.rics" },
+            "3": { "name": "entity.name.function.scss.rics" }
           },
           "end": "(?=[;{])",
           "patterns": [
-            { "include": "#function-call-args" }
+            { "include": "#function-arguments" }
           ]
         },
         {
-          "name": "keyword.control.at-rule.return.rics",
-          "match": "@return"
-        },
-        {
-          "name": "keyword.control.at-rule.content.rics",
-          "match": "@content"
-        },
-        {
-          "name": "meta.at-rule.for.rics",
-          "begin": "(@for)\\s+(\\$[a-zA-Z_][a-zA-Z0-9_-]*)\\s+(from)",
+          "begin": "(@)(for)\\s+(\\$[a-zA-Z_][a-zA-Z0-9_-]*)\\s+(from)\\b",
           "beginCaptures": {
-            "1": { "name": "keyword.control.at-rule.for.rics" },
-            "2": { "name": "variable.other.rics" },
-            "3": { "name": "keyword.control.rics" }
+            "1": { "name": "punctuation.definition.keyword.scss.rics" },
+            "2": { "name": "keyword.control.at-rule.scss.rics" },
+            "3": { "name": "variable.scss.rics" },
+            "4": { "name": "keyword.control.scss.rics" }
           },
           "end": "(?=\\{)",
           "patterns": [
-            {
-              "name": "keyword.control.rics",
-              "match": "\\b(through|to)\\b"
-            },
-            { "include": "#numbers" },
-            { "include": "#variables" },
-            { "include": "#operators" }
+            { "match": "\\b(through|to)\\b", "name": "keyword.control.scss.rics" },
+            { "include": "#numeric" },
+            { "include": "#variable" }
           ]
         },
         {
-          "name": "meta.at-rule.each.rics",
-          "begin": "(@each)\\s+(\\$[a-zA-Z_][a-zA-Z0-9_-]*)(?:\\s*,\\s*(\\$[a-zA-Z_][a-zA-Z0-9_-]*))?\\s+(in)",
+          "begin": "(@)(each)\\s+(\\$[a-zA-Z_][a-zA-Z0-9_-]*)(?:\\s*,\\s*(\\$[a-zA-Z_][a-zA-Z0-9_-]*))?\\s+(in)\\b",
           "beginCaptures": {
-            "1": { "name": "keyword.control.at-rule.each.rics" },
-            "2": { "name": "variable.other.rics" },
-            "3": { "name": "variable.other.rics" },
-            "4": { "name": "keyword.control.rics" }
+            "1": { "name": "punctuation.definition.keyword.scss.rics" },
+            "2": { "name": "keyword.control.at-rule.scss.rics" },
+            "3": { "name": "variable.scss.rics" },
+            "4": { "name": "variable.scss.rics" },
+            "5": { "name": "keyword.control.scss.rics" }
           },
           "end": "(?=\\{)",
           "patterns": [
-            { "include": "#variables" },
-            { "include": "#lists" }
+            { "include": "#variable" },
+            { "include": "#map-or-list" }
           ]
         },
         {
-          "name": "meta.at-rule.while.rics",
-          "begin": "(@while)",
+          "begin": "(@)(if|else\\s+if)\\b",
           "beginCaptures": {
-            "1": { "name": "keyword.control.at-rule.while.rics" }
+            "1": { "name": "punctuation.definition.keyword.scss.rics" },
+            "2": { "name": "keyword.control.at-rule.scss.rics" }
           },
           "end": "(?=\\{)",
           "patterns": [
-            { "include": "#variables" },
-            { "include": "#operators" },
-            { "include": "#numbers" }
+            { "include": "#variable" },
+            { "include": "#operator" },
+            { "include": "#numeric" },
+            { "include": "#string" }
           ]
         },
         {
-          "name": "meta.at-rule.if.rics",
-          "begin": "(@if|@else\\s+if)",
+          "match": "(@)(else|return|content)\\b",
+          "captures": {
+            "1": { "name": "punctuation.definition.keyword.scss.rics" },
+            "2": { "name": "keyword.control.at-rule.scss.rics" }
+          }
+        },
+        {
+          "match": "(@)(while)\\b",
+          "captures": {
+            "1": { "name": "punctuation.definition.keyword.scss.rics" },
+            "2": { "name": "keyword.control.at-rule.scss.rics" }
+          }
+        },
+        {
+          "begin": "(@)(media|supports|container)\\b",
           "beginCaptures": {
-            "1": { "name": "keyword.control.at-rule.if.rics" }
+            "1": { "name": "punctuation.definition.keyword.css.rics" },
+            "2": { "name": "keyword.control.at-rule.css.rics" }
           },
-          "end": "(?=\\{)",
+          "end": "(?<=\\})",
           "patterns": [
-            { "include": "#variables" },
-            { "include": "#operators" },
-            { "include": "#numbers" },
-            { "include": "#strings" },
-            { "include": "#functions" }
+            { "include": "#media-query" },
+            { "include": "#property-list" }
           ]
         },
         {
-          "name": "keyword.control.at-rule.else.rics",
-          "match": "@else"
+          "begin": "(@)(keyframes)\\s+([a-zA-Z_-][a-zA-Z0-9_-]*)",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.keyword.css.rics" },
+            "2": { "name": "keyword.control.at-rule.css.rics" },
+            "3": { "name": "entity.name.function.css.rics" }
+          },
+          "end": "(?<=\\})",
+          "patterns": [
+            { "include": "#keyframe-block" }
+          ]
         },
         {
-          "name": "keyword.control.at-rule.import.rics",
-          "begin": "@import",
+          "begin": "(@)(import|use|forward)\\b",
+          "beginCaptures": {
+            "1": { "name": "punctuation.definition.keyword.scss.rics" },
+            "2": { "name": "keyword.control.at-rule.scss.rics" }
+          },
           "end": ";",
           "patterns": [
-            { "include": "#strings" }
+            { "include": "#string" },
+            { "match": "\\b(as|with)\\b", "name": "keyword.control.scss.rics" }
           ]
         },
         {
-          "name": "keyword.control.at-rule.use.rics",
-          "begin": "@use",
-          "end": ";",
-          "patterns": [
-            { "include": "#strings" },
-            {
-              "name": "keyword.control.rics",
-              "match": "\\b(as|with)\\b"
-            }
-          ]
-        },
-        {
-          "name": "keyword.control.at-rule.forward.rics",
-          "begin": "@forward",
-          "end": ";",
-          "patterns": [
-            { "include": "#strings" }
-          ]
-        },
-        {
-          "name": "keyword.control.at-rule.debug.rics",
-          "match": "@debug"
-        },
-        {
-          "name": "keyword.control.at-rule.warn.rics",
-          "match": "@warn"
-        },
-        {
-          "name": "keyword.control.at-rule.error.rics",
-          "match": "@error"
-        },
-        {
-          "name": "meta.at-rule.media.rics",
-          "begin": "@media",
-          "beginCaptures": {
-            "0": { "name": "keyword.control.at-rule.media.rics" }
-          },
-          "end": "(?=\\{)",
-          "patterns": [
-            { "include": "#media-query" }
-          ]
-        },
-        {
-          "name": "meta.at-rule.keyframes.rics",
-          "begin": "@keyframes\\s+([a-zA-Z_][a-zA-Z0-9_-]*)",
-          "beginCaptures": {
-            "0": { "name": "keyword.control.at-rule.keyframes.rics" },
-            "1": { "name": "entity.name.function.rics" }
-          },
-          "end": "(?=\\{)"
-        },
-        {
-          "name": "keyword.control.at-rule.supports.rics",
-          "match": "@supports"
-        },
-        {
-          "name": "keyword.control.at-rule.container.rics",
-          "match": "@container"
-        },
-        {
-          "name": "keyword.control.at-rule.layer.rics",
-          "match": "@layer"
-        },
-        {
-          "name": "keyword.control.at-rule.scope.rics",
-          "match": "@scope"
-        },
-        {
-          "name": "keyword.control.at-rule.font-face.rics",
-          "match": "@font-face"
+          "match": "(@)(debug|warn|error|font-face|layer|scope)\\b",
+          "captures": {
+            "1": { "name": "punctuation.definition.keyword.css.rics" },
+            "2": { "name": "keyword.control.at-rule.css.rics" }
+          }
         }
       ]
     },
-    "mixin-params": {
+    "ruleset": {
+      "begin": "(?=[:.*#a-zA-Z&\\[])",
+      "end": "(?<=\\})",
       "patterns": [
-        {
-          "begin": "\\(",
-          "end": "\\)",
-          "patterns": [
-            { "include": "#variables" },
-            { "include": "#values" },
-            {
-              "name": "punctuation.separator.rics",
-              "match": ","
-            },
-            {
-              "name": "keyword.operator.assignment.rics",
-              "match": ":"
-            }
-          ]
-        }
+        { "include": "#selector" },
+        { "include": "#property-list" }
       ]
     },
-    "function-call-args": {
+    "selector": {
+      "begin": "(?=[:.*#a-zA-Z&\\[])",
+      "end": "(?=\\{)",
       "patterns": [
+        { "include": "#comment" },
         {
-          "begin": "\\(",
-          "end": "\\)",
-          "patterns": [
-            { "include": "#variables" },
-            { "include": "#values" },
-            { "include": "#functions" },
-            {
-              "name": "punctuation.separator.rics",
-              "match": ","
-            }
-          ]
-        }
-      ]
-    },
-    "selectors": {
-      "patterns": [
+          "name": "entity.name.tag.wildcard.css.rics",
+          "match": "\\*"
+        },
         {
           "name": "entity.other.attribute-name.class.css.rics",
           "match": "\\.[a-zA-Z_][a-zA-Z0-9_-]*"
@@ -297,108 +213,145 @@
         },
         {
           "name": "entity.name.tag.css.rics",
-          "match": "\\b(a|abbr|address|area|article|aside|audio|b|base|bdi|bdo|blockquote|body|br|button|canvas|caption|cite|code|col|colgroup|data|datalist|dd|del|details|dfn|dialog|div|dl|dt|em|embed|fieldset|figcaption|figure|footer|form|h[1-6]|head|header|hgroup|hr|html|i|iframe|img|input|ins|kbd|label|legend|li|link|main|map|mark|menu|meta|meter|nav|noscript|object|ol|optgroup|option|output|p|picture|pre|progress|q|rp|rt|ruby|s|samp|script|section|select|slot|small|source|span|strong|style|sub|summary|sup|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr|track|u|ul|var|video|wbr)\\b"
+          "match": "\\b(a|abbr|address|area|article|aside|audio|b|base|bdi|bdo|blockquote|body|br|button|canvas|caption|cite|code|col|colgroup|data|datalist|dd|del|details|dfn|dialog|div|dl|dt|em|embed|fieldset|figcaption|figure|footer|form|h[1-6]|head|header|hgroup|hr|html|i|iframe|img|input|ins|kbd|label|legend|li|link|main|map|mark|menu|meta|meter|nav|noscript|object|ol|optgroup|option|output|p|picture|pre|progress|q|rp|rt|ruby|s|samp|script|section|select|slot|small|source|span|strong|style|sub|summary|sup|svg|table|tbody|td|template|textarea|tfoot|th|thead|time|title|tr|track|u|ul|var|video|wbr|path|rect|circle|ellipse|line|polyline|polygon|g|defs|use|symbol|text|tspan)\\b"
         },
         {
           "name": "entity.other.attribute-name.pseudo-class.css.rics",
-          "match": ":(?:hover|active|focus|focus-within|focus-visible|visited|link|first-child|last-child|nth-child|nth-last-child|first-of-type|last-of-type|nth-of-type|only-child|only-of-type|empty|not|is|where|has|checked|disabled|enabled|required|optional|valid|invalid|in-range|out-of-range|read-only|read-write|placeholder-shown|default|indeterminate|root|target|lang|dir|fullscreen|picture-in-picture|playing|paused|seeking|buffering|stalled|muted|volume-locked|scope|any-link|local-link|target-within|current|past|future)\\b"
+          "match": "::?[a-zA-Z][a-zA-Z0-9-]*(?:\\([^)]*\\))?"
         },
         {
-          "name": "entity.other.attribute-name.pseudo-element.css.rics",
-          "match": "::(?:before|after|first-line|first-letter|selection|placeholder|marker|backdrop|cue|part|slotted|file-selector-button|highlight|spelling-error|grammar-error|target-text)"
-        },
-        {
-          "name": "variable.language.parent-selector.rics",
+          "name": "variable.language.parent-selector.scss.rics",
           "match": "&"
         },
         {
-          "name": "entity.other.attribute-name.attribute.css.rics",
+          "name": "meta.attribute-selector.css.rics",
           "begin": "\\[",
           "end": "\\]",
           "patterns": [
-            { "include": "#strings" },
-            {
-              "name": "entity.other.attribute-name.css.rics",
-              "match": "[a-zA-Z_-][a-zA-Z0-9_-]*"
-            },
-            {
-              "name": "keyword.operator.comparison.css.rics",
-              "match": "[~|^$*]?="
-            }
+            { "include": "#string" },
+            { "match": "[a-zA-Z_-][a-zA-Z0-9_-]*", "name": "entity.other.attribute-name.css.rics" },
+            { "match": "[~|^$*]?=", "name": "keyword.operator.comparison.css.rics" }
           ]
-        }
+        },
+        {
+          "name": "punctuation.separator.combinator.css.rics",
+          "match": "[>+~]"
+        },
+        {
+          "name": "punctuation.separator.list.comma.css.rics",
+          "match": ","
+        },
+        { "include": "#interpolation" }
       ]
     },
     "property-list": {
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": { "name": "punctuation.section.property-list.begin.css.rics" }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": { "name": "punctuation.section.property-list.end.css.rics" }
+      },
       "patterns": [
-        {
-          "begin": "\\{",
-          "end": "\\}",
-          "patterns": [
-            { "include": "#comments" },
-            { "include": "#at-rules" },
-            { "include": "#property-declaration" },
-            { "include": "#selectors" },
-            { "include": "#property-list" }
-          ]
-        }
+        { "include": "#comment" },
+        { "include": "#at-rule" },
+        { "include": "#variable-declaration" },
+        { "include": "#property" },
+        { "include": "#ruleset" }
       ]
     },
-    "property-declaration": {
+    "property": {
+      "begin": "(?<![-a-zA-Z])([a-zA-Z-][a-zA-Z0-9-]*)\\s*(:)(?!:)",
+      "beginCaptures": {
+        "1": { "name": "support.type.property-name.css.rics" },
+        "2": { "name": "punctuation.separator.key-value.css.rics" }
+      },
+      "end": ";|(?=\\})",
+      "endCaptures": {
+        "0": { "name": "punctuation.terminator.rule.css.rics" }
+      },
       "patterns": [
-        {
-          "begin": "(?=[a-zA-Z-])",
-          "end": ";|(?=\\})",
-          "patterns": [
-            {
-              "name": "support.type.property-name.css.rics",
-              "match": "[a-zA-Z-][a-zA-Z0-9-]*(?=\\s*:)"
-            },
-            {
-              "name": "punctuation.separator.key-value.css.rics",
-              "match": ":"
-            },
-            { "include": "#values" }
-          ]
-        }
+        { "include": "#value" }
       ]
     },
-    "values": {
+    "value": {
       "patterns": [
-        { "include": "#variables" },
+        { "include": "#comment" },
+        { "include": "#variable" },
         { "include": "#interpolation" },
-        { "include": "#functions" },
-        { "include": "#colors" },
-        { "include": "#numbers" },
-        { "include": "#strings" },
-        { "include": "#operators" },
-        { "include": "#keywords" }
+        { "include": "#string" },
+        { "include": "#color" },
+        { "include": "#numeric" },
+        { "include": "#function" },
+        { "include": "#operator" },
+        { "include": "#keyword" },
+        { "include": "#important" }
       ]
     },
-    "functions": {
+    "function": {
+      "begin": "([a-zA-Z_-][a-zA-Z0-9_-]*)\\s*(\\()",
+      "beginCaptures": {
+        "1": { "name": "support.function.css.rics" },
+        "2": { "name": "punctuation.section.function.begin.css.rics" }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": { "name": "punctuation.section.function.end.css.rics" }
+      },
       "patterns": [
-        {
-          "name": "meta.function-call.rics",
-          "begin": "([a-zA-Z_-][a-zA-Z0-9_-]*)\\s*(\\()",
-          "beginCaptures": {
-            "1": { "name": "support.function.rics" },
-            "2": { "name": "punctuation.section.function.begin.rics" }
-          },
-          "end": "\\)",
-          "endCaptures": {
-            "0": { "name": "punctuation.section.function.end.rics" }
-          },
-          "patterns": [
-            { "include": "#values" },
-            {
-              "name": "punctuation.separator.rics",
-              "match": ","
-            }
-          ]
-        }
+        { "include": "#value" },
+        { "match": ",", "name": "punctuation.separator.list.comma.css.rics" }
       ]
     },
-    "colors": {
+    "function-parameters": {
+      "begin": "\\(",
+      "beginCaptures": {
+        "0": { "name": "punctuation.section.parameters.begin.scss.rics" }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": { "name": "punctuation.section.parameters.end.scss.rics" }
+      },
+      "patterns": [
+        { "include": "#variable" },
+        { "include": "#value" },
+        { "match": ":", "name": "punctuation.separator.key-value.scss.rics" },
+        { "match": ",", "name": "punctuation.separator.list.comma.scss.rics" }
+      ]
+    },
+    "function-arguments": {
+      "begin": "\\(",
+      "beginCaptures": {
+        "0": { "name": "punctuation.section.arguments.begin.scss.rics" }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": { "name": "punctuation.section.arguments.end.scss.rics" }
+      },
+      "patterns": [
+        { "include": "#variable" },
+        { "include": "#value" },
+        { "match": ",", "name": "punctuation.separator.list.comma.scss.rics" }
+      ]
+    },
+    "map-or-list": {
+      "begin": "\\(",
+      "beginCaptures": {
+        "0": { "name": "punctuation.section.list.begin.scss.rics" }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": { "name": "punctuation.section.list.end.scss.rics" }
+      },
+      "patterns": [
+        { "include": "#variable" },
+        { "include": "#value" },
+        { "match": ":", "name": "punctuation.separator.key-value.scss.rics" },
+        { "match": ",", "name": "punctuation.separator.list.comma.scss.rics" }
+      ]
+    },
+    "color": {
       "patterns": [
         {
           "name": "constant.other.color.rgb-value.hex.css.rics",
@@ -406,29 +359,22 @@
         },
         {
           "name": "support.constant.color.w3c-standard-color-name.css.rics",
-          "match": "\\b(aliceblue|antiquewhite|aqua|aquamarine|azure|beige|bisque|black|blanchedalmond|blue|blueviolet|brown|burlywood|cadetblue|chartreuse|chocolate|coral|cornflowerblue|cornsilk|crimson|cyan|darkblue|darkcyan|darkgoldenrod|darkgray|darkgreen|darkgrey|darkkhaki|darkmagenta|darkolivegreen|darkorange|darkorchid|darkred|darksalmon|darkseagreen|darkslateblue|darkslategray|darkslategrey|darkturquoise|darkviolet|deeppink|deepskyblue|dimgray|dimgrey|dodgerblue|firebrick|floralwhite|forestgreen|fuchsia|gainsboro|ghostwhite|gold|goldenrod|gray|green|greenyellow|grey|honeydew|hotpink|indianred|indigo|ivory|khaki|lavender|lavenderblush|lawngreen|lemonchiffon|lightblue|lightcoral|lightcyan|lightgoldenrodyellow|lightgray|lightgreen|lightgrey|lightpink|lightsalmon|lightseagreen|lightskyblue|lightslategray|lightslategrey|lightsteelblue|lightyellow|lime|limegreen|linen|magenta|maroon|mediumaquamarine|mediumblue|mediumorchid|mediumpurple|mediumseagreen|mediumslateblue|mediumspringgreen|mediumturquoise|mediumvioletred|midnightblue|mintcream|mistyrose|moccasin|navajowhite|navy|oldlace|olive|olivedrab|orange|orangered|orchid|palegoldenrod|palegreen|paleturquoise|palevioletred|papayawhip|peachpuff|peru|pink|plum|powderblue|purple|rebeccapurple|red|rosybrown|royalblue|saddlebrown|salmon|sandybrown|seagreen|seashell|sienna|silver|skyblue|slateblue|slategray|slategrey|snow|springgreen|steelblue|tan|teal|thistle|tomato|transparent|turquoise|violet|wheat|white|whitesmoke|yellow|yellowgreen|currentColor|inherit|initial|unset|revert)\\b"
+          "match": "\\b(aliceblue|antiquewhite|aqua|aquamarine|azure|beige|bisque|black|blanchedalmond|blue|blueviolet|brown|burlywood|cadetblue|chartreuse|chocolate|coral|cornflowerblue|cornsilk|crimson|cyan|darkblue|darkcyan|darkgoldenrod|darkgray|darkgreen|darkgrey|darkkhaki|darkmagenta|darkolivegreen|darkorange|darkorchid|darkred|darksalmon|darkseagreen|darkslateblue|darkslategray|darkslategrey|darkturquoise|darkviolet|deeppink|deepskyblue|dimgray|dimgrey|dodgerblue|firebrick|floralwhite|forestgreen|fuchsia|gainsboro|ghostwhite|gold|goldenrod|gray|green|greenyellow|grey|honeydew|hotpink|indianred|indigo|ivory|khaki|lavender|lavenderblush|lawngreen|lemonchiffon|lightblue|lightcoral|lightcyan|lightgoldenrodyellow|lightgray|lightgreen|lightgrey|lightpink|lightsalmon|lightseagreen|lightskyblue|lightslategray|lightslategrey|lightsteelblue|lightyellow|lime|limegreen|linen|magenta|maroon|mediumaquamarine|mediumblue|mediumorchid|mediumpurple|mediumseagreen|mediumslateblue|mediumspringgreen|mediumturquoise|mediumvioletred|midnightblue|mintcream|mistyrose|moccasin|navajowhite|navy|oldlace|olive|olivedrab|orange|orangered|orchid|palegoldenrod|palegreen|paleturquoise|palevioletred|papayawhip|peachpuff|peru|pink|plum|powderblue|purple|rebeccapurple|red|rosybrown|royalblue|saddlebrown|salmon|sandybrown|seagreen|seashell|sienna|silver|skyblue|slateblue|slategray|slategrey|snow|springgreen|steelblue|tan|teal|thistle|tomato|transparent|turquoise|violet|wheat|white|whitesmoke|yellow|yellowgreen|currentColor)\\b"
         }
       ]
     },
-    "numbers": {
-      "patterns": [
-        {
-          "name": "constant.numeric.css.rics",
-          "match": "-?(?:\\d+\\.?\\d*|\\.\\d+)(?:px|em|rem|%|vh|vw|vmin|vmax|ch|ex|cm|mm|in|pt|pc|deg|rad|grad|turn|s|ms|fr|dpi|dpcm|dppx)?\\b"
-        }
-      ]
+    "numeric": {
+      "name": "constant.numeric.css.rics",
+      "match": "-?(?:\\d+\\.?\\d*|\\.\\d+)(?:px|em|rem|%|vh|vw|vmin|vmax|ch|ex|cm|mm|in|pt|pc|deg|rad|grad|turn|s|ms|fr|dpi|dpcm|dppx|Hz|kHz)?\\b"
     },
-    "strings": {
+    "string": {
       "patterns": [
         {
           "name": "string.quoted.double.css.rics",
           "begin": "\"",
           "end": "\"",
           "patterns": [
-            {
-              "name": "constant.character.escape.css.rics",
-              "match": "\\\\."
-            },
+            { "match": "\\\\.", "name": "constant.character.escape.css.rics" },
             { "include": "#interpolation" }
           ]
         },
@@ -437,77 +383,63 @@
           "begin": "'",
           "end": "'",
           "patterns": [
-            {
-              "name": "constant.character.escape.css.rics",
-              "match": "\\\\."
-            },
+            { "match": "\\\\.", "name": "constant.character.escape.css.rics" },
             { "include": "#interpolation" }
           ]
         }
       ]
     },
-    "operators": {
+    "operator": {
       "patterns": [
-        {
-          "name": "keyword.operator.comparison.rics",
-          "match": "==|!=|<=|>=|<|>"
-        },
-        {
-          "name": "keyword.operator.logical.rics",
-          "match": "\\b(and|or|not)\\b"
-        },
-        {
-          "name": "keyword.operator.arithmetic.rics",
-          "match": "[+\\-*/%]"
-        }
+        { "match": "==|!=|<=|>=|<|>", "name": "keyword.operator.comparison.scss.rics" },
+        { "match": "\\b(and|or|not)\\b", "name": "keyword.operator.logical.scss.rics" },
+        { "match": "[+\\-*/%]", "name": "keyword.operator.arithmetic.scss.rics" }
       ]
     },
-    "keywords": {
+    "keyword": {
       "patterns": [
         {
           "name": "support.constant.property-value.css.rics",
-          "match": "\\b(none|auto|inherit|initial|unset|revert|normal|bold|bolder|lighter|italic|oblique|underline|overline|line-through|solid|dashed|dotted|double|groove|ridge|inset|outset|hidden|visible|scroll|fixed|local|cover|contain|top|right|bottom|left|center|baseline|middle|sub|super|text-top|text-bottom|absolute|relative|static|sticky|flex|inline-flex|grid|inline-grid|block|inline|inline-block|table|list-item|run-in|contents|flow-root|nowrap|pre|pre-wrap|pre-line|break-spaces|row|row-reverse|column|column-reverse|wrap|wrap-reverse|stretch|flex-start|flex-end|space-between|space-around|space-evenly|start|end|self-start|self-end|ease|ease-in|ease-out|ease-in-out|linear|step-start|step-end|forwards|backwards|both|running|paused|alternate|alternate-reverse|infinite|border-box|content-box|padding-box|fill|stroke|pointer|default|text|move|wait|help|progress|not-allowed|grab|grabbing|zoom-in|zoom-out|crosshair|cell|alias|copy|context-menu|vertical-text|no-drop|e-resize|n-resize|ne-resize|nw-resize|s-resize|se-resize|sw-resize|w-resize|ew-resize|ns-resize|nesw-resize|nwse-resize|col-resize|row-resize|all-scroll)\\b"
+          "match": "\\b(none|auto|inherit|initial|unset|revert|normal|bold|bolder|lighter|italic|oblique|underline|overline|line-through|solid|dashed|dotted|double|groove|ridge|inset|outset|hidden|visible|scroll|fixed|local|cover|contain|top|right|bottom|left|center|baseline|middle|sub|super|text-top|text-bottom|absolute|relative|static|sticky|flex|inline-flex|grid|inline-grid|block|inline|inline-block|table|list-item|contents|flow-root|nowrap|pre|pre-wrap|pre-line|break-spaces|row|row-reverse|column|column-reverse|wrap|wrap-reverse|stretch|flex-start|flex-end|space-between|space-around|space-evenly|start|end|ease|ease-in|ease-out|ease-in-out|linear|step-start|step-end|forwards|backwards|both|running|paused|alternate|alternate-reverse|infinite|border-box|content-box|padding-box|pointer|default|text|move|wait|help|progress|not-allowed|grab|grabbing|zoom-in|zoom-out|crosshair|cell|alias|copy|no-drop|all-scroll|col-resize|row-resize|dark|light|repeat|no-repeat|repeat-x|repeat-y|round|space|clip|ellipsis|break-word|break-all|keep-all|uppercase|lowercase|capitalize|small-caps|ltr|rtl|horizontal|vertical|collapse|separate|always|avoid|serif|sans-serif|monospace|cursive|fantasy|system-ui|ui-serif|ui-sans-serif|ui-monospace|ui-rounded)\\b"
         },
         {
-          "name": "constant.language.boolean.rics",
+          "name": "constant.language.boolean.scss.rics",
           "match": "\\b(true|false|null)\\b"
         }
       ]
     },
+    "important": {
+      "name": "keyword.other.important.css.rics",
+      "match": "!\\s*important\\b"
+    },
     "media-query": {
       "patterns": [
-        {
-          "name": "support.constant.media.css.rics",
-          "match": "\\b(all|print|screen|speech)\\b"
-        },
-        {
-          "name": "support.type.property-name.media.css.rics",
-          "match": "\\b(width|height|device-width|device-height|orientation|aspect-ratio|device-aspect-ratio|color|color-index|monochrome|resolution|scan|grid|min-width|max-width|min-height|max-height|min-device-width|max-device-width|min-device-height|max-device-height|min-aspect-ratio|max-aspect-ratio|min-device-aspect-ratio|max-device-aspect-ratio|min-color|max-color|min-color-index|max-color-index|min-monochrome|max-monochrome|min-resolution|max-resolution|prefers-color-scheme|prefers-reduced-motion|prefers-contrast|prefers-reduced-transparency|hover|any-hover|pointer|any-pointer)\\b"
-        },
-        {
-          "name": "keyword.operator.logical.media.css.rics",
-          "match": "\\b(and|or|not|only)\\b"
-        },
-        { "include": "#numbers" },
-        { "include": "#variables" }
+        { "match": "\\b(all|print|screen|speech)\\b", "name": "support.constant.media.css.rics" },
+        { "match": "\\b(and|or|not|only)\\b", "name": "keyword.operator.logical.media.css.rics" },
+        { "match": "\\b(min-width|max-width|min-height|max-height|width|height|orientation|aspect-ratio|resolution|prefers-color-scheme|prefers-reduced-motion|hover|pointer)\\b", "name": "support.type.property-name.media.css.rics" },
+        { "include": "#numeric" },
+        { "include": "#variable" }
       ]
     },
-    "lists": {
+    "keyframe-block": {
+      "begin": "\\{",
+      "beginCaptures": {
+        "0": { "name": "punctuation.section.keyframes.begin.css.rics" }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "0": { "name": "punctuation.section.keyframes.end.css.rics" }
+      },
       "patterns": [
+        { "include": "#comment" },
         {
-          "begin": "\\(",
-          "end": "\\)",
+          "begin": "(from|to|\\d+%)",
+          "beginCaptures": {
+            "1": { "name": "entity.other.keyframe-offset.css.rics" }
+          },
+          "end": "(?<=\\})",
           "patterns": [
-            { "include": "#variables" },
-            { "include": "#values" },
-            {
-              "name": "punctuation.separator.rics",
-              "match": ","
-            },
-            {
-              "name": "punctuation.separator.key-value.rics",
-              "match": ":"
-            }
+            { "include": "#property-list" }
           ]
         }
       ]
