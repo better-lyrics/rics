@@ -1,0 +1,44 @@
+{
+  "name": "webpack-loader-rics",
+  "version": "0.1.0",
+  "description": "Webpack loader for rics CSS preprocessor",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "rics": "workspace:*"
+  },
+  "peerDependencies": {
+    "webpack": "^5.0.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0",
+    "webpack": "^5.0.0"
+  },
+  "keywords": [
+    "webpack",
+    "loader",
+    "rics",
+    "scss",
+    "css",
+    "preprocessor"
+  ],
+  "license": "MIT"
+}

@@ -1,72 +1,24 @@
 {
-  "name": "rics",
-  "version": "0.1.0",
-  "description": "Lightweight SCSS-like CSS preprocessor for browser/real-time use",
+  "name": "rics-monorepo",
+  "private": true,
+  "description": "Monorepo for rics - Lightweight SCSS-like CSS preprocessor",
   "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
-    "./codemirror": {
-      "types": "./dist/codemirror/index.d.ts",
-      "import": "./dist/codemirror/index.js",
-      "require": "./dist/codemirror/index.cjs"
-    }
-  },
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
-    "test": "vitest",
-    "test:ui": "vitest --ui",
-    "bench": "vitest bench",
-    "lint": "eslint src",
-    "typecheck": "tsc --noEmit",
-    "size": "tsup && echo 'Minified:' && du -h dist/index.js && echo 'Gzipped:' && gzip -c dist/index.js | wc -c",
-    "playground": "vite playground",
-    "playground:build": "vite build playground",
-    "prepublishOnly": "npm run build && npm run test:run && npm run size",
-    "publish:dry": "npm publish --dry-run"
-  },
-  "peerDependencies": {
-    "@codemirror/language": "^6.0.0",
-    "@codemirror/lint": "^6.0.0",
-    "@codemirror/state": "^6.0.0",
-    "@codemirror/view": "^6.0.0"
-  },
-  "peerDependenciesMeta": {
-    "@codemirror/language": {
-      "optional": true
-    },
-    "@codemirror/lint": {
-      "optional": true
-    },
-    "@codemirror/state": {
-      "optional": true
-    },
-    "@codemirror/view": {
-      "optional": true
-    }
+    "build": "pnpm -r build",
+    "dev": "pnpm -r --parallel dev",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "playground": "pnpm --filter rics-playground dev",
+    "playground:build": "pnpm --filter rics-playground build",
+    "clean": "rm -rf packages/*/dist apps/*/dist node_modules/.cache",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && pnpm test && changeset publish",
+    "size": "echo '=== Package Sizes (ESM) ===' && ls -la packages/*/dist/*.js 2>/dev/null | awk '{printf \"%-30s %s bytes\\n\", $9, $5}'"
   },
   "devDependencies": {
-    "@codemirror/language": "^6.0.0",
-    "@codemirror/lint": "^6.0.0",
-    "@codemirror/state": "^6.0.0",
-    "@codemirror/view": "^6.0.0",
-    "@vitest/ui": "^4.0.14",
-    "tsup": "^8.0.0",
-    "typescript": "^5.0.0",
-    "vite": "^5.0.0",
-    "vitest": "^4.0.14"
+    "@changesets/cli": "^2.29.8",
+    "typescript": "^5.0.0"
   },
   "keywords": [
     "scss",
@@ -74,13 +26,13 @@
     "preprocessor",
     "codemirror",
     "lightweight",
-    "lyrics",
-    "theming"
+    "vite-plugin"
   ],
   "author": "",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": ""
-  }
+  },
+  "packageManager": "pnpm@9.0.0"
 }

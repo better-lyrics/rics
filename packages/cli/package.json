@@ -1,0 +1,33 @@
+{
+  "name": "rics-cli",
+  "version": "0.1.0",
+  "description": "Command-line interface for rics CSS preprocessor",
+  "type": "module",
+  "bin": {
+    "rics": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "rics": "workspace:*"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  },
+  "keywords": [
+    "rics",
+    "scss",
+    "css",
+    "preprocessor",
+    "cli"
+  ],
+  "license": "MIT"
+}

@@ -1,0 +1,48 @@
+{
+  "name": "rics-vscode",
+  "displayName": "rics",
+  "description": "Syntax highlighting for rics - a lightweight SCSS-like CSS preprocessor",
+  "version": "0.1.0",
+  "publisher": "rics",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "rics",
+    "scss",
+    "css",
+    "preprocessor",
+    "syntax highlighting"
+  ],
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "license": "MIT",
+  "icon": "icon.png",
+  "contributes": {
+    "languages": [
+      {
+        "id": "rics",
+        "aliases": [
+          "rics",
+          "RICS"
+        ],
+        "extensions": [
+          ".rics"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "rics",
+        "scopeName": "source.rics",
+        "path": "./syntaxes/rics.tmLanguage.json"
+      }
+    ]
+  }
+}

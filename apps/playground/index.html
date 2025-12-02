@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rics playground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Styles compiled from styles.rics -->
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <header class="header">
+      <h1><span>rics</span> playground</h1>
+      <div class="header-actions">
+        <div class="dropdown" id="examples-dropdown">
+          <button class="dropdown-trigger" id="examples-trigger">
+            <span>Variables</span>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path
+                d="M3 4.5L6 7.5L9 4.5"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+          <div class="dropdown-menu" id="examples-menu">
+            <!-- Row 1 -->
+            <div class="dropdown-group">
+              <div class="dropdown-label">Basics</div>
+              <button data-example="basic">Variables</button>
+              <button data-example="mixins">Mixins</button>
+              <button data-example="functions">Functions</button>
+            </div>
+            <div class="dropdown-group">
+              <div class="dropdown-label">Control Flow</div>
+              <button data-example="conditionals">Conditionals</button>
+              <button data-example="loops">For Loops</button>
+              <button data-example="each">Each Loops</button>
+            </div>
+            <div class="dropdown-group">
+              <div class="dropdown-label">Components</div>
+              <button data-example="buttons">Buttons</button>
+              <button data-example="cards">Cards</button>
+              <button data-example="forms">Forms</button>
+            </div>
+            <div class="dropdown-group">
+              <div class="dropdown-label">Styling</div>
+              <button data-example="typography">Typography</button>
+              <button data-example="shadows">Shadows</button>
+              <button data-example="animations">Animations</button>
+            </div>
+            <!-- Row 2 -->
+            <div class="dropdown-group">
+              <div class="dropdown-label">Colors</div>
+              <button data-example="colors">Color Functions</button>
+              <button data-example="palette">Color Palette</button>
+              <button data-example="gradients">Gradients</button>
+            </div>
+            <div class="dropdown-group">
+              <div class="dropdown-label">Layout</div>
+              <button data-example="grid">Grid System</button>
+              <button data-example="flexbox">Flexbox</button>
+              <button data-example="utilities">Utilities</button>
+            </div>
+            <div class="dropdown-group">
+              <div class="dropdown-label">Responsive</div>
+              <button data-example="breakpoints">Breakpoints</button>
+              <button data-example="responsive">Media Queries</button>
+              <button data-example="aspect">Aspect Ratios</button>
+            </div>
+            <div class="dropdown-group">
+              <div class="dropdown-label">Advanced</div>
+              <button data-example="theming">Theming</button>
+              <button data-example="math">Math</button>
+              <button data-example="borders">Borders</button>
+              <button data-example="zindex">Z-Index</button>
+            </div>
+            <!-- Row 3 - Stress Tests -->
+            <div class="dropdown-group">
+              <div class="dropdown-label">Stress Test</div>
+              <button data-example="tailwind">Tailwind Utils</button>
+              <button data-example="matrix">Grid Matrix</button>
+              <button data-example="colorSystem">Color System</button>
+            </div>
+            <div class="dropdown-group">
+              <div class="dropdown-label">Performance</div>
+              <button data-example="stressTest">Button Matrix</button>
+              <button data-example="designTokens">Design Tokens</button>
+              <button data-example="animation">Animations</button>
+            </div>
+            <div class="dropdown-group">
+              <div class="dropdown-label">Edge Cases</div>
+              <button data-example="blur">Blur Cascade</button>
+              <button data-example="duration">Duration Hack</button>
+            </div>
+            <div class="dropdown-group">
+              <div class="dropdown-label">Meta</div>
+              <button data-example="playground">Playground Styles</button>
+            </div>
+          </div>
+        </div>
+        <button id="import">Import</button>
+        <button id="export">Export</button>
+        <button id="share">Share</button>
+        <input type="file" id="file-input" accept=".rics,.scss,.css" style="display: none" />
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="pane" id="pane-input">
+        <div class="pane-header">
+          <span>rics Input</span>
+          <button id="format-input">Format</button>
+        </div>
+        <div id="input-editor" class="editor-container"></div>
+      </div>
+      <div class="pane" id="pane-output">
+        <div class="pane-header">
+          <span>CSS Output</span>
+          <button id="copy-output">Copy</button>
+        </div>
+        <div id="output-editor" class="editor-container"></div>
+      </div>
+    </main>
+
+    <footer class="status-bar">
+      <div id="status"></div>
+      <div id="stats" class="stats"></div>
+    </footer>
+
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>

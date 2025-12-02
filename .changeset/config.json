@@ -1,0 +1,13 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.1.2/schema.json",
+  "changelog": "@changesets/cli/changelog",
+  "commit": false,
+  "fixed": [],
+  "linked": [
+    ["rics", "rics-cli", "codemirror-lang-rics", "vite-plugin-rics", "webpack-loader-rics", "prettier-plugin-rics", "eslint-plugin-rics"]
+  ],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": ["rics-playground", "rics-vscode"]
+}
