@@ -1,5 +1,6 @@
 {
   "framework": null,
+  "installCommand": "npm i -g pnpm && pnpm install",
   "buildCommand": "pnpm build",
   "outputDirectory": "apps/playground/dist"
 }
