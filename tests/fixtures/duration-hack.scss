@@ -1,0 +1,15 @@
+@function duration-exclusions($max) {
+  $result: "";
+  @for $i from 0 through ($max * 1000) {
+    $val: $i / 1000;
+    @if $result != "" {
+      $result: $result + ", ";
+    }
+    $result: $result + '[data-duration="#{$val}"]';
+  }
+  @return $result;
+}
+
+.blyrics--word[data-duration]:not(#{duration-exclusions(1.5)})::after {
+  --blyrics-glow-color: color(display-p3 1 1 1 / 1);
+}

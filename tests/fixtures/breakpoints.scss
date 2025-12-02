@@ -1,0 +1,16 @@
+$sizes: (
+  1024: 200px,
+  1170: 250px,
+  1279: 300px
+);
+
+@each $breakpoint, $size in $sizes {
+  @media (max-width: #{$breakpoint}px) {
+    #player {
+      max-width: $size;
+      max-height: $size;
+      width: $size;
+      height: $size;
+    }
+  }
+}

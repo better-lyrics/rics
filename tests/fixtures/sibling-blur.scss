@@ -1,0 +1,10 @@
+@for $i from 1 through 6 {
+  $selector: ".blyrics--active";
+  @for $j from 1 through $i {
+    $selector: $selector + "+.blyrics--line";
+  }
+
+  .blyrics-container:not(.blyrics-user-scrolling) > #{$selector} {
+    filter: blur(#{$i * 1.5}px) !important;
+  }
+}

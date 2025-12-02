@@ -1,0 +1,17 @@
+# Development
+playground/
+tests/
+src/
+*.test.ts
+*.bench.ts
+vitest.config.ts
+tsup.config.ts
+tsconfig.json
+.github/
+PLAN.md
+
+# Build artifacts
+node_modules/
+coverage/
+.turbo/
+*.log
