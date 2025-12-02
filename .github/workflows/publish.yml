@@ -1,6 +1,11 @@
 name: Publish
 
 on:
+  push:
+    branches:
+      - master
+    paths:
+      - ".changeset/**"
   workflow_dispatch:
 
 jobs:
@@ -35,19 +40,36 @@ jobs:
       - name: Run tests
         run: pnpm test
 
+      - name: Check for changesets
+        id: changesets
+        run: |
+          if ls .changeset/*.md 1> /dev/null 2>&1 && [ "$(ls .changeset/*.md 2>/dev/null | grep -v README.md)" ]; then
+            echo "has_changesets=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_changesets=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Version packages
+        if: steps.changesets.outputs.has_changesets == 'true'
         run: pnpm changeset version
 
       - name: Commit version bump
+        if: steps.changesets.outputs.has_changesets == 'true'
         run: |
           git add .
           git commit -m "chore: version packages" || echo "No changes to commit"
           git push
 
       - name: Publish to npm
+        if: steps.changesets.outputs.has_changesets == 'true'
         run: pnpm changeset publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Push tags
+        if: steps.changesets.outputs.has_changesets == 'true'
         run: git push --follow-tags
+
+      - name: No changesets found
+        if: steps.changesets.outputs.has_changesets == 'false'
+        run: echo "No changesets found, skipping publish"
