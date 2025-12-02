@@ -46,7 +46,7 @@ jobs:
         run: pnpm test
 
       - name: Bump versions
-        run: pnpm -r exec -- npm version ${{ inputs.bump }} --no-git-tag-version
+        run: pnpm --filter './packages/*' exec npm version ${{ inputs.bump }} --no-git-tag-version
 
       - name: Commit version bump
         run: |
