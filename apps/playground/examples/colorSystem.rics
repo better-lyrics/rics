@@ -1,0 +1,55 @@
+// Complete color system with shades
+// Generates full 50-950 palette for multiple colors
+
+@function shade-color($color, $weight) {
+  @if $weight < 500 {
+    @return mix(white, $color, (500 - $weight) / 5 * 10%);
+  } @else if $weight > 500 {
+    @return mix(black, $color, ($weight - 500) / 5 * 8%);
+  }
+  @return $color;
+}
+
+$base-colors: (
+  rose: #f43f5e,
+  pink: #ec4899,
+  violet: #8b5cf6,
+  indigo: #6366f1,
+  blue: #3b82f6,
+  cyan: #06b6d4,
+  teal: #14b8a6,
+  green: #22c55e,
+  yellow: #eab308,
+  orange: #f97316,
+  red: #ef4444,
+  gray: #6b7280
+);
+
+$weights: 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950;
+
+:root {
+  @each $name, $base in $base-colors {
+    @each $weight in $weights {
+      --#{$name}-#{$weight}: #{shade-color($base, $weight)};
+    }
+  }
+}
+
+// Generate utility classes for each shade
+@each $name, $base in $base-colors {
+  @each $weight in $weights {
+    $color: shade-color($base, $weight);
+
+    .text-#{$name}-#{$weight} {
+      color: $color;
+    }
+
+    .bg-#{$name}-#{$weight} {
+      background-color: $color;
+    }
+
+    .border-#{$name}-#{$weight} {
+      border-color: $color;
+    }
+  }
+}

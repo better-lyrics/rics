@@ -1,0 +1,41 @@
+// Type scale
+$type-scale: (
+  xs: 12px,
+  sm: 14px,
+  base: 16px,
+  lg: 18px,
+  xl: 20px,
+  2xl: 24px,
+  3xl: 30px,
+  4xl: 36px
+);
+
+@each $name, $size in $type-scale {
+  .text-#{$name} {
+    font-size: $size;
+    line-height: $size * 1.5;
+  }
+}
+
+// Font weights
+$weights: (light: 300, normal: 400, medium: 500, semibold: 600, bold: 700);
+
+@each $name, $weight in $weights {
+  .font-#{$name} {
+    font-weight: $weight;
+  }
+}
+
+// Text colors
+$text-colors: (
+  primary: #0f172a,
+  secondary: #475569,
+  muted: #94a3b8,
+  inverse: #f8fafc
+);
+
+@each $name, $color in $text-colors {
+  .text-#{$name} {
+    color: $color;
+  }
+}

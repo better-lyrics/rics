@@ -1,0 +1,33 @@
+$base: #f43f5e;
+
+// Generate a full color palette
+@for $i from 1 through 9 {
+  $lightness: 100 - ($i * 10);
+
+  .color-#{$i * 100} {
+    @if $i < 5 {
+      background: mix(white, $base, (5 - $i) * 20%);
+    } @else if $i == 5 {
+      background: $base;
+    } @else {
+      background: mix(black, $base, ($i - 5) * 15%);
+    }
+  }
+}
+
+// Semantic color tokens
+$colors: (
+  primary: #f43f5e,
+  secondary: #8b5cf6,
+  success: #22c55e,
+  warning: #f59e0b,
+  error: #ef4444
+);
+
+:root {
+  @each $name, $color in $colors {
+    --#{$name}: #{$color};
+    --#{$name}-light: #{mix(white, $color, 30%)};
+    --#{$name}-dark: #{mix(black, $color, 20%)};
+  }
+}

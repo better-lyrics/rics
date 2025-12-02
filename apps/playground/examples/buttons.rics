@@ -1,0 +1,65 @@
+$btn-colors: (
+  primary: #f43f5e,
+  secondary: #6366f1,
+  success: #22c55e,
+  danger: #ef4444
+);
+
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 150ms ease;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@each $name, $color in $btn-colors {
+  .btn-#{$name} {
+    @include button-base;
+    background: $color;
+    color: white;
+
+    &:hover:not(:disabled) {
+      background: darken($color, 8%);
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+  }
+
+  .btn-#{$name}-outline {
+    @include button-base;
+    background: transparent;
+    color: $color;
+    border: 2px solid $color;
+
+    &:hover:not(:disabled) {
+      background: rgba($color, 0.1);
+    }
+  }
+}
+
+// Size variants
+$btn-sizes: (
+  sm: (8px 16px, 14px),
+  md: (10px 20px, 16px),
+  lg: (14px 28px, 18px)
+);
+
+@each $name, $values in $btn-sizes {
+  .btn-#{$name} {
+    padding: nth($values, 1);
+    font-size: nth($values, 2);
+  }
+}

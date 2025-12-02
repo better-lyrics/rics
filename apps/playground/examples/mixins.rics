@@ -1,0 +1,36 @@
+@mixin button($bg, $color: white, $radius: 4px) {
+  background: $bg;
+  color: $color;
+  border-radius: $radius;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background: darken($bg, 10%);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary {
+  @include button(#f43f5e);
+}
+
+.btn-danger {
+  @include button(#dc3545, white, 8px);
+}
+
+.centered-box {
+  @include flex-center;
+  width: 200px;
+  height: 200px;
+}

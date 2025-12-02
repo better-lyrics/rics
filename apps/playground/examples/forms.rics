@@ -1,0 +1,58 @@
+$input-states: (
+  default: #d1d5db,
+  focus: #f43f5e,
+  error: #ef4444,
+  success: #22c55e
+);
+
+@mixin input-base {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 2px solid map-get($input-states, default);
+  background: white;
+  transition: all 150ms ease;
+
+  &::placeholder {
+    color: #9ca3af;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: map-get($input-states, focus);
+    box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.1);
+  }
+}
+
+.input {
+  @include input-base;
+}
+
+.input-error {
+  @include input-base;
+  border-color: map-get($input-states, error);
+
+  &:focus {
+    border-color: map-get($input-states, error);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  }
+}
+
+.label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.helper-text {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #6b7280;
+
+  &--error {
+    color: map-get($input-states, error);
+  }
+}

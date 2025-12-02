@@ -1,0 +1,51 @@
+// Flexbox utilities generator
+$flex-directions: row, row-reverse, column, column-reverse;
+$flex-wraps: nowrap, wrap, wrap-reverse;
+
+$justify-values: (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  between: space-between,
+  around: space-around,
+  evenly: space-evenly
+);
+
+$align-values: (
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  baseline: baseline,
+  stretch: stretch
+);
+
+@each $dir in $flex-directions {
+  .flex-#{$dir} {
+    display: flex;
+    flex-direction: $dir;
+  }
+}
+
+@each $wrap in $flex-wraps {
+  .flex-#{$wrap} {
+    flex-wrap: $wrap;
+  }
+}
+
+@each $name, $value in $justify-values {
+  .justify-#{$name} {
+    justify-content: $value;
+  }
+}
+
+@each $name, $value in $align-values {
+  .items-#{$name} {
+    align-items: $value;
+  }
+}
+
+// Flex grow/shrink
+@for $i from 0 through 3 {
+  .grow-#{$i} { flex-grow: $i; }
+  .shrink-#{$i} { flex-shrink: $i; }
+}

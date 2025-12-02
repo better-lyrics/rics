@@ -7,7 +7,7 @@
     ["rics", "rics-cli", "codemirror-lang-rics", "vite-plugin-rics", "webpack-loader-rics", "prettier-plugin-rics", "eslint-plugin-rics"]
   ],
   "access": "public",
-  "baseBranch": "main",
+  "baseBranch": "master",
   "updateInternalDependencies": "patch",
   "ignore": ["rics-playground", "rics-vscode"]
 }

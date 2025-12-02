@@ -1,0 +1,38 @@
+// Theme configuration
+$themes: (
+  light: (
+    bg: #ffffff,
+    text: #1a1a1a,
+    border: #e5e7eb,
+    accent: #f43f5e
+  ),
+  dark: (
+    bg: #0f0f0f,
+    text: #fafafa,
+    border: #27272a,
+    accent: #fb7185
+  )
+);
+
+@each $theme, $colors in $themes {
+  [data-theme="#{$theme}"] {
+    --bg: #{map-get($colors, bg)};
+    --text: #{map-get($colors, text)};
+    --border: #{map-get($colors, border)};
+    --accent: #{map-get($colors, accent)};
+
+    background: var(--bg);
+    color: var(--text);
+  }
+}
+
+// Component that uses theme variables
+.card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+
+  .title {
+    color: var(--accent);
+  }
+}

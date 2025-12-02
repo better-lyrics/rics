@@ -1,0 +1,23 @@
+$primary: #f43f5e;
+$spacing: 8px;
+
+.button {
+  color: $primary;
+  padding: $spacing * 2;
+
+  &:hover {
+    color: darken($primary, 10%);
+    background: lighten($primary, 40%);
+  }
+
+  &--large {
+    padding: $spacing * 4;
+    font-size: 18px;
+  }
+
+  .icon {
+    margin-right: $spacing;
+
+    &.left { margin-left: 0; }
+  }
+}

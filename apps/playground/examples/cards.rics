@@ -1,0 +1,51 @@
+$card-variants: (
+  default: (bg: white, border: #e5e7eb, shadow: 0 1px 3px rgba(0,0,0,0.1)),
+  elevated: (bg: white, border: transparent, shadow: 0 10px 40px rgba(0,0,0,0.1)),
+  outlined: (bg: transparent, border: #e5e7eb, shadow: none)
+);
+
+@mixin card-base {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+@each $name, $props in $card-variants {
+  .card-#{$name} {
+    @include card-base;
+    background: map-get($props, bg);
+    border: 1px solid map-get($props, border);
+    box-shadow: map-get($props, shadow);
+  }
+}
+
+// Card parts
+.card {
+  @include card-base;
+  background: white;
+  border: 1px solid #e5e7eb;
+
+  &__header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  &__body {
+    padding: 20px;
+  }
+
+  &__footer {
+    padding: 16px 20px;
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  &--interactive {
+    cursor: pointer;
+    transition: all 200ms ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    }
+  }
+}

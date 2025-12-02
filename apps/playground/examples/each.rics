@@ -1,0 +1,36 @@
+$colors: (
+  primary: #f43f5e,
+  success: #22c55e,
+  warning: #f59e0b,
+  danger: #ef4444,
+  info: #3b82f6
+);
+
+@each $name, $color in $colors {
+  .text-#{$name} {
+    color: $color;
+  }
+
+  .bg-#{$name} {
+    background: $color;
+    color: white;
+
+    &:hover {
+      background: darken($color, 10%);
+    }
+  }
+
+  .border-#{$name} {
+    border: 2px solid $color;
+  }
+}
+
+// List iteration
+$sizes: sm, md, lg, xl;
+$values: 576px, 768px, 1024px, 1280px;
+
+@for $i from 1 through length($sizes) {
+  .container-#{nth($sizes, $i)} {
+    max-width: nth($values, $i);
+  }
+}

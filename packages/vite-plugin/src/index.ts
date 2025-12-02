@@ -23,6 +23,8 @@ export function ricsPlugin(options: RicsPluginOptions = {}): Plugin {
   const cssMap = new Map<string, string>();
 
   const isRicsFile = (id: string) => {
+    // Skip ?raw imports - let Vite handle them natively
+    if (id.includes("?raw")) return false;
     const cleanId = id.split("?")[0];
     return extensions.some((ext) => cleanId.endsWith(ext));
   };

@@ -1,0 +1,42 @@
+// Mathematical operations
+$base: 16px;
+$ratio: 1.25;
+
+// Modular scale
+@for $i from -2 through 6 {
+  $size: $base;
+  @if $i > 0 {
+    @for $j from 1 through $i {
+      $size: $size * $ratio;
+    }
+  } @else if $i < 0 {
+    @for $j from $i through -1 {
+      $size: $size / $ratio;
+    }
+  }
+
+  .scale-#{$i + 3} {
+    font-size: round($size);
+  }
+}
+
+// Aspect ratios
+$ratios: (
+  square: 1/1,
+  video: 16/9,
+  portrait: 3/4,
+  wide: 21/9
+);
+
+@each $name, $ratio in $ratios {
+  .aspect-#{$name} {
+    aspect-ratio: $ratio;
+  }
+}
+
+// Percentage widths
+@for $i from 1 through 6 {
+  .w-#{$i}of6 {
+    width: percentage($i / 6);
+  }
+}

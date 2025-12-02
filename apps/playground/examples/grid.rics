@@ -1,0 +1,39 @@
+$columns: 12;
+$gutter: 24;
+$half-gutter: $gutter / 2;
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -#{$half-gutter}px;
+  margin-right: -#{$half-gutter}px;
+}
+
+@for $i from 1 through $columns {
+  .col-#{$i} {
+    flex: 0 0 percentage($i / $columns);
+    max-width: percentage($i / $columns);
+    padding: 0 #{$half-gutter}px;
+  }
+}
+
+// Offset classes (0-11)
+@for $i from 0 through 11 {
+  .offset-#{$i} {
+    margin-left: percentage($i / $columns);
+  }
+}
+
+// Responsive variants
+$breakpoints: (sm: 576px, md: 768px, lg: 1024px);
+
+@each $bp, $width in $breakpoints {
+  @media (min-width: $width) {
+    @for $i from 1 through $columns {
+      .col-#{$bp}-#{$i} {
+        flex: 0 0 percentage($i / $columns);
+        max-width: percentage($i / $columns);
+      }
+    }
+  }
+}

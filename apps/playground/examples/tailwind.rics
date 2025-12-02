@@ -1,0 +1,68 @@
+// Tailwind-style utility generator
+// Generates ~500+ utility classes
+
+$spacer: 4px;
+$spacing-scale: 0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24, 32, 40, 48, 64;
+
+// Spacing utilities (margin & padding)
+@each $size in $spacing-scale {
+  .m-#{$size} { margin: $spacer * $size; }
+  .mx-#{$size} { margin-left: $spacer * $size; margin-right: $spacer * $size; }
+  .my-#{$size} { margin-top: $spacer * $size; margin-bottom: $spacer * $size; }
+  .mt-#{$size} { margin-top: $spacer * $size; }
+  .mr-#{$size} { margin-right: $spacer * $size; }
+  .mb-#{$size} { margin-bottom: $spacer * $size; }
+  .ml-#{$size} { margin-left: $spacer * $size; }
+
+  .p-#{$size} { padding: $spacer * $size; }
+  .px-#{$size} { padding-left: $spacer * $size; padding-right: $spacer * $size; }
+  .py-#{$size} { padding-top: $spacer * $size; padding-bottom: $spacer * $size; }
+  .pt-#{$size} { padding-top: $spacer * $size; }
+  .pr-#{$size} { padding-right: $spacer * $size; }
+  .pb-#{$size} { padding-bottom: $spacer * $size; }
+  .pl-#{$size} { padding-left: $spacer * $size; }
+
+  .gap-#{$size} { gap: $spacer * $size; }
+  .w-#{$size} { width: $spacer * $size; }
+  .h-#{$size} { height: $spacer * $size; }
+}
+
+// Colors with variants
+$colors: (
+  slate: #64748b,
+  gray: #6b7280,
+  red: #ef4444,
+  orange: #f97316,
+  amber: #f59e0b,
+  yellow: #eab308,
+  lime: #84cc16,
+  green: #22c55e,
+  emerald: #10b981,
+  teal: #14b8a6,
+  cyan: #06b6d4,
+  sky: #0ea5e9,
+  blue: #3b82f6,
+  indigo: #6366f1,
+  violet: #8b5cf6,
+  purple: #a855f7,
+  fuchsia: #d946ef,
+  pink: #ec4899,
+  rose: #f43f5e
+);
+
+@each $name, $color in $colors {
+  .text-#{$name} { color: $color; }
+  .bg-#{$name} { background-color: $color; }
+  .border-#{$name} { border-color: $color; }
+
+  .text-#{$name}-light { color: lighten($color, 20%); }
+  .bg-#{$name}-light { background-color: lighten($color, 30%); }
+
+  .text-#{$name}-dark { color: darken($color, 15%); }
+  .bg-#{$name}-dark { background-color: darken($color, 15%); }
+}
+
+// Opacity utilities
+@for $i from 0 through 10 {
+  .opacity-#{$i * 10} { opacity: $i / 10; }
+}

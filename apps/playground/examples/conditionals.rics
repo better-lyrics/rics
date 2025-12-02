@@ -1,0 +1,42 @@
+$theme: dark;
+$size: large;
+
+.panel {
+  @if $theme == dark {
+    background: #1a1a1a;
+    color: white;
+  } @else {
+    background: white;
+    color: #1a1a1a;
+  }
+
+  @if $size == small {
+    padding: 8px;
+    font-size: 12px;
+  } @else if $size == large {
+    padding: 24px;
+    font-size: 18px;
+  } @else {
+    padding: 16px;
+    font-size: 14px;
+  }
+}
+
+// Mixin with conditional logic
+@mixin button-variant($style) {
+  @if $style == primary {
+    background: #f43f5e;
+    color: white;
+  } @else if $style == secondary {
+    background: transparent;
+    color: #f43f5e;
+    border: 1px solid #f43f5e;
+  } @else if $style == ghost {
+    background: transparent;
+    color: inherit;
+  }
+}
+
+.btn-primary { @include button-variant(primary); }
+.btn-secondary { @include button-variant(secondary); }
+.btn-ghost { @include button-variant(ghost); }

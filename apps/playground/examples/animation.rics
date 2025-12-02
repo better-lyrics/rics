@@ -1,0 +1,123 @@
+// Complex animation system
+// Generates keyframes and animation utilities
+
+@mixin generate-keyframes($name, $from, $to) {
+  @keyframes #{$name} {
+    from { #{$from} }
+    to { #{$to} }
+  }
+}
+
+// Base animations
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes slide-in-up {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slide-in-down {
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slide-in-left {
+  from { transform: translateX(-100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slide-in-right {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes scale-in {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-25%); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+// Duration scale
+$durations: 75, 100, 150, 200, 300, 500, 700, 1000;
+
+@each $duration in $durations {
+  .duration-#{$duration} {
+    animation-duration: #{$duration}ms;
+    transition-duration: #{$duration}ms;
+  }
+}
+
+// Delay scale
+$delays: 0, 75, 100, 150, 200, 300, 500, 700, 1000;
+
+@each $delay in $delays {
+  .delay-#{$delay} {
+    animation-delay: #{$delay}ms;
+    transition-delay: #{$delay}ms;
+  }
+}
+
+// Animation utilities
+$animations: fade-in, fade-out, slide-in-up, slide-in-down,
+             slide-in-left, slide-in-right, scale-in,
+             bounce, pulse, spin, ping;
+
+@each $name in $animations {
+  .animate-#{$name} {
+    animation-name: $name;
+    animation-fill-mode: both;
+  }
+}
+
+// Timing functions
+$easings: (
+  linear: linear,
+  ease: ease,
+  ease-in: ease-in,
+  ease-out: ease-out,
+  ease-in-out: ease-in-out
+);
+
+@each $name, $value in $easings {
+  .ease-#{$name} {
+    animation-timing-function: $value;
+    transition-timing-function: $value;
+  }
+}
+
+// Iteration count
+.animate-once { animation-iteration-count: 1; }
+.animate-infinite { animation-iteration-count: infinite; }
+
+@for $i from 2 through 5 {
+  .animate-#{$i}x { animation-iteration-count: $i; }
+}

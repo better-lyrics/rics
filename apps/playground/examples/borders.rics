@@ -1,0 +1,50 @@
+// Border radius scale
+$radii: (
+  none: 0,
+  sm: 2px,
+  md: 4px,
+  lg: 8px,
+  xl: 12px,
+  2xl: 16px,
+  full: 9999px
+);
+
+@each $name, $value in $radii {
+  .rounded-#{$name} {
+    border-radius: $value;
+  }
+}
+
+// Border widths
+@for $i from 0 through 4 {
+  .border-#{$i} {
+    border-width: #{$i}px;
+    border-style: solid;
+  }
+}
+
+// Border colors
+$border-colors: (
+  default: #e5e7eb,
+  dark: #374151,
+  light: #f3f4f6,
+  accent: #f43f5e
+);
+
+@each $name, $color in $border-colors {
+  .border-#{$name} {
+    border-color: $color;
+  }
+}
+
+// Individual sides
+$sides: (top, right, bottom, left);
+
+@each $side in $sides {
+  @for $i from 0 through 4 {
+    .border-#{$side}-#{$i} {
+      border-#{$side}-width: #{$i}px;
+      border-#{$side}-style: solid;
+    }
+  }
+}

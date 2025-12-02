@@ -1,0 +1,43 @@
+// Spacing utilities
+$spacer: 4px;
+$spacers: (0, 1, 2, 3, 4, 5, 6, 8, 10, 12);
+
+@each $size in $spacers {
+  .m-#{$size} { margin: $spacer * $size; }
+  .mt-#{$size} { margin-top: $spacer * $size; }
+  .mb-#{$size} { margin-bottom: $spacer * $size; }
+  .ml-#{$size} { margin-left: $spacer * $size; }
+  .mr-#{$size} { margin-right: $spacer * $size; }
+  .mx-#{$size} { margin-left: $spacer * $size; margin-right: $spacer * $size; }
+  .my-#{$size} { margin-top: $spacer * $size; margin-bottom: $spacer * $size; }
+
+  .p-#{$size} { padding: $spacer * $size; }
+  .pt-#{$size} { padding-top: $spacer * $size; }
+  .pb-#{$size} { padding-bottom: $spacer * $size; }
+  .pl-#{$size} { padding-left: $spacer * $size; }
+  .pr-#{$size} { padding-right: $spacer * $size; }
+  .px-#{$size} { padding-left: $spacer * $size; padding-right: $spacer * $size; }
+  .py-#{$size} { padding-top: $spacer * $size; padding-bottom: $spacer * $size; }
+}
+
+// Display utilities
+$displays: none, block, inline, inline-block, flex, grid;
+
+@each $display in $displays {
+  .d-#{$display} { display: $display; }
+}
+
+// Flex utilities
+.flex-row { flex-direction: row; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.items-end { align-items: flex-end; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-around { justify-content: space-around; }
+
+// Gap utilities
+@for $i from 1 through 8 {
+  .gap-#{$i} { gap: $spacer * $i; }
+}

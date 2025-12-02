@@ -1,0 +1,43 @@
+$primary: #f43f5e;
+$secondary: #8b5cf6;
+
+.color-palette {
+  .primary {
+    color: $primary;
+    background: lighten($primary, 35%);
+    border-color: darken($primary, 10%);
+  }
+
+  .complement {
+    color: complement($primary);
+  }
+
+  .overlay {
+    background: rgba($primary, 0.5);
+  }
+
+  .gradient {
+    background: linear-gradient(
+      to right,
+      $primary,
+      mix($primary, $secondary, 50%),
+      $secondary
+    );
+  }
+
+  .inverted {
+    background: invert($primary);
+  }
+
+  .grayscale {
+    color: grayscale($primary);
+  }
+
+  .saturated {
+    color: saturate($primary, 20%);
+  }
+
+  .desaturated {
+    color: desaturate($primary, 20%);
+  }
+}

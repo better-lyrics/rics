@@ -1,0 +1,58 @@
+// Animation durations
+@for $i from 1 through 5 {
+  .duration-#{$i * 100} {
+    transition-duration: #{$i * 100}ms;
+  }
+}
+
+// Delays
+@for $i from 0 through 4 {
+  .delay-#{$i * 100} {
+    transition-delay: #{$i * 100}ms;
+    animation-delay: #{$i * 100}ms;
+  }
+}
+
+// Keyframe animations
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// Animation utilities
+.animate-fade-in { animation: fade-in 300ms ease-out; }
+.animate-slide-up { animation: slide-up 400ms ease-out; }
+.animate-pulse { animation: pulse 2s infinite; }
+.animate-spin { animation: spin 1s linear infinite; }
+
+// Transition properties
+$properties: opacity, transform, colors, all;
+
+@each $prop in $properties {
+  .transition-#{$prop} {
+    transition-property: $prop;
+    transition-duration: 150ms;
+    transition-timing-function: ease-in-out;
+  }
+}

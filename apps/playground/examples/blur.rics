@@ -1,0 +1,24 @@
+@for $i from 1 through 6 {
+  $selector: ".active-line";
+  @for $j from 1 through $i {
+    $selector: $selector + " + .line";
+  }
+
+  .container:not(.scrolling) > #{$selector} {
+    filter: blur(#{$i * 1.5}px);
+    opacity: #{1 - $i * 0.1};
+    transform: translateY(#{$i * 2}px);
+  }
+}
+
+$layers: (1, 2, 3, 4, 5);
+
+@each $layer in $layers {
+  .layer-#{$layer} {
+    z-index: $layer * 10;
+
+    @if $layer > 3 {
+      box-shadow: 0 #{$layer * 2}px #{$layer * 4}px rgba(0, 0, 0, 0.2);
+    }
+  }
+}

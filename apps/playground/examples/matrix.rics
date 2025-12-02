@@ -1,0 +1,65 @@
+// CSS Grid matrix generator
+// Creates a complete responsive grid system
+
+$columns: 12;
+$breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px,
+  2xl: 1536px
+);
+
+// Base grid
+.grid {
+  display: grid;
+  gap: 16px;
+}
+
+// Generate columns for each breakpoint
+@each $bp, $width in $breakpoints {
+  @if $width == 0 {
+    // Base classes (no media query)
+    @for $i from 1 through $columns {
+      .col-#{$i} {
+        grid-column: span $i;
+      }
+      .col-start-#{$i} {
+        grid-column-start: $i;
+      }
+    }
+    @for $i from 1 through 6 {
+      .grid-cols-#{$i} {
+        grid-template-columns: repeat($i, 1fr);
+      }
+      .grid-rows-#{$i} {
+        grid-template-rows: repeat($i, 1fr);
+      }
+    }
+  } @else {
+    @media (min-width: $width) {
+      @for $i from 1 through $columns {
+        .col-#{$bp}-#{$i} {
+          grid-column: span $i;
+        }
+        .col-#{$bp}-start-#{$i} {
+          grid-column-start: $i;
+        }
+      }
+      @for $i from 1 through 6 {
+        .grid-#{$bp}-cols-#{$i} {
+          grid-template-columns: repeat($i, 1fr);
+        }
+      }
+    }
+  }
+}
+
+// Gap utilities
+$gaps: 0, 1, 2, 4, 6, 8, 12, 16;
+@each $gap in $gaps {
+  .gap-#{$gap} { gap: #{$gap}px; }
+  .gap-x-#{$gap} { column-gap: #{$gap}px; }
+  .gap-y-#{$gap} { row-gap: #{$gap}px; }
+}

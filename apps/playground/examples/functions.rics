@@ -1,0 +1,34 @@
+@function rem($px) {
+  @return #{$px / 16}rem;
+}
+
+@function spacing($multiplier) {
+  $base: 4px;
+  @return $base * $multiplier;
+}
+
+@function tint($color, $percent) {
+  @return mix(white, $color, $percent);
+}
+
+@function shade($color, $percent) {
+  @return mix(black, $color, $percent);
+}
+
+.card {
+  padding: #{rem(24)};
+  margin: spacing(4);
+  font-size: #{rem(16)};
+  line-height: #{rem(24)};
+}
+
+$brand: #f43f5e;
+
+.brand-palette {
+  --tint-10: #{tint($brand, 10%)};
+  --tint-20: #{tint($brand, 20%)};
+  --tint-30: #{tint($brand, 30%)};
+  --shade-10: #{shade($brand, 10%)};
+  --shade-20: #{shade($brand, 20%)};
+  --shade-30: #{shade($brand, 30%)};
+}

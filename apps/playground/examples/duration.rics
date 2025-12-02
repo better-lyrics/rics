@@ -1,0 +1,16 @@
+@function duration-exclusions($max) {
+  $result: "";
+  @for $i from 0 through ($max * 100) {
+    $val: $i / 100;
+    @if $result != "" {
+      $result: $result + ", ";
+    }
+    $result: $result + '[data-duration="#{$val}"]';
+  }
+  @return $result;
+}
+
+.lyrics--word[data-duration]:not(#{duration-exclusions(1)})::after {
+  --glow-color: white;
+  text-shadow: 0 0 10px var(--glow-color);
+}

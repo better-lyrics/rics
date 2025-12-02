@@ -1,0 +1,20 @@
+// Generate utility classes with @for
+@for $i from 1 through 5 {
+  .mt-#{$i} { margin-top: #{$i * 4}px; }
+  .mb-#{$i} { margin-bottom: #{$i * 4}px; }
+  .p-#{$i} { padding: #{$i * 4}px; }
+}
+
+// Generate grid columns
+@for $i from 1 through 12 {
+  .col-#{$i} {
+    width: percentage($i / 12);
+  }
+}
+
+// Opacity utilities
+@for $i from 0 through 10 {
+  .opacity-#{$i * 10} {
+    opacity: #{$i / 10};
+  }
+}

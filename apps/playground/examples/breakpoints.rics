@@ -1,0 +1,40 @@
+$breakpoints: (
+  sm: 576px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px
+);
+
+$container-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px
+);
+
+@each $name, $width in $breakpoints {
+  @media (min-width: $width) {
+    .container {
+      max-width: map-get($container-widths, $name);
+    }
+
+    .hide-#{$name}-up {
+      display: none;
+    }
+
+    .show-#{$name}-up {
+      display: block;
+    }
+  }
+}
+
+// Generate grid columns for each breakpoint
+@each $bp, $width in $breakpoints {
+  @media (min-width: $width) {
+    @for $i from 1 through 12 {
+      .col-#{$bp}-#{$i} {
+        width: percentage($i / 12);
+      }
+    }
+  }
+}

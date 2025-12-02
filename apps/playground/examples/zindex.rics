@@ -1,0 +1,40 @@
+// Z-index scale
+$z-indices: (
+  hide: -1,
+  base: 0,
+  dropdown: 10,
+  sticky: 20,
+  fixed: 30,
+  backdrop: 40,
+  modal: 50,
+  popover: 60,
+  tooltip: 70
+);
+
+@each $name, $value in $z-indices {
+  .z-#{$name} {
+    z-index: $value;
+  }
+}
+
+// Numeric z-index (0-50, step 10)
+@for $i from 0 through 5 {
+  .z-#{$i * 10} {
+    z-index: $i * 10;
+  }
+}
+
+// Stacking context helper
+@mixin stacking-context($z: 0) {
+  position: relative;
+  z-index: $z;
+  isolation: isolate;
+}
+
+.stacking-base {
+  @include stacking-context(0);
+}
+
+.stacking-modal {
+  @include stacking-context(50);
+}

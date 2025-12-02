@@ -1,0 +1,44 @@
+// Gradient directions
+$directions: (
+  t: to top,
+  r: to right,
+  b: to bottom,
+  l: to left,
+  tr: to top right,
+  br: to bottom right,
+  bl: to bottom left,
+  tl: to top left
+);
+
+// Gradient color stops
+$gradient-colors: (
+  sunset: (#f43f5e, #fb7185, #fda4af),
+  ocean: (#3b82f6, #60a5fa, #93c5fd),
+  forest: (#22c55e, #4ade80, #86efac),
+  purple: (#8b5cf6, #a78bfa, #c4b5fd)
+);
+
+@each $name, $colors in $gradient-colors {
+  @each $dir-name, $dir in $directions {
+    .gradient-#{$name}-#{$dir-name} {
+      background: linear-gradient(
+        $dir,
+        nth($colors, 1),
+        nth($colors, 2),
+        nth($colors, 3)
+      );
+    }
+  }
+}
+
+// Radial gradients
+@each $name, $colors in $gradient-colors {
+  .gradient-#{$name}-radial {
+    background: radial-gradient(
+      circle,
+      nth($colors, 1),
+      nth($colors, 2),
+      nth($colors, 3)
+    );
+  }
+}

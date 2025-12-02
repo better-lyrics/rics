@@ -1,0 +1,76 @@
+// Stress test: nested loops and conditionals
+// Tests compiler performance with deep nesting
+
+$sizes: xs, sm, md, lg, xl, 2xl;
+$variants: solid, outline, ghost, link;
+$states: default, hover, active, focus, disabled;
+
+$theme: (
+  primary: #f43f5e,
+  secondary: #6366f1,
+  success: #22c55e,
+  warning: #f59e0b,
+  danger: #ef4444,
+  info: #0ea5e9
+);
+
+// Generate button variants - O(sizes * variants * theme * states)
+@each $size in $sizes {
+  @each $variant in $variants {
+    @each $name, $color in $theme {
+      .btn-#{$size}-#{$variant}-#{$name} {
+        @if $size == xs {
+          padding: 4px 8px;
+          font-size: 12px;
+        } @else if $size == sm {
+          padding: 6px 12px;
+          font-size: 14px;
+        } @else if $size == md {
+          padding: 8px 16px;
+          font-size: 16px;
+        } @else if $size == lg {
+          padding: 12px 24px;
+          font-size: 18px;
+        } @else if $size == xl {
+          padding: 16px 32px;
+          font-size: 20px;
+        } @else {
+          padding: 20px 40px;
+          font-size: 24px;
+        }
+
+        @if $variant == solid {
+          background: $color;
+          color: white;
+          border: none;
+        } @else if $variant == outline {
+          background: transparent;
+          color: $color;
+          border: 2px solid $color;
+        } @else if $variant == ghost {
+          background: transparent;
+          color: $color;
+          border: none;
+        } @else {
+          background: none;
+          color: $color;
+          border: none;
+          text-decoration: underline;
+        }
+
+        &:hover {
+          @if $variant == solid {
+            background: darken($color, 10%);
+          } @else {
+            background: rgba($color, 0.1);
+          }
+        }
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}

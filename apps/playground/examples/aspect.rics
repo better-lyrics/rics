@@ -1,0 +1,61 @@
+// Common aspect ratios
+$aspects: (
+  square: 1,
+  video: 1.778,
+  photo: 1.333,
+  portrait: 0.75,
+  wide: 2.333
+);
+
+@each $name, $ratio in $aspects {
+  .aspect-#{$name} {
+    aspect-ratio: $ratio;
+  }
+}
+
+// Common numeric ratios
+$ratios: (
+  1x1: 1,
+  4x3: 1.333,
+  16x9: 1.778,
+  21x9: 2.333,
+  3x4: 0.75,
+  9x16: 0.5625
+);
+
+@each $name, $ratio in $ratios {
+  .ratio-#{$name} {
+    aspect-ratio: $ratio;
+  }
+}
+
+// Aspect box container for responsive media
+.aspect-box {
+  position: relative;
+  width: 100%;
+
+  &--video { aspect-ratio: 1.778; }
+  &--square { aspect-ratio: 1; }
+  &--portrait { aspect-ratio: 0.75; }
+
+  img,
+  video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.video-container {
+  aspect-ratio: 1.778;
+  background: #000;
+}
+
+.thumbnail {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+}

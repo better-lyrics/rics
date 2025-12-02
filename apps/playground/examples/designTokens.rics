@@ -1,0 +1,121 @@
+// Design token system
+// Complex token generation with multiple categories
+
+// Spacing tokens
+$spacing: (
+  0: 0,
+  px: 1px,
+  1: 4px,
+  2: 8px,
+  3: 12px,
+  4: 16px,
+  5: 20px,
+  6: 24px,
+  7: 28px,
+  8: 32px,
+  9: 36px,
+  10: 40px,
+  12: 48px,
+  14: 56px,
+  16: 64px,
+  20: 80px,
+  24: 96px
+);
+
+// Radius tokens
+$radius: (
+  none: 0,
+  sm: 2px,
+  default: 4px,
+  md: 6px,
+  lg: 8px,
+  xl: 12px,
+  2xl: 16px,
+  3xl: 24px,
+  full: 9999px
+);
+
+// Shadow tokens
+$shadows: (
+  sm: (0 1px 2px rgba(0, 0, 0, 0.05)),
+  default: (0 1px 3px rgba(0, 0, 0, 0.1)),
+  md: (0 4px 6px rgba(0, 0, 0, 0.1)),
+  lg: (0 10px 15px rgba(0, 0, 0, 0.1)),
+  xl: (0 20px 25px rgba(0, 0, 0, 0.15)),
+  2xl: (0 25px 50px rgba(0, 0, 0, 0.25))
+);
+
+// Font size tokens
+$font-sizes: (
+  xs: 12px,
+  sm: 14px,
+  base: 16px,
+  lg: 18px,
+  xl: 20px,
+  2xl: 24px,
+  3xl: 30px,
+  4xl: 36px,
+  5xl: 48px,
+  6xl: 60px
+);
+
+// Generate CSS custom properties
+:root {
+  @each $name, $value in $spacing {
+    --spacing-#{$name}: #{$value};
+  }
+
+  @each $name, $value in $radius {
+    --radius-#{$name}: #{$value};
+  }
+
+  @each $name, $value in $shadows {
+    --shadow-#{$name}: #{$value};
+  }
+
+  @each $name, $value in $font-sizes {
+    --text-#{$name}: #{$value};
+  }
+}
+
+// Generate spacing utilities
+@each $name, $value in $spacing {
+  .m-#{$name} { margin: $value; }
+  .mt-#{$name} { margin-top: $value; }
+  .mr-#{$name} { margin-right: $value; }
+  .mb-#{$name} { margin-bottom: $value; }
+  .ml-#{$name} { margin-left: $value; }
+  .mx-#{$name} { margin-left: $value; margin-right: $value; }
+  .my-#{$name} { margin-top: $value; margin-bottom: $value; }
+
+  .p-#{$name} { padding: $value; }
+  .pt-#{$name} { padding-top: $value; }
+  .pr-#{$name} { padding-right: $value; }
+  .pb-#{$name} { padding-bottom: $value; }
+  .pl-#{$name} { padding-left: $value; }
+  .px-#{$name} { padding-left: $value; padding-right: $value; }
+  .py-#{$name} { padding-top: $value; padding-bottom: $value; }
+
+  .gap-#{$name} { gap: $value; }
+  .w-#{$name} { width: $value; }
+  .h-#{$name} { height: $value; }
+  .size-#{$name} { width: $value; height: $value; }
+}
+
+// Generate radius utilities
+@each $name, $value in $radius {
+  .rounded-#{$name} { border-radius: $value; }
+}
+
+// Generate shadow utilities
+@each $name, $value in $shadows {
+  .shadow-#{$name} { box-shadow: $value; }
+}
+
+// Generate font size utilities
+@each $name, $value in $font-sizes {
+  .text-#{$name} {
+    font-size: $value;
+    line-height: $value * 1.5;
+  }
+}
