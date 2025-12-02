@@ -24,8 +24,18 @@ Import `.rics` files in your code:
 
 ```typescript
 // main.ts
-import "./styles.rics";
+import "./styles.rics"; // Compiled to CSS and injected
 ```
+
+### Raw Imports
+
+Use `?raw` to import the source content without compilation:
+
+```typescript
+import source from "./styles.rics?raw"; // Raw rics source as string
+```
+
+This is useful for editors, playgrounds, or when you need the unprocessed source.
 
 ## Options
 
@@ -63,6 +73,11 @@ Add type declarations for `.rics` imports:
 declare module "*.rics" {
   const css: string;
   export default css;
+}
+
+declare module "*.rics?raw" {
+  const source: string;
+  export default source;
 }
 ```
 
