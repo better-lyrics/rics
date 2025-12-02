@@ -14,7 +14,8 @@
     "changeset": "changeset",
     "version": "changeset version",
     "release": "pnpm build && pnpm test && changeset publish",
-    "size": "echo '=== Package Sizes (ESM) ===' && ls -la packages/*/dist/*.js 2>/dev/null | awk '{printf \"%-30s %s bytes\\n\", $9, $5}'"
+    "size": "echo '=== Package Sizes (ESM) ===' && ls -la packages/*/dist/*.js 2>/dev/null | awk '{printf \"%-30s %s bytes\\n\", $9, $5}'",
+    "publish:all": "pnpm -r publish --access public"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.8",

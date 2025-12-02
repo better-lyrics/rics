@@ -155,6 +155,8 @@ importers:
         specifier: ^5.0.0
         version: 5.4.21(@types/node@20.19.25)(terser@5.44.1)
 
+  packages/vscode-extension: {}
+
   packages/webpack-loader:
     dependencies:
       rics:
