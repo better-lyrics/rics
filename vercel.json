@@ -1,6 +1,6 @@
 {
   "framework": null,
   "installCommand": "npx pnpm@9.15.0 install",
-  "buildCommand": "npx pnpm@9.15.0 run build",
+  "buildCommand": "npx pnpm@9.15.0 --filter './packages/*' run build && npx pnpm@9.15.0 --filter rics-playground run build",
   "outputDirectory": "apps/playground/dist"
 }
