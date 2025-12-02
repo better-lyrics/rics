@@ -1686,8 +1686,8 @@ $accent-blue: #60a5fa;
 $accent-yellow: #fbbf24;
 
 // Font stacks
-$font-sans: unquote("\\"DM Sans\\", -apple-system, BlinkMacSystemFont, \\"Segoe UI\\", sans-serif");
-$font-mono: unquote("\\"DM Mono\\", \\"SF Mono\\", Monaco, \\"Cascadia Code\\", Consolas, monospace");
+$font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+$font-mono: "DM Mono", "SF Mono", Monaco, "Cascadia Code", Consolas, monospace;
 
 // Mixins
 @mixin button-base {

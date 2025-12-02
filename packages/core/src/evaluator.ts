@@ -620,6 +620,13 @@ export function createExpressionEvaluator(
           if (!prevIsWhitespace && !prevIsOperatorEnd) {
             continue; // This is part of an identifier, not subtraction
           }
+
+          // Also check if this is a vendor prefix like -apple-system, -webkit-*, -moz-*
+          // These start with - followed by a letter
+          const next = expr[i + 1];
+          if (next && /[a-zA-Z]/.test(next)) {
+            continue; // This is a vendor prefix, not subtraction
+          }
         }
 
         const left = expr.slice(0, i).trim();

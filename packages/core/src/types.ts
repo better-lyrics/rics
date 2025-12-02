@@ -2,6 +2,7 @@ export interface CompilerConfig {
   maxIterations: number;
   maxOutputRules: number;
   maxNestingDepth: number;
+  maxInputSize: number;
   timeout: number;
   strictMode: boolean;
   minify: boolean;
@@ -60,6 +61,7 @@ export enum ErrorCode {
   MAX_ITERATIONS = "MAX_ITERATIONS",
   MAX_OUTPUT_RULES = "MAX_OUTPUT_RULES",
   MAX_NESTING_DEPTH = "MAX_NESTING_DEPTH",
+  MAX_INPUT_SIZE = "MAX_INPUT_SIZE",
   TIMEOUT = "TIMEOUT",
   TYPE_ERROR = "TYPE_ERROR",
   INVALID_UNIT = "INVALID_UNIT",

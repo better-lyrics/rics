@@ -14,11 +14,49 @@
     "changeset": "changeset",
     "version": "changeset version",
     "release": "pnpm build && pnpm test && changeset publish",
-    "size": "echo '=== Package Sizes (ESM) ===' && ls -la packages/*/dist/*.js 2>/dev/null | awk '{printf \"%-30s %s bytes\\n\", $9, $5}'",
+    "size": "bundlesize",
     "publish:all": "pnpm -r publish --access public"
   },
+  "bundlesize": [
+    {
+      "path": "./packages/core/dist/index.js",
+      "maxSize": "15 kB",
+      "compression": "gzip"
+    },
+    {
+      "path": "./packages/vite-plugin/dist/index.js",
+      "maxSize": "2 kB",
+      "compression": "gzip"
+    },
+    {
+      "path": "./packages/codemirror/dist/index.js",
+      "maxSize": "3 kB",
+      "compression": "gzip"
+    },
+    {
+      "path": "./packages/cli/dist/cli.js",
+      "maxSize": "2 kB",
+      "compression": "gzip"
+    },
+    {
+      "path": "./packages/webpack-loader/dist/index.js",
+      "maxSize": "1 kB",
+      "compression": "gzip"
+    },
+    {
+      "path": "./packages/eslint-plugin/dist/index.js",
+      "maxSize": "2 kB",
+      "compression": "gzip"
+    },
+    {
+      "path": "./packages/prettier-plugin/dist/index.js",
+      "maxSize": "1 kB",
+      "compression": "gzip"
+    }
+  ],
   "devDependencies": {
     "@changesets/cli": "^2.29.8",
+    "bundlesize2": "^0.0.35",
     "typescript": "^5.0.0"
   },
   "keywords": [

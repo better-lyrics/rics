@@ -1,8 +1,17 @@
 name: Publish
 
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: "Version bump type"
+        required: true
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+        default: patch
 
 jobs:
   publish:
@@ -10,6 +19,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: pnpm/action-setup@v4
         with:
@@ -21,6 +33,11 @@ jobs:
           registry-url: https://registry.npmjs.org
           cache: "pnpm"
 
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Install dependencies
         run: pnpm install
 
@@ -30,7 +47,22 @@ jobs:
       - name: Run tests
         run: pnpm test
 
+      - name: Bump versions
+        run: pnpm -r exec -- npm version ${{ inputs.bump }} --no-git-tag-version
+
+      - name: Commit version bump
+        run: |
+          git add .
+          git commit -m "chore: bump versions (${{ inputs.bump }})"
+          git push
+
       - name: Publish to npm
         run: pnpm -r publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create git tag
+        run: |
+          VERSION=$(node -p "require('./packages/core/package.json').version")
+          git tag "v$VERSION"
+          git push origin "v$VERSION"

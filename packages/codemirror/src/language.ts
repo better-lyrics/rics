@@ -174,6 +174,11 @@ const scssLike = StreamLanguage.define<LexerState>({
       return "punctuation";
     }
 
+    // Vendor prefixes (-webkit-*, -moz-*, -apple-system, etc.) - check before operators
+    if (stream.match(/^-[a-zA-Z][a-zA-Z0-9_-]*/)) {
+      return state.braceDepth > 0 ? "variableName" : "tagName";
+    }
+
     // Operators
     if (stream.match(/^[=!<>]=?|[+\-*\/%]/)) {
       return "operator";

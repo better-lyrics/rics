@@ -33,6 +33,15 @@ describe("compiler", () => {
       const result = compile(input);
       expect(result).toContain("var(--primary)");
     });
+
+    it("should handle vendor prefixes in font-family lists", () => {
+      const input = `
+        $font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+        body { font-family: $font-sans; }
+      `;
+      const result = compile(input);
+      expect(result).toContain("font-family: \"DM Sans\", -apple-system, BlinkMacSystemFont, sans-serif");
+    });
   });
 
   describe("nesting", () => {

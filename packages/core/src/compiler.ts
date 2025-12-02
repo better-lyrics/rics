@@ -28,6 +28,7 @@ export const defaultConfig: Readonly<Required<CompilerConfig>> = {
   maxIterations: 10000,
   maxOutputRules: 50000,
   maxNestingDepth: 64,
+  maxInputSize: 1024 * 1024, // 1MB
   timeout: 5000,
   strictMode: false,
   minify: false,
@@ -46,6 +47,26 @@ export class Compiler {
   }
 
   compile(input: string): CompileResult {
+    // Check input size limit
+    if (this.config.maxInputSize > 0 && input.length > this.config.maxInputSize) {
+      return {
+        css: "",
+        errors: [{
+          type: "error",
+          code: ErrorCode.MAX_INPUT_SIZE,
+          message: `Input exceeds maximum size of ${this.config.maxInputSize} bytes`,
+        }],
+        warnings: [],
+        stats: {
+          iterations: 0,
+          rules: 0,
+          duration: 0,
+          inputSize: input.length,
+          outputSize: 0,
+        },
+      };
+    }
+
     this.input = input;
     this.pos = 0;
 
