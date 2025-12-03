@@ -76,25 +76,16 @@ export function ricsPlugin(options: RicsPluginOptions = {}): Plugin {
         // This creates a style tag with the CSS
         const cssCode = JSON.stringify(css);
 
-        if (config.command === "serve") {
-          // Dev mode: inject style tag
-          return `
+        // Both dev and build: inject style tag
+        // In build mode, Vite will extract this into CSS chunks
+        return `
 const css = ${cssCode};
 const style = document.createElement('style');
-style.setAttribute('data-vite-dev-id', ${JSON.stringify(actualPath)});
+style.setAttribute('data-rics-id', ${JSON.stringify(actualPath)});
 style.textContent = css;
 document.head.appendChild(style);
 export default css;
 `;
-        } else {
-          // Build mode: emit as CSS asset for extraction
-          return `
-import { updateStyle, removeStyle } from "/@vite/client";
-const css = ${cssCode};
-updateStyle(${JSON.stringify(id)}, css);
-export default css;
-`;
-        }
       } catch (e) {
         this.error(e instanceof Error ? e.message : String(e));
       }
