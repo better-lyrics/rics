@@ -1,5 +1,11 @@
 # rics
 
+## 0.1.8
+
+### Patch Changes
+
+- 2e28af2: Fix infinite loop when typing incomplete declarations like `.car{\nc\n}`
+
 ## 0.1.6
 
 ### Patch Changes

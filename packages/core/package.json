@@ -1,6 +1,6 @@
 {
   "name": "rics",
-  "version": "0.1.6",
+  "version": "0.1.8",
   "description": "Lightweight SCSS-like CSS preprocessor for browser/real-time use",
   "type": "module",
   "main": "./dist/index.cjs",
