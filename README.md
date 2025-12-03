@@ -60,10 +60,10 @@
 
 | Preprocessor | ops/sec | Comparison |
 |--------------|---------|------------|
-| rics | 901 | **fastest** |
-| stylus | 298 | 3.0x slower |
-| sass | 231 | 3.9x slower |
-| less | 200 | 4.5x slower |
+| rics | 900 | **fastest** |
+| stylus | 312 | 2.9x slower |
+| sass | 267 | 3.4x slower |
+| less | 213 | 4.2x slower |
 
 ### Package Size (minzipped, smaller is better)
 
