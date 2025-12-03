@@ -27,7 +27,7 @@ $spacing-scale: 0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24, 32, 40, 48, 64;
   .h-#{$size} { height: $spacer * $size; }
 }
 
-// Colors with variants
+// Base colors (500 level - the "main" color)
 $colors: (
   slate: #64748b,
   gray: #6b7280,
@@ -50,16 +50,54 @@ $colors: (
   rose: #f43f5e
 );
 
-@each $name, $color in $colors {
-  .text-#{$name} { color: $color; }
-  .bg-#{$name} { background-color: $color; }
-  .border-#{$name} { border-color: $color; }
+// Generate color shades using mix with white/black
+@each $name, $base in $colors {
+  // Light shades (mix with white)
+  .text-#{$name}-50 { color: mix($base, white, 10%); }
+  .bg-#{$name}-50 { background-color: mix($base, white, 10%); }
+  .border-#{$name}-50 { border-color: mix($base, white, 10%); }
 
-  .text-#{$name}-light { color: lighten($color, 20%); }
-  .bg-#{$name}-light { background-color: lighten($color, 30%); }
+  .text-#{$name}-100 { color: mix($base, white, 20%); }
+  .bg-#{$name}-100 { background-color: mix($base, white, 20%); }
+  .border-#{$name}-100 { border-color: mix($base, white, 20%); }
 
-  .text-#{$name}-dark { color: darken($color, 15%); }
-  .bg-#{$name}-dark { background-color: darken($color, 15%); }
+  .text-#{$name}-200 { color: mix($base, white, 40%); }
+  .bg-#{$name}-200 { background-color: mix($base, white, 40%); }
+  .border-#{$name}-200 { border-color: mix($base, white, 40%); }
+
+  .text-#{$name}-300 { color: mix($base, white, 60%); }
+  .bg-#{$name}-300 { background-color: mix($base, white, 60%); }
+  .border-#{$name}-300 { border-color: mix($base, white, 60%); }
+
+  .text-#{$name}-400 { color: mix($base, white, 80%); }
+  .bg-#{$name}-400 { background-color: mix($base, white, 80%); }
+  .border-#{$name}-400 { border-color: mix($base, white, 80%); }
+
+  // Base (500)
+  .text-#{$name}-500 { color: $base; }
+  .bg-#{$name}-500 { background-color: $base; }
+  .border-#{$name}-500 { border-color: $base; }
+
+  // Dark shades (mix with black)
+  .text-#{$name}-600 { color: mix($base, black, 85%); }
+  .bg-#{$name}-600 { background-color: mix($base, black, 85%); }
+  .border-#{$name}-600 { border-color: mix($base, black, 85%); }
+
+  .text-#{$name}-700 { color: mix($base, black, 70%); }
+  .bg-#{$name}-700 { background-color: mix($base, black, 70%); }
+  .border-#{$name}-700 { border-color: mix($base, black, 70%); }
+
+  .text-#{$name}-800 { color: mix($base, black, 50%); }
+  .bg-#{$name}-800 { background-color: mix($base, black, 50%); }
+  .border-#{$name}-800 { border-color: mix($base, black, 50%); }
+
+  .text-#{$name}-900 { color: mix($base, black, 35%); }
+  .bg-#{$name}-900 { background-color: mix($base, black, 35%); }
+  .border-#{$name}-900 { border-color: mix($base, black, 35%); }
+
+  .text-#{$name}-950 { color: mix($base, black, 20%); }
+  .bg-#{$name}-950 { background-color: mix($base, black, 20%); }
+  .border-#{$name}-950 { border-color: mix($base, black, 20%); }
 }
 
 // Opacity utilities

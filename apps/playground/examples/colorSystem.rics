@@ -1,15 +1,6 @@
 // Complete color system with shades
 // Generates full 50-950 palette for multiple colors
 
-@function shade-color($color, $weight) {
-  @if $weight < 500 {
-    @return mix(white, $color, (500 - $weight) / 5 * 10%);
-  } @else if $weight > 500 {
-    @return mix(black, $color, ($weight - 500) / 5 * 8%);
-  }
-  @return $color;
-}
-
 $base-colors: (
   rose: #f43f5e,
   pink: #ec4899,
@@ -25,31 +16,58 @@ $base-colors: (
   gray: #6b7280
 );
 
-$weights: 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950;
+// Mix percentages: first value is how much of the base color to keep
+$light-mix: (
+  50: 10%,
+  100: 20%,
+  200: 40%,
+  300: 60%,
+  400: 80%
+);
+
+$dark-mix: (
+  600: 85%,
+  700: 70%,
+  800: 50%,
+  900: 35%,
+  950: 20%
+);
 
 :root {
   @each $name, $base in $base-colors {
-    @each $weight in $weights {
-      --#{$name}-#{$weight}: #{shade-color($base, $weight)};
+    // Light shades
+    @each $weight, $amount in $light-mix {
+      --#{$name}-#{$weight}: #{mix($base, white, $amount)};
+    }
+    // Base
+    --#{$name}-500: #{$base};
+    // Dark shades
+    @each $weight, $amount in $dark-mix {
+      --#{$name}-#{$weight}: #{mix($base, black, $amount)};
     }
   }
 }
 
-// Generate utility classes for each shade
+// Generate utility classes
 @each $name, $base in $base-colors {
-  @each $weight in $weights {
-    $color: shade-color($base, $weight);
+  // Light shades
+  @each $weight, $amount in $light-mix {
+    $color: mix($base, white, $amount);
+    .text-#{$name}-#{$weight} { color: $color; }
+    .bg-#{$name}-#{$weight} { background-color: $color; }
+    .border-#{$name}-#{$weight} { border-color: $color; }
+  }
 
-    .text-#{$name}-#{$weight} {
-      color: $color;
-    }
+  // Base (500)
+  .text-#{$name}-500 { color: $base; }
+  .bg-#{$name}-500 { background-color: $base; }
+  .border-#{$name}-500 { border-color: $base; }
 
-    .bg-#{$name}-#{$weight} {
-      background-color: $color;
-    }
-
-    .border-#{$name}-#{$weight} {
-      border-color: $color;
-    }
+  // Dark shades
+  @each $weight, $amount in $dark-mix {
+    $color: mix($base, black, $amount);
+    .text-#{$name}-#{$weight} { color: $color; }
+    .bg-#{$name}-#{$weight} { background-color: $color; }
+    .border-#{$name}-#{$weight} { border-color: $color; }
   }
 }
