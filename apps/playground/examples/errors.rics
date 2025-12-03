@@ -9,6 +9,14 @@
 
 // Uncomment below to see other errors:
 
+// Incomplete declarations (as if typing):
+// .car {
+// .car { color:
+// .car { color: #
+// .car { color: #5
+// .car { color: #55
+// .car { color: #555555
+
 // Undefined mixin
 // .box {
 //   @include non-existent-mixin();

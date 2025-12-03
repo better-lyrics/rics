@@ -76,13 +76,20 @@
 
 ## Why rics?
 
-- **Zero dependencies** — Single ~40KB bundle, no PostCSS, no Dart Sass
-- **Blazing fast** — Compiles thousands of rules in milliseconds
-- **Browser-native** — Works in any JavaScript environment without WASM or workers
-- **Real-time ready** — Designed for live preview in CodeMirror, Monaco, or any editor
-- **SCSS-compatible** — Variables, nesting, mixins, functions, loops, conditionals
-- **Full color manipulation** — `darken()`, `lighten()`, `mix()`, `saturate()`, and more
-- **Smart pass-through** — Native CSS features like `var()`, `calc()`, `@container` work unchanged
+**rics vs Stylis** — Stylis handles nesting and autoprefixing (~3KB), but that's it. rics adds full SCSS features — variables, mixins, functions, loops, conditionals, color manipulation — while staying small (~10KB minzipped) and fast.
+
+**rics vs Sass/Less/Stylus** — These need Node.js or WASM. rics runs anywhere JavaScript runs, compiles in milliseconds, and has zero dependencies.
+
+| Feature | rics | Stylis | Sass | Less |
+|---------|------|--------|------|------|
+| Variables | Yes | No | Yes | Yes |
+| Nesting | Yes | Yes | Yes | Yes |
+| Mixins | Yes | No | Yes | Yes |
+| Functions | Yes | No | Yes | Yes |
+| Loops | Yes | No | Yes | Yes |
+| Color functions | Yes | No | Yes | Yes |
+| Browser-native | Yes | Yes | No | No |
+| Zero dependencies | Yes | Yes | No | No |
 
 ## Packages
 

@@ -120,8 +120,8 @@ function compileAndUpdate(source: string) {
 
   debounceTimer = setTimeout(async () => {
     const result = compileWithDetails(source, {
-      timeout: 30000,
-      maxIterations: 100000,
+      timeout: 5000,
+      maxIterations: 50000,
     });
 
     if (result.errors.length > 0) {

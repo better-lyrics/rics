@@ -972,6 +972,9 @@ class Compiler {
       const decl = this.parseDeclaration();
       if (decl) {
         declarations.push(decl);
+      } else {
+        // parseDeclaration returned null and reset pos - skip this character to avoid infinite loop
+        this.advance();
       }
     }
 
