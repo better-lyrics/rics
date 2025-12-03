@@ -1,5 +1,13 @@
 # codemirror-lang-rics
 
+## 0.3.0
+
+### Patch Changes
+
+- 5bfa8d5: Add oklch color format support with format preservation. Colors now retain their original format (hex, rgb, hsl, oklch) through transformations like mix(), lighten(), and darken(). Fix color highlighter to prevent lch/lab from matching inside oklch/oklab.
+- Updated dependencies [5bfa8d5]
+  - rics@0.3.0
+
 ## 0.2.0
 
 ### Minor Changes
