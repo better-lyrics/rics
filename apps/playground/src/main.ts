@@ -94,15 +94,34 @@ document.addEventListener("click", (e) => {
   }
 });
 
+function loadExample(key: string) {
+  if (!examples[key]) return false;
+  setEditorContent(examples[key]);
+  const btn = examplesMenu.querySelector(`button[data-example="${key}"]`);
+  setTriggerText(btn?.textContent || key);
+  setActiveExample(key);
+  history.pushState(null, "", `/${key}`);
+  return true;
+}
+
 examplesMenu.addEventListener("click", (e) => {
   const target = e.target as HTMLElement;
   const key = target.dataset.example as keyof typeof examples;
   if (!key || !examples[key]) return;
 
-  setEditorContent(examples[key]);
-  setTriggerText(target.textContent || "");
-  setActiveExample(key);
+  loadExample(key);
   examplesDropdown.classList.remove("open");
+});
+
+// Handle browser back/forward
+window.addEventListener("popstate", () => {
+  const path = location.pathname.slice(1);
+  if (path && examples[path]) {
+    setEditorContent(examples[path]);
+    const btn = examplesMenu.querySelector(`button[data-example="${path}"]`);
+    setTriggerText(btn?.textContent || path);
+    setActiveExample(path);
+  }
 });
 
 // Share
@@ -182,17 +201,31 @@ $("copy-output").addEventListener("click", () => {
   });
 });
 
-// Load from URL hash
+// Load from URL: hash takes priority, then pathname, then default
+let initialExample = "basic";
 if (location.hash) {
   try {
     setEditorContent(decodeURIComponent(atob(location.hash.slice(1))));
+    clearActiveExample();
+    setTriggerText("Shared");
+    initialExample = "";
   } catch {
     console.error("Failed to decode URL hash");
+  }
+} else {
+  const path = location.pathname.slice(1);
+  if (path && examples[path]) {
+    initialExample = path;
+    setEditorContent(examples[path]);
   }
 }
 
 // Initial compile and active example
-setActiveExample("basic");
+if (initialExample) {
+  setActiveExample(initialExample);
+  const btn = examplesMenu.querySelector(`button[data-example="${initialExample}"]`);
+  if (btn) setTriggerText(btn.textContent || initialExample);
+}
 compileAndUpdate(editor.state.doc.toString());
 
 // Split panes
