@@ -1,5 +1,20 @@
 # codemirror-lang-rics
 
+## 0.1.6
+
+### Patch Changes
+
+- 0a9e2a5: Clean up unused exports and fix code organization:
+  - Remove unused internal exports from core compiler (Compiler class, parseValue, compareValues, performMath, Tokenizer class)
+  - Remove duplicate LinterConfig definition in codemirror package
+  - Remove redundant default export from vite-plugin (use named import `{ ricsPlugin }` instead)
+- Updated dependencies [0a9e2a5]
+- Updated dependencies [0a9e2a5]
+- Updated dependencies [0a9e2a5]
+- Updated dependencies [0a9e2a5]
+- Updated dependencies [0a9e2a5]
+  - rics@0.1.6
+
 ## 0.1.2
 
 ### Patch Changes

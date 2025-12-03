@@ -1,5 +1,17 @@
 # rics-cli
 
+## 0.1.6
+
+### Patch Changes
+
+- 0a9e2a5: Fix `--watch` mode not working when CLI is executed via npm bin symlink.
+- Updated dependencies [0a9e2a5]
+- Updated dependencies [0a9e2a5]
+- Updated dependencies [0a9e2a5]
+- Updated dependencies [0a9e2a5]
+- Updated dependencies [0a9e2a5]
+  - rics@0.1.6
+
 ## 0.1.5
 
 ### Patch Changes

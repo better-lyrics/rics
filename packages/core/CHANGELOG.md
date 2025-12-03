@@ -1,5 +1,18 @@
 # rics
 
+## 0.1.6
+
+### Patch Changes
+
+- 0a9e2a5: Clean up unused exports and fix code organization:
+  - Remove unused internal exports from core compiler (Compiler class, parseValue, compareValues, performMath, Tokenizer class)
+  - Remove duplicate LinterConfig definition in codemirror package
+  - Remove redundant default export from vite-plugin (use named import `{ ricsPlugin }` instead)
+- 0a9e2a5: Fix floating point precision issues in compiled output. Numbers are now rounded to 6 decimal places to avoid values like `0.3999999999999999` appearing instead of `0.4`.
+- 0a9e2a5: Fix CSS function arguments being incorrectly evaluated as math expressions. Added transform functions (translateX, translateY, rotate, scale, etc.), filter functions, and other CSS functions to the list of functions that preserve their arguments.
+- 0a9e2a5: Add error detection for unclosed braces in rulesets, @media blocks, and control flow blocks. Previously, unclosed braces would silently auto-close without reporting an error.
+- 0a9e2a5: Undefined variables now only emit a warning instead of both an error and warning. The compiled output preserves the variable name as-is when undefined.
+
 ## 0.1.2
 
 ### Patch Changes
