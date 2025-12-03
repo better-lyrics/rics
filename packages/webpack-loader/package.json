@@ -19,6 +19,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
+    "test": "vitest",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -30,6 +31,7 @@
   "devDependencies": {
     "tsup": "^8.0.0",
     "typescript": "^5.0.0",
+    "vitest": "^3.0.0",
     "webpack": "^5.0.0"
   },
   "keywords": [

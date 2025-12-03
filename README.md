@@ -5,6 +5,13 @@
   Built for real-time compilation in browsers, editors, and build tools.
 </p>
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/rics"><img src="https://badgen.net/npm/v/rics" alt="npm version"></a>
+  <a href="https://bundlephobia.com/package/rics"><img src="https://badgen.net/bundlephobia/minzip/rics" alt="minzipped size"></a>
+  <a href="https://www.npmjs.com/package/rics"><img src="https://badgen.net/npm/dm/rics" alt="downloads"></a>
+  <a href="https://github.com/user/rics/blob/master/LICENSE"><img src="https://badgen.net/npm/license/rics" alt="license"></a>
+</p>
+
 ## Why rics?
 
 - **Zero dependencies** — Single ~40KB bundle, no PostCSS, no Dart Sass

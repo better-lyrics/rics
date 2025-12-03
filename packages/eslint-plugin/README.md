@@ -1,5 +1,9 @@
 # eslint-plugin-rics
 
+[![npm version](https://badgen.net/npm/v/eslint-plugin-rics)](https://www.npmjs.com/package/eslint-plugin-rics)
+[![minzipped size](https://badgen.net/bundlephobia/minzip/eslint-plugin-rics)](https://bundlephobia.com/package/eslint-plugin-rics)
+[![downloads](https://badgen.net/npm/dm/eslint-plugin-rics)](https://www.npmjs.com/package/eslint-plugin-rics)
+
 ESLint plugin for linting rics files.
 
 ## Installation

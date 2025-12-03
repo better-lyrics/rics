@@ -2,7 +2,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { compileWithDetails, version } from "rics";
 
-interface Options {
+export interface Options {
   output?: string;
   minify?: boolean;
   watch?: boolean;
@@ -31,7 +31,7 @@ Examples:
   rics styles.rics -w -o styles.css    # Watch mode
 `;
 
-function parseArgs(args: string[]): { input?: string; options: Options } {
+export function parseArgs(args: string[]): { input?: string; options: Options } {
   const options: Options = {};
   let input: string | undefined;
 
@@ -147,4 +147,7 @@ function main(): void {
   }
 }
 
-main();
+// Only run main when executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main();
+}

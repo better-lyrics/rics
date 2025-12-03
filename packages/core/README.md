@@ -1,5 +1,9 @@
 # rics
 
+[![npm version](https://badgen.net/npm/v/rics)](https://www.npmjs.com/package/rics)
+[![minzipped size](https://badgen.net/bundlephobia/minzip/rics)](https://bundlephobia.com/package/rics)
+[![downloads](https://badgen.net/npm/dm/rics)](https://www.npmjs.com/package/rics)
+
 Core compiler for the rics CSS preprocessor. A fast, lightweight SCSS-like preprocessor that runs anywhere JavaScript runs.
 
 ## Installation

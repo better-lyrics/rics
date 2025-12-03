@@ -1,5 +1,9 @@
 # codemirror-lang-rics
 
+[![npm version](https://badgen.net/npm/v/codemirror-lang-rics)](https://www.npmjs.com/package/codemirror-lang-rics)
+[![minzipped size](https://badgen.net/bundlephobia/minzip/codemirror-lang-rics)](https://bundlephobia.com/package/codemirror-lang-rics)
+[![downloads](https://badgen.net/npm/dm/codemirror-lang-rics)](https://www.npmjs.com/package/codemirror-lang-rics)
+
 CodeMirror 6 language support for rics. Provides syntax highlighting and real-time linting.
 
 ## Installation

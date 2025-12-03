@@ -1,5 +1,9 @@
 # prettier-plugin-rics
 
+[![npm version](https://badgen.net/npm/v/prettier-plugin-rics)](https://www.npmjs.com/package/prettier-plugin-rics)
+[![minzipped size](https://badgen.net/bundlephobia/minzip/prettier-plugin-rics)](https://bundlephobia.com/package/prettier-plugin-rics)
+[![downloads](https://badgen.net/npm/dm/prettier-plugin-rics)](https://www.npmjs.com/package/prettier-plugin-rics)
+
 Prettier plugin for formatting rics files.
 
 ## Installation

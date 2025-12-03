@@ -1,5 +1,9 @@
 # rics-cli
 
+[![npm version](https://badgen.net/npm/v/rics-cli)](https://www.npmjs.com/package/rics-cli)
+[![minzipped size](https://badgen.net/bundlephobia/minzip/rics-cli)](https://bundlephobia.com/package/rics-cli)
+[![downloads](https://badgen.net/npm/dm/rics-cli)](https://www.npmjs.com/package/rics-cli)
+
 Command-line interface for the rics CSS preprocessor.
 
 ## Installation
