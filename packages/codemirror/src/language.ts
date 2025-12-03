@@ -92,7 +92,7 @@ const scssLike = StreamLanguage.define<LexerState>({
 
     // Variables: $name or $name-with-dashes (must come before other identifier matching)
     if (stream.match(/^\$[a-zA-Z_][a-zA-Z0-9_-]*/)) {
-      return "variableName.special";
+      return "variableName";
     }
 
     // Interpolation start
