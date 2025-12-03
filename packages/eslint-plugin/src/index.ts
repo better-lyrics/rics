@@ -161,6 +161,13 @@ const configs = {
   },
 };
 
+// Rules export
+const rules = {
+  "no-compile-errors": noCompileErrors,
+  "no-compile-warnings": noCompileWarnings,
+  "max-nesting-depth": maxNestingDepth,
+};
+
 // Plugin export
 const plugin = {
   meta: {
@@ -168,13 +175,10 @@ const plugin = {
     version: "0.1.0",
   },
   configs,
-  rules: {
-    "no-compile-errors": noCompileErrors,
-    "no-compile-warnings": noCompileWarnings,
-    "max-nesting-depth": maxNestingDepth,
-  },
+  rules,
   processors: {},
   parser,
 };
 
+export { configs, parser, rules };
 export default plugin;

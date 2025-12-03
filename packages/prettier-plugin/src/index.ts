@@ -109,4 +109,5 @@ const plugin: Plugin<RicsNode> = {
   printers,
 };
 
+export { languages, parsers, printers };
 export default plugin;

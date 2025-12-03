@@ -1333,9 +1333,32 @@ class Compiler {
     if (/^(calc|var|min|max|clamp)\s*\(/i.test(str.trim())) {
       return false;
     }
-    // Match numbers with optional units, variables, and math operators
-    // Must have a math operator and contain numbers or variables
-    return /[+\-*/%]/.test(str) && (/\d/.test(str) || /\$/.test(str));
+
+    const hasVariable = /\$/.test(str);
+
+    // For division, only treat as math if:
+    // 1. Variables are involved ($a / 2)
+    // 2. There are spaces around the / (actual division: 16px / 2)
+    // This prevents font: 16px/1.5 from being treated as division
+    // Font shorthand uses / without spaces: 16px/1.5
+    if (str.includes("/") && !hasVariable) {
+      // Check if / has spaces around it (actual division) vs no spaces (font shorthand)
+      const hasSpacedDivision = /\s\/\s/.test(str);
+      if (!hasSpacedDivision) {
+        // No spaced division - check if there are other math operators with spaces
+        const hasSpacedMath = /\s[+\-*%]\s/.test(str);
+        if (!hasSpacedMath) {
+          return false;
+        }
+      }
+    }
+
+    // Must have a math operator surrounded by spaces (to avoid matching identifiers like system-ui)
+    // OR have variables with operators
+    const hasSpacedOperator = /\s[+\-*/%]\s/.test(str);
+    const hasOperatorWithVar = hasVariable && /[+\-*/%]/.test(str);
+
+    return (hasSpacedOperator || hasOperatorWithVar) && (/\d/.test(str) || hasVariable);
   }
 
   private evaluateExpression(expr: string): Value {
