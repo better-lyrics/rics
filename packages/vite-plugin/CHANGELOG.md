@@ -1,5 +1,11 @@
 # vite-plugin-rics
 
+## 0.1.7
+
+### Patch Changes
+
+- 2ed87fd: Fix production build **DEFINES** error
+
 ## 0.1.6
 
 ### Patch Changes
