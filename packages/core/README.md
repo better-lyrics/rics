@@ -96,19 +96,19 @@ compile(input, {
 
 | Preprocessor | ops/sec | Comparison |
 |--------------|---------|------------|
-| rics | 2,615 | **fastest** |
-| stylus | 1,200 | 2.2x slower |
-| sass | 1,071 | 2.4x slower |
-| less | 737 | 3.5x slower |
+| rics | 2,578 | **fastest** |
+| sass | 1,249 | 2.1x slower |
+| stylus | 1,220 | 2.1x slower |
+| less | 673 | 3.8x slower |
 
 ### Package Size (minzipped, smaller is better)
 
 | Package | Size | Dependencies | Comparison |
 |---------|------|--------------|------------|
-| rics | 10.5 KB | 0 | **smallest** |
-| less | 47.2 KB | 3 | 4x larger |
-| stylus | 82.8 KB | 5 | 8x larger |
-| sass | 669.8 KB | 3 | 63x larger |
+| rics | 12.4 KB | 0 | **smallest** |
+| less | 49.3 KB | 0 | 4x larger |
+| stylus | 82.8 KB | 5 | 7x larger |
+| sass | 675.7 KB | 1 | 54x larger |
 
 ## License
 

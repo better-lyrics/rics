@@ -61,24 +61,44 @@ async function runBenchmarks() {
   return results;
 }
 
+async function fetchFromBundlejs(pkg) {
+  const response = await fetch(`https://deno.bundlejs.com/?q=${pkg}`);
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const data = await response.json();
+  const depCount = (data.installSize?.packages?.length || 1) - 1;
+  console.log(`  ${pkg}: ${data.size?.compressedSize} (${data.version}) [bundlejs]`);
+  return {
+    name: pkg,
+    size: data.size?.rawCompressedSize || 0,
+    deps: depCount,
+  };
+}
+
+async function fetchFromBundlephobia(pkg) {
+  const response = await fetch(`https://bundlephobia.com/api/size?package=${pkg}`);
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const data = await response.json();
+  console.log(`  ${pkg}: ${(data.gzip / 1024).toFixed(1)} kB (${data.version}) [bundlephobia]`);
+  return {
+    name: pkg,
+    size: data.gzip || 0,
+    deps: data.dependencyCount || 0,
+  };
+}
+
 async function getPackageSizes() {
-  console.log("Fetching package sizes from bundlephobia...");
+  console.log("Fetching package sizes...");
 
   const packages = ["rics", "sass", "less", "stylus"];
   const results = [];
 
   for (const pkg of packages) {
     try {
-      const response = await fetch(`https://bundlephobia.com/api/size?package=${pkg}`);
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const data = await response.json();
-      results.push({
-        name: pkg,
-        size: data.gzip || 0,
-        deps: data.dependencyCount || 0,
-      });
+      // Try bundlejs first (more up-to-date), fall back to bundlephobia
+      const result = await fetchFromBundlejs(pkg).catch(() => fetchFromBundlephobia(pkg));
+      results.push(result);
     } catch (e) {
-      console.log(`  Warning: Could not fetch ${pkg} from bundlephobia`);
+      console.log(`  Warning: Could not fetch ${pkg} - ${e.message}`);
     }
   }
 
