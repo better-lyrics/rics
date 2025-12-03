@@ -172,6 +172,28 @@ describe("built-in functions", () => {
       expect(result).toContain("width: 20px");
     });
 
+    it("nth should work without interpolation", () => {
+      const input = `
+        $blur-values: (2px, 3.5px, 5px);
+        .box { width: nth($blur-values, 2); }
+      `;
+      const result = compile(input);
+      expect(result).toContain("width: 3.5px");
+    });
+
+    it("nth should work inside @for loop without interpolation", () => {
+      const input = `
+        $values: (10px, 20px, 30px);
+        @for $i from 1 through 3 {
+          .item-#{$i} { width: nth($values, $i); }
+        }
+      `;
+      const result = compile(input);
+      expect(result).toContain("width: 10px");
+      expect(result).toContain("width: 20px");
+      expect(result).toContain("width: 30px");
+    });
+
     it("index should find item in list", () => {
       const input = `
         $list: (a, b, c);
@@ -179,6 +201,15 @@ describe("built-in functions", () => {
       `;
       const result = compile(input);
       expect(result).toContain("--idx: 2");
+    });
+
+    it("nth should work inside CSS functions like blur()", () => {
+      const input = `
+        $blur-values: (2px, 4px, 6px);
+        .box { filter: blur(nth($blur-values, 2)); }
+      `;
+      const result = compile(input);
+      expect(result).toContain("filter: blur(4px)");
     });
   });
 

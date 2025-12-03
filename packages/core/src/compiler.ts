@@ -1012,7 +1012,9 @@ class Compiler {
         ch === ":" ||
         ch === "*" ||
         (ch === "#" && this.peek(1) !== "{") || // ID selector, not interpolation
-        (this.isIdentStart(ch) && this.looksLikeSelector())
+        (this.isIdentStart(ch) && this.looksLikeSelector()) ||
+        // Combinator-prefixed nested selectors: + .sibling, > .child, ~ .sibling
+        ((ch === "+" || ch === ">" || ch === "~") && this.looksLikeSelector())
       ) {
         const savedOutput = this.state.output;
         this.state.output = [];
@@ -1241,8 +1243,11 @@ class Compiler {
 
   private processValue(value: string): string {
     value = this.interpolate(value);
-    value = this.substituteVariables(value);
+    // Evaluate function calls BEFORE variable substitution
+    // This allows functions like nth($list, 2) to receive the list as a Value object
+    // rather than a stringified "2px, 3.5px, 5px" which breaks argument parsing
     value = this.evaluateFunctionCalls(value);
+    value = this.substituteVariables(value);
     value = this.evaluateMath(value);
     return value;
   }
@@ -1271,7 +1276,7 @@ class Compiler {
         /([a-zA-Z_][\w-]*)\s*\(([^()]*(?:\([^()]*\)[^()]*)*)\)/g;
 
       result = result.replace(funcRegex, (match, funcName, args, offset) => {
-        // Skip CSS-only functions
+        // Skip CSS-only functions entirely
         if (cssOnlyFunctions.test(funcName) && !scssBuiltins.test(funcName)) {
           return match;
         }
@@ -1286,6 +1291,16 @@ class Compiler {
             }
           } catch {
             // If evaluation fails, return original
+          }
+        }
+
+        // For non-builtin functions (like CSS blur(), drop-shadow(), etc.),
+        // recursively process the args to evaluate any inner SCSS functions
+        if (!scssBuiltins.test(funcName)) {
+          const processedArgs = this.evaluateFunctionCalls(args);
+          if (processedArgs !== args) {
+            changed = true;
+            return `${funcName}(${processedArgs})`;
           }
         }
 

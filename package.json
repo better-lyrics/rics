@@ -8,6 +8,7 @@
     "dev": "pnpm --filter rics build && pnpm -r --parallel dev",
     "test": "pnpm -r test",
     "typecheck": "pnpm -r typecheck",
+    "preflight": "pnpm typecheck && pnpm test && pnpm knip && pnpm build",
     "playground": "pnpm --filter rics-playground dev",
     "playground:build": "pnpm --filter rics-playground build",
     "clean": "rm -rf packages/*/dist apps/*/dist node_modules/.cache",

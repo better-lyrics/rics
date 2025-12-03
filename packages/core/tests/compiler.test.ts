@@ -80,6 +80,37 @@ describe("compiler", () => {
       const result = compile(input);
       expect(result).toContain(".item + .item");
     });
+
+    it("should handle + adjacent sibling combinator without &", () => {
+      const input = `
+        .parent {
+          color: red;
+          + .sibling { color: blue; }
+        }
+      `;
+      const result = compile(input);
+      expect(result).toContain(".parent + .sibling");
+    });
+
+    it("should handle ~ general sibling combinator without &", () => {
+      const input = `
+        .parent {
+          ~ .sibling { color: green; }
+        }
+      `;
+      const result = compile(input);
+      expect(result).toContain(".parent ~ .sibling");
+    });
+
+    it("should handle > child combinator without &", () => {
+      const input = `
+        .parent {
+          > .child { color: yellow; }
+        }
+      `;
+      const result = compile(input);
+      expect(result).toContain(".parent > .child");
+    });
   });
 
   describe("mixins", () => {

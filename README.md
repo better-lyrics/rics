@@ -2,7 +2,7 @@
 
 <p align="center">
   A fast, lightweight SCSS-like preprocessor that runs anywhere JavaScript runs.<br>
-  Built for real-time compilation in browsers, editors, and build tools.
+  Built for real-time compilation in browsers, editors, and build tools.<br>
 </p>
 
 <p align="center">
@@ -60,10 +60,10 @@
 
 | Preprocessor | ops/sec | Comparison |
 |--------------|---------|------------|
-| rics | 900 | **fastest** |
-| stylus | 312 | 2.9x slower |
-| sass | 267 | 3.4x slower |
-| less | 213 | 4.2x slower |
+| rics | 2,615 | **fastest** |
+| stylus | 1,200 | 2.2x slower |
+| sass | 1,071 | 2.4x slower |
+| less | 737 | 3.5x slower |
 
 ### Package Size (minzipped, smaller is better)
 
@@ -75,6 +75,8 @@
 | sass | 669.8 KB | 3 | 63x larger |
 
 ## Why rics?
+
+**Drop-in compatible** — All valid CSS is valid rics. Use your existing stylesheets and progressively adopt preprocessor features.
 
 **rics vs Stylis** — Stylis handles nesting and autoprefixing (~3KB), but that's it. rics adds full SCSS features — variables, mixins, functions, loops, conditionals, color manipulation — while staying small (~10KB minzipped) and fast.
 
