@@ -12,6 +12,68 @@
   <a href="https://github.com/user/rics/blob/master/LICENSE"><img src="https://badgen.net/npm/license/rics" alt="license"></a>
 </p>
 
+## Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [Benchmarks](#benchmarks)
+	- [Performance (ops/sec, higher is better)](#performance-opssec-higher-is-better)
+	- [Package Size (smaller is better)](#package-size-smaller-is-better)
+- [Why rics?](#why-rics)
+- [Packages](#packages)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+	- [Node.js / Browser](#nodejs--browser)
+	- [CLI](#cli)
+	- [Vite](#vite)
+	- [Webpack](#webpack)
+	- [CodeMirror 6](#codemirror-6)
+	- [Prettier](#prettier)
+	- [ESLint](#eslint)
+- [Features](#features)
+	- [Variables \& Math](#variables--math)
+	- [Nesting](#nesting)
+	- [Mixins with Parameters](#mixins-with-parameters)
+	- [Custom Functions](#custom-functions)
+	- [Loops](#loops)
+	- [Conditionals](#conditionals)
+	- [Color Functions](#color-functions)
+	- [Interpolation](#interpolation)
+- [API](#api)
+	- [compile(input, config?)](#compileinput-config)
+	- [compileWithDetails(input, config?)](#compilewithdetailsinput-config)
+	- [compileAsync(input, config?)](#compileasyncinput-config)
+- [Configuration](#configuration)
+- [Built-in Functions](#built-in-functions)
+	- [Math](#math)
+	- [Strings](#strings)
+	- [Lists](#lists)
+	- [Maps](#maps)
+	- [Introspection](#introspection)
+- [Native CSS Pass-through](#native-css-pass-through)
+- [License](#license)
+
+## Benchmarks
+
+> Auto-generated. Run `pnpm bench` in the benchmarks folder to regenerate.
+
+### Performance (ops/sec, higher is better)
+
+| Preprocessor | ops/sec | Comparison |
+|--------------|---------|------------|
+| rics | 2,567 | **fastest** |
+| stylus | 1,122 | 2.3x slower |
+| sass | 973 | 2.6x slower |
+| less | 694 | 3.7x slower |
+
+### Package Size (smaller is better)
+
+| Package | Size | Dependencies | Comparison |
+|---------|------|--------------|------------|
+| rics | 92.1 KB | 0 | **smallest** |
+| stylus | 357.2 KB | 5 | 4x larger |
+| less | 2.8 MB | 3 | 32x larger |
+| sass | 5.5 MB | 3 | 61x larger |
+
 ## Why rics?
 
 - **Zero dependencies** — Single ~40KB bundle, no PostCSS, no Dart Sass

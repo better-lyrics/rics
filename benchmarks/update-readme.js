@@ -9,7 +9,8 @@ import less from "less";
 import stylus from "stylus";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const README_PATH = join(__dirname, "../packages/core/README.md");
+const CORE_README_PATH = join(__dirname, "../packages/core/README.md");
+const ROOT_README_PATH = join(__dirname, "../README.md");
 
 // Read fixture files
 const fixtures = {
@@ -128,13 +129,8 @@ function generateBenchmarkMarkdown(perfResults, sizeResults) {
   return md;
 }
 
-async function updateReadme() {
-  const perfResults = await runBenchmarks();
-  const sizeResults = await getPackageSizes();
-
-  const benchmarkMd = generateBenchmarkMarkdown(perfResults, sizeResults);
-
-  let readme = readFileSync(README_PATH, "utf-8");
+function updateReadmeFile(readmePath, benchmarkMd) {
+  let readme = readFileSync(readmePath, "utf-8");
 
   // Replace or add benchmark section
   const benchmarkStart = "## Benchmarks";
@@ -160,8 +156,23 @@ async function updateReadme() {
     }
   }
 
-  writeFileSync(README_PATH, readme);
-  console.log("✅ README updated with benchmark results!");
+  writeFileSync(readmePath, readme);
+}
+
+async function updateReadme() {
+  const perfResults = await runBenchmarks();
+  const sizeResults = await getPackageSizes();
+
+  const benchmarkMd = generateBenchmarkMarkdown(perfResults, sizeResults);
+
+  // Update both READMEs
+  updateReadmeFile(CORE_README_PATH, benchmarkMd);
+  console.log("✅ packages/core/README.md updated");
+
+  updateReadmeFile(ROOT_README_PATH, benchmarkMd);
+  console.log("✅ README.md updated");
+
+  console.log("✅ Benchmark results updated!");
 }
 
 updateReadme().catch(console.error);
