@@ -58,21 +58,21 @@
 
 ### Performance (ops/sec, higher is better)
 
-| Preprocessor | ops/sec | Comparison |
-|--------------|---------|------------|
-| rics | 927 | **fastest** |
-| stylus | 306 | 3.0x slower |
-| sass | 265 | 3.5x slower |
-| less | 222 | 4.2x slower |
+| Preprocessor | ops/sec | Comparison  |
+| ------------ | ------- | ----------- |
+| rics         | 927     | **fastest** |
+| stylus       | 306     | 3.0x slower |
+| sass         | 265     | 3.5x slower |
+| less         | 222     | 4.2x slower |
 
 ### Package Size (minzipped, smaller is better)
 
-| Package | Size | Dependencies | Comparison |
-|---------|------|--------------|------------|
-| rics | 10.5 KB | 0 | **smallest** |
-| less | 47.2 KB | 3 | 4x larger |
-| stylus | 82.8 KB | 5 | 8x larger |
-| sass | 669.8 KB | 3 | 63x larger |
+| Package | Size     | Dependencies | Comparison   |
+| ------- | -------- | ------------ | ------------ |
+| rics    | 10.5 KB  | 0            | **smallest** |
+| less    | 47.2 KB  | 3            | 4x larger    |
+| stylus  | 82.8 KB  | 5            | 8x larger    |
+| sass    | 669.8 KB | 3            | 63x larger   |
 
 ## Why rics?
 
@@ -80,16 +80,16 @@
 
 **rics vs Sass/Less/Stylus** — These need Node.js or WASM. rics runs anywhere JavaScript runs, compiles in milliseconds, and has zero dependencies.
 
-| Feature | rics | Stylis | Sass | Less |
-|---------|------|--------|------|------|
-| Variables | Yes | No | Yes | Yes |
-| Nesting | Yes | Yes | Yes | Yes |
-| Mixins | Yes | No | Yes | Yes |
-| Functions | Yes | No | Yes | Yes |
-| Loops | Yes | No | Yes | Yes |
-| Color functions | Yes | No | Yes | Yes |
-| Browser-native | Yes | Yes | No | No |
-| Zero dependencies | Yes | Yes | No | No |
+| Feature           | rics | Stylis | Sass | Less |
+| ----------------- | ---- | ------ | ---- | ---- |
+| Variables         | Yes  | No     | Yes  | Yes  |
+| Nesting           | Yes  | Yes    | Yes  | Yes  |
+| Mixins            | Yes  | No     | Yes  | Yes  |
+| Functions         | Yes  | No     | Yes  | Yes  |
+| Loops             | Yes  | No     | Yes  | Yes  |
+| Color functions   | Yes  | No     | Yes  | Yes  |
+| Browser-native    | Yes  | Yes    | No   | No   |
+| Zero dependencies | Yes  | Yes    | No   | No   |
 
 ## Packages
 
@@ -99,7 +99,7 @@
 | [rics-cli](https://www.npmjs.com/package/rics-cli)                         | Command-line interface | ~2KB   |
 | [vite-plugin-rics](https://www.npmjs.com/package/vite-plugin-rics)         | Vite plugin            | ~1KB   |
 | [webpack-loader-rics](https://www.npmjs.com/package/webpack-loader-rics)   | Webpack loader         | ~0.5KB |
-| [codemirror-lang-rics](https://www.npmjs.com/package/codemirror-lang-rics) | CodeMirror 6 support   | ~3KB   |
+| [codemirror-lang-rics](https://www.npmjs.com/package/codemirror-lang-rics) | CodeMirror 6 support   | ~4KB   |
 | [prettier-plugin-rics](https://www.npmjs.com/package/prettier-plugin-rics) | Prettier formatter     | ~1KB   |
 | [eslint-plugin-rics](https://www.npmjs.com/package/eslint-plugin-rics)     | ESLint plugin          | ~2KB   |
 | [rics-vscode](https://marketplace.visualstudio.com/)                       | VS Code extension      | -      |

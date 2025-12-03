@@ -142,6 +142,8 @@ export interface StringValue {
   quoted: boolean;
 }
 
+export type ColorFormat = "hex" | "rgb" | "hsl" | "oklch";
+
 export interface ColorValue {
   type: "color";
   r: number;
@@ -149,6 +151,7 @@ export interface ColorValue {
   b: number;
   a: number;
   original?: string;
+  format?: ColorFormat;
 }
 
 export interface BooleanValue {

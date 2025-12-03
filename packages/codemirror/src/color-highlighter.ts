@@ -39,7 +39,7 @@ function hasValidColorArgs(str: string): boolean {
   const args = match[1];
 
   // Reject if contains preprocessor variables ($var), CSS variables (var()),
-  // or any identifier that's not a valid color keyword
+  // or rics interpolation (#{})
   if (/\$\w|var\s*\(|#\{/.test(args)) {
     return false;
   }
@@ -49,9 +49,9 @@ function hasValidColorArgs(str: string): boolean {
     return /^[a-z-]+\s+[\d.\s%/,-]+$/i.test(args);
   }
 
-  // For other functions, arguments should be numbers, percentages, or separators
-  // Allow: digits, dots, %, deg, commas, spaces, forward slash (for alpha)
-  return /^[\d.\s%,/deg-]+$/i.test(args);
+  // For all color functions, allow: numbers, dots, %, deg, commas, spaces, forward slash, minus
+  // This covers rgb, hsl, hwb, lab, lch, oklch, oklab with various syntaxes
+  return /^[\d.\s%,/deg+-]+$/i.test(args);
 }
 
 // Parse color string to valid CSS color
@@ -204,14 +204,14 @@ export function colorHighlighter(config: ColorHighlighterConfig = {}) {
     luminanceThreshold = 0.35,
   } = config;
 
-  // Color patterns
+  // Color patterns - use negative lookbehind to prevent lab/lch matching inside oklab/oklch
   const colorPatterns = [
     /#[0-9a-fA-F]{3,8}\b/g,
     /rgba?\s*\([^)]+\)/gi,
     /hsla?\s*\([^)]+\)/gi,
     /hwb\s*\([^)]+\)/gi,
-    /lab\s*\([^)]+\)/gi,
-    /lch\s*\([^)]+\)/gi,
+    /(?<!ok)lab\s*\([^)]+\)/gi,
+    /(?<!ok)lch\s*\([^)]+\)/gi,
     /oklch\s*\([^)]+\)/gi,
     /oklab\s*\([^)]+\)/gi,
     /color\s*\([^)]+\)/gi,

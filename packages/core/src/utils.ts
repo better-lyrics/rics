@@ -1,4 +1,92 @@
-import { Value, ColorValue } from "./types";
+import { Value, ColorValue, ColorFormat } from "./types";
+
+function toHex(n: number): string {
+  const hex = Math.round(Math.max(0, Math.min(255, n))).toString(16);
+  return hex.length === 1 ? "0" + hex : hex;
+}
+
+function round(n: number, decimals: number = 3): number {
+  const factor = Math.pow(10, decimals);
+  return Math.round(n * factor) / factor;
+}
+
+// RGB to HSL conversion
+function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const l = (max + min) / 2;
+  let h = 0, s = 0;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = ((g - b) / d + (g < b ? 6 : 0)) * 60; break;
+      case g: h = ((b - r) / d + 2) * 60; break;
+      case b: h = ((r - g) / d + 4) * 60; break;
+    }
+  }
+  return [h, s * 100, l * 100];
+}
+
+// RGB to oklch conversion
+function rgbToOklch(r: number, g: number, b: number): [number, number, number] {
+  const toLinear = (x: number) => {
+    x = x / 255;
+    return x <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+  };
+  const lr = toLinear(r);
+  const lg = toLinear(g);
+  const lb = toLinear(b);
+  const l_ = Math.cbrt(0.4122214708 * lr + 0.5363325363 * lg + 0.0514459929 * lb);
+  const m_ = Math.cbrt(0.2119034982 * lr + 0.6806995451 * lg + 0.1073969566 * lb);
+  const s_ = Math.cbrt(0.0883024619 * lr + 0.2817188376 * lg + 0.6299787005 * lb);
+  const L = 0.2104542553 * l_ + 0.793617785 * m_ - 0.0040720468 * s_;
+  const a = 1.9779984951 * l_ - 2.428592205 * m_ + 0.4505937099 * s_;
+  const bVal = 0.0259040371 * l_ + 0.7827717662 * m_ - 0.808675766 * s_;
+  const C = Math.sqrt(a * a + bVal * bVal);
+  let H = (Math.atan2(bVal, a) * 180) / Math.PI;
+  if (H < 0) H += 360;
+  return [L, C, H];
+}
+
+function colorToString(value: ColorValue): string {
+  const { r, g, b, a, format, original } = value;
+
+  if (original) {
+    return original;
+  }
+
+  switch (format) {
+    case "oklch": {
+      const [L, C, H] = rgbToOklch(r, g, b);
+      if (a === 1) {
+        return `oklch(${round(L * 100, 1)}% ${round(C, 3)} ${round(H, 3)})`;
+      }
+      return `oklch(${round(L * 100, 1)}% ${round(C, 3)} ${round(H, 3)} / ${round(a, 2)})`;
+    }
+    case "hsl": {
+      const [h, s, l] = rgbToHsl(r, g, b);
+      if (a === 1) {
+        return `hsl(${round(h, 1)}, ${round(s, 1)}%, ${round(l, 1)}%)`;
+      }
+      return `hsla(${round(h, 1)}, ${round(s, 1)}%, ${round(l, 1)}%, ${round(a, 2)})`;
+    }
+    case "rgb":
+      if (a === 1) {
+        return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
+      }
+      return `rgba(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}, ${round(a, 2)})`;
+    case "hex":
+    default:
+      if (a === 1) {
+        return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+      }
+      return `rgba(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)}, ${round(a, 2)})`;
+  }
+}
 
 export function valueToString(value: Value): string {
   switch (value.type) {
@@ -6,7 +94,6 @@ export function valueToString(value: Value): string {
       if (Number.isInteger(value.value)) {
         return `${value.value}${value.unit}`;
       }
-      // Round to 6 decimal places to avoid floating point precision issues
       const rounded = Math.round(value.value * 1e6) / 1e6;
       const str = rounded.toString();
       if (str.includes("e") || str.includes("E")) {
@@ -18,13 +105,7 @@ export function valueToString(value: Value): string {
       return value.quoted ? `"${value.value}"` : value.value;
 
     case "color":
-      if (value.original) {
-        return value.original;
-      }
-      if (value.a === 1) {
-        return `#${toHex(value.r)}${toHex(value.g)}${toHex(value.b)}`;
-      }
-      return `rgba(${value.r}, ${value.g}, ${value.b}, ${value.a})`;
+      return colorToString(value);
 
     case "boolean":
       return value.value ? "true" : "false";
@@ -44,13 +125,59 @@ export function valueToString(value: Value): string {
   }
 }
 
-function toHex(n: number): string {
-  const hex = Math.round(Math.max(0, Math.min(255, n))).toString(16);
-  return hex.length === 1 ? "0" + hex : hex;
+// Convert oklch to RGB
+function oklchToRgb(l: number, c: number, h: number): [number, number, number] {
+  // oklch uses L in 0-1 range, C typically 0-0.4, H in degrees
+  // Convert to oklab (polar to cartesian)
+  const hRad = (h * Math.PI) / 180;
+  const a = c * Math.cos(hRad);
+  const b = c * Math.sin(hRad);
+
+  // oklab to linear sRGB
+  const l_ = l + 0.3963377774 * a + 0.2158037573 * b;
+  const m_ = l - 0.1055613458 * a - 0.0638541728 * b;
+  const s_ = l - 0.0894841775 * a - 1.291485548 * b;
+
+  const l3 = l_ * l_ * l_;
+  const m3 = m_ * m_ * m_;
+  const s3 = s_ * s_ * s_;
+
+  const r = 4.0767416621 * l3 - 3.3077115913 * m3 + 0.2309699292 * s3;
+  const g = -1.2684380046 * l3 + 2.6097574011 * m3 - 0.3413193965 * s3;
+  const b_ = -0.0041960863 * l3 - 0.7034186147 * m3 + 1.707614701 * s3;
+
+  // Linear sRGB to sRGB (gamma correction)
+  const toSrgb = (x: number) => {
+    if (x <= 0) return 0;
+    if (x >= 1) return 255;
+    return Math.round(
+      (x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055) * 255
+    );
+  };
+
+  return [toSrgb(r), toSrgb(g), toSrgb(b_)];
 }
 
 export function parseColor(input: string): ColorValue | null {
   const trimmed = input.trim().toLowerCase();
+
+  // oklch format: oklch(L% C H) or oklch(L C H) or oklch(L% C H / alpha)
+  const oklchMatch = trimmed.match(
+    /^oklch\s*\(\s*([\d.]+)(%?)\s+([\d.]+)\s+([\d.]+)(?:deg)?\s*(?:\/\s*([\d.]+)(%?))?\s*\)$/
+  );
+  if (oklchMatch) {
+    let l = parseFloat(oklchMatch[1]);
+    if (oklchMatch[2] === "%") l = l / 100;
+    const c = parseFloat(oklchMatch[3]);
+    const h = parseFloat(oklchMatch[4]);
+    let a = 1;
+    if (oklchMatch[5]) {
+      a = parseFloat(oklchMatch[5]);
+      if (oklchMatch[6] === "%") a = a / 100;
+    }
+    const [r, g, b] = oklchToRgb(l, c, h);
+    return { type: "color", r, g, b, a, format: "oklch" };
+  }
 
   const hexMatch = trimmed.match(/^#([0-9a-f]{3,8})$/i);
   if (hexMatch) {
@@ -79,7 +206,7 @@ export function parseColor(input: string): ColorValue | null {
       return null;
     }
 
-    return { type: "color", r, g, b, a, original: input };
+    return { type: "color", r, g, b, a, format: "hex" };
   }
 
   const rgbMatch = trimmed.match(/^rgba?\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*([\d.]+))?\s*\)$/);
@@ -90,7 +217,7 @@ export function parseColor(input: string): ColorValue | null {
       g: parseInt(rgbMatch[2], 10),
       b: parseInt(rgbMatch[3], 10),
       a: rgbMatch[4] ? parseFloat(rgbMatch[4]) : 1,
-      original: input,
+      format: "rgb",
     };
   }
 
@@ -128,7 +255,8 @@ export function parseColor(input: string): ColorValue | null {
       g,
       b,
       a: trimmed === "transparent" ? 0 : 1,
-      original: input,
+      format: "hex",
+      original: trimmed,
     };
   }
 

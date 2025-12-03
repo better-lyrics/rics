@@ -91,14 +91,14 @@ function adjustLightness(color: ColorValue, amount: number, darken = false): Col
   const [h, s, l] = rgbToHsl(color.r, color.g, color.b);
   const newL = darken ? Math.max(0, l - amount) : Math.min(100, l + amount);
   const [r, g, b] = hslToRgb(h, s, newL);
-  return { type: "color", r, g, b, a: color.a };
+  return { type: "color", r, g, b, a: color.a, format: color.format };
 }
 
 function adjustSaturation(color: ColorValue, amount: number, desaturate = false): ColorValue {
   const [h, s, l] = rgbToHsl(color.r, color.g, color.b);
   const newS = desaturate ? Math.max(0, s - amount) : Math.min(100, s + amount);
   const [r, g, b] = hslToRgb(h, newS, l);
-  return { type: "color", r, g, b, a: color.a };
+  return { type: "color", r, g, b, a: color.a, format: color.format };
 }
 
 export const builtinFunctions: Record<string, BuiltinFunction> = {
@@ -136,7 +136,7 @@ export const builtinFunctions: Record<string, BuiltinFunction> = {
     if (!color) return args[0];
     const [h, s, l] = rgbToHsl(color.r, color.g, color.b);
     const [r, g, b] = hslToRgb(h + degrees, s, l);
-    return { type: "color", r, g, b, a: color.a };
+    return { type: "color", r, g, b, a: color.a, format: color.format };
   },
 
   rgba(args) {
@@ -144,20 +144,20 @@ export const builtinFunctions: Record<string, BuiltinFunction> = {
       const color = ensureColor(args[0]);
       const alpha = ensureNumber(args[1], 1);
       if (!color) return args[0];
-      return { type: "color", r: color.r, g: color.g, b: color.b, a: alpha };
+      return { type: "color", r: color.r, g: color.g, b: color.b, a: alpha, format: color.format };
     }
     const r = Math.round(ensureNumber(args[0], 0));
     const g = Math.round(ensureNumber(args[1], 0));
     const b = Math.round(ensureNumber(args[2], 0));
     const a = args[3] ? ensureNumber(args[3], 1) : 1;
-    return { type: "color", r, g, b, a };
+    return { type: "color", r, g, b, a, format: "rgb" as const };
   },
 
   rgb(args) {
     const r = Math.round(ensureNumber(args[0], 0));
     const g = Math.round(ensureNumber(args[1], 0));
     const b = Math.round(ensureNumber(args[2], 0));
-    return { type: "color", r, g, b, a: 1 };
+    return { type: "color", r, g, b, a: 1, format: "rgb" as const };
   },
 
   hsl(args) {
@@ -165,7 +165,7 @@ export const builtinFunctions: Record<string, BuiltinFunction> = {
     const s = ensureNumber(args[1], 0);
     const l = ensureNumber(args[2], 0);
     const [r, g, b] = hslToRgb(h, s, l);
-    return { type: "color", r, g, b, a: 1 };
+    return { type: "color", r, g, b, a: 1, format: "hsl" as const };
   },
 
   hsla(args) {
@@ -174,7 +174,7 @@ export const builtinFunctions: Record<string, BuiltinFunction> = {
     const l = ensureNumber(args[2], 0);
     const a = args[3] ? ensureNumber(args[3], 1) : 1;
     const [r, g, b] = hslToRgb(h, s, l);
-    return { type: "color", r, g, b, a };
+    return { type: "color", r, g, b, a, format: "hsl" as const };
   },
 
   mix(args) {
@@ -194,6 +194,7 @@ export const builtinFunctions: Record<string, BuiltinFunction> = {
       g: Math.round(color1.g * w1 + color2.g * w2),
       b: Math.round(color1.b * w1 + color2.b * w2),
       a: color1.a * weight + color2.a * (1 - weight),
+      format: color1.format,
     };
   },
 
@@ -248,7 +249,7 @@ export const builtinFunctions: Record<string, BuiltinFunction> = {
     if (!color) return args[0];
     const [h, s, l] = rgbToHsl(color.r, color.g, color.b);
     const [r, g, b] = hslToRgb(h + 180, s, l);
-    return { type: "color", r, g, b, a: color.a };
+    return { type: "color", r, g, b, a: color.a, format: color.format };
   },
 
   invert(args) {
@@ -260,6 +261,7 @@ export const builtinFunctions: Record<string, BuiltinFunction> = {
       g: 255 - color.g,
       b: 255 - color.b,
       a: color.a,
+      format: color.format,
     };
   },
 
