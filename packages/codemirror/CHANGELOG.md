@@ -1,5 +1,11 @@
 # codemirror-lang-rics
 
+## 0.3.5
+
+### Patch Changes
+
+- b6e330c: Fix CodeMirror tokenizer to use `keyword` instead of `function` for CSS functions (var, calc, rgb, etc.) - `function` is a Lezer modifier, not a base tag
+
 ## 0.3.4
 
 ### Patch Changes
