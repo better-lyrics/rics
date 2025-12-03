@@ -101,7 +101,7 @@ compile(input, {
 | sass | 231 | 3.9x slower |
 | less | 176 | 5.2x slower |
 
-### Package Size (smaller is better)
+### Package Size (unpacked, smaller is better)
 
 | Package | Size | Dependencies | Comparison |
 |---------|------|--------------|------------|

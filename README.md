@@ -17,7 +17,7 @@
 - [Table of Contents](#table-of-contents)
 - [Benchmarks](#benchmarks)
 	- [Performance (ops/sec, higher is better)](#performance-opssec-higher-is-better)
-	- [Package Size (smaller is better)](#package-size-smaller-is-better)
+	- [Package Size (unpacked, smaller is better)](#package-size-unpacked-smaller-is-better)
 - [Why rics?](#why-rics)
 - [Packages](#packages)
 - [Installation](#installation)
@@ -65,7 +65,7 @@
 | sass | 973 | 2.6x slower |
 | less | 694 | 3.7x slower |
 
-### Package Size (smaller is better)
+### Package Size (unpacked, smaller is better)
 
 | Package | Size | Dependencies | Comparison |
 |---------|------|--------------|------------|

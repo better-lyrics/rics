@@ -113,7 +113,7 @@ function generateBenchmarkMarkdown(perfResults, sizeResults) {
   }
 
   md += `
-### Package Size (smaller is better)
+### Package Size (unpacked, smaller is better)
 
 | Package | Size | Dependencies | Comparison |
 |---------|------|--------------|------------|
