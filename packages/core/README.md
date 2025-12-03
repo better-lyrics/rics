@@ -96,10 +96,10 @@ compile(input, {
 
 | Preprocessor | ops/sec | Comparison |
 |--------------|---------|------------|
-| rics | 927 | **fastest** |
-| stylus | 306 | 3.0x slower |
-| sass | 265 | 3.5x slower |
-| less | 222 | 4.2x slower |
+| rics | 808 | **fastest** |
+| stylus | 267 | 3.0x slower |
+| sass | 207 | 3.9x slower |
+| less | 172 | 4.7x slower |
 
 ### Package Size (minzipped, smaller is better)
 
