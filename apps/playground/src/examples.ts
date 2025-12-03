@@ -31,7 +31,9 @@ import colorSystem from '../examples/colorSystem.rics?raw';
 import stressTest from '../examples/stressTest.rics?raw';
 import designTokens from '../examples/designTokens.rics?raw';
 import animation from '../examples/animation.rics?raw';
-import playground from '../examples/playground.rics?raw';
+import styles from '../src/styles.rics?raw';
+import warnings from '../examples/warnings.rics?raw';
+import errors from '../examples/errors.rics?raw';
 
 export const examples: Record<string, string> = {
   basic,
@@ -67,5 +69,7 @@ export const examples: Record<string, string> = {
   stressTest,
   designTokens,
   animation,
-  playground,
+  styles,
+  warnings,
+  errors,
 };

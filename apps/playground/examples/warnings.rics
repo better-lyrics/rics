@@ -1,0 +1,24 @@
+// Warnings Example
+// These compile but generate warnings
+
+// Undefined variable - will use the literal value
+.box {
+  color: $undefined-color;
+  background: $missing-bg;
+}
+
+// Multiple undefined variables
+.card {
+  padding: $spacing;
+  margin: $gap;
+  border-radius: $radius;
+}
+
+// Mixed - some defined, some not
+$primary: #3b82f6;
+
+.button {
+  background: $primary;      // OK - defined
+  color: $text-color;        // Warning - undefined
+  border: 1px solid $border; // Warning - undefined
+}

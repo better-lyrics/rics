@@ -1,4 +1,6 @@
-# rics for VS Code
+<p align="center">
+  <img src="https://raw.githubusercontent.com/better-lyrics/rics/master/images/logo.png" alt="rics" width="96" height="96">
+</p>
 
 Syntax highlighting for rics - a lightweight SCSS-like CSS preprocessor.
 

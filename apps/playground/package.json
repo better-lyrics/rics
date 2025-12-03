@@ -11,7 +11,6 @@
     "rics": "workspace:*",
     "codemirror-lang-rics": "workspace:*",
     "vite-plugin-rics": "workspace:*",
-    "@codemirror/lang-css": "^6.3.1",
     "prettier": "^3.7.3",
     "split.js": "^1.6.5"
   },

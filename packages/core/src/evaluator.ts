@@ -11,7 +11,7 @@ import {
   CompileError,
 } from "./types";
 import { builtinFunctions } from "./functions";
-export { valueToString, parseColor } from "./utils";
+export { valueToString } from "./utils";
 import { valueToString, parseColor } from "./utils";
 
 const UNIT_CONVERSIONS: Record<string, Record<string, number>> = {
@@ -101,7 +101,7 @@ function hasTopLevelComma(input: string): boolean {
   return false;
 }
 
-export function parseValue(input: string): Value {
+function parseValue(input: string): Value {
   const trimmed = input.trim();
 
   if (trimmed === "" || trimmed === "null") {
@@ -181,7 +181,7 @@ export function isTruthy(value: Value): boolean {
   }
 }
 
-export function compareValues(left: Value, right: Value, operator: string): boolean {
+function compareValues(left: Value, right: Value, operator: string): boolean {
   if (operator === "==" || operator === "!=") {
     const equal = valuesEqual(left, right);
     return operator === "==" ? equal : !equal;
@@ -259,7 +259,7 @@ function rawStringValue(v: Value): string {
   return valueToString(v);
 }
 
-export function performMath(
+function performMath(
   left: Value,
   right: Value,
   operator: string
@@ -456,7 +456,7 @@ function splitList(input: string, separator: string): string[] {
   return result;
 }
 
-export interface ExpressionEvaluator {
+interface ExpressionEvaluator {
   evaluate(
     expr: string,
     scope: Scope,
@@ -483,11 +483,7 @@ export function createExpressionEvaluator(
       const varName = trimmed.split(/[^$\w-]/)[0];
       const value = lookupVariable(scope, varName);
       if (!value) {
-        onError({
-          type: "error",
-          code: ErrorCode.UNDEFINED_VARIABLE,
-          message: `Undefined variable: ${varName}`,
-        });
+        // Return the literal variable name - warning is handled by substituteVariables
         return { type: "string", value: trimmed, quoted: false };
       }
       if (varName === trimmed) {

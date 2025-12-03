@@ -9,12 +9,7 @@ html {
 }
 
 body {
-  font-family:
-    "DM Sans",
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+  font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: #09090b;
   color: #fafafa;
   height: 100vh;
@@ -46,8 +41,7 @@ body {
   width: auto;
 }
 
-.header select,
-.header button {
+.header select, .header button {
   font-family: inherit;
   font-weight: 500;
   border-radius: 6px;
@@ -60,18 +54,15 @@ body {
   padding: 6px 12px;
 }
 
-.header select:hover,
-.header button:hover {
+.header select:hover, .header button:hover {
   background: #1f1f23;
 }
 
-.header select:focus,
-.header button:focus {
+.header select:focus, .header button:focus {
   outline: none;
 }
 
-.header select:focus-visible,
-.header button:focus-visible {
+.header select:focus-visible, .header button:focus-visible {
   border-color: #3f3f46;
 }
 
@@ -173,7 +164,7 @@ body {
 
 .main {
   display: flex;
-  height: calc(100vh - 52px - 36px);
+  height: calc(100vh - 88px);
 }
 
 .pane {
@@ -232,6 +223,7 @@ body {
 
 .pane-header button:hover {
   background: #1f1f23;
+  color: #fafafa;
 }
 
 .pane-header button:focus {
@@ -240,10 +232,6 @@ body {
 
 .pane-header button:focus-visible {
   border-color: #3f3f46;
-}
-
-.pane-header button:hover {
-  color: #fafafa;
 }
 
 .pane-header-actions {
@@ -263,8 +251,7 @@ body {
 }
 
 .cm-editor .cm-scroller {
-  font-family:
-    "DM Mono", "SF Mono", Monaco, "Cascadia Code", Consolas, monospace;
+  font-family: "DM Mono", "SF Mono", Monaco, "Cascadia Code", Consolas, monospace;
   line-height: 1.6;
 }
 
@@ -311,9 +298,8 @@ body {
   background: #0f0f12;
   border-top: 1px solid #27272a;
   font-size: 12px;
+  font-family: "DM Mono", "SF Mono", Monaco, "Cascadia Code", Consolas, monospace;
   height: 36px;
-  font-family:
-    "DM Mono", "SF Mono", Monaco, "Cascadia Code", Consolas, monospace;
 }
 
 .status-success {
@@ -346,6 +332,21 @@ body {
   background: currentColor;
 }
 
+.status-warning {
+  color: #fbbf24;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-warning::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
 .stats {
   color: #71717a;
   font-size: 11px;
@@ -367,8 +368,7 @@ body {
   color: #71717a;
 }
 
-.cm-editor .ͼ1 .cm-variableName.cm-special,
-.cm-editor .ͼ1 .cm-special {
+.cm-editor .ͼ1 .cm-variableName.cm-special, .cm-editor .ͼ1 .cm-special {
   color: #c4b5fd !important;
 }
 

@@ -1,8 +1,12 @@
-# webpack-loader-rics
+<p align="center">
+  <img src="https://raw.githubusercontent.com/better-lyrics/rics/master/images/logo.svg" alt="rics" width="96" height="96">
+</p>
 
-[![npm version](https://badgen.net/npm/v/webpack-loader-rics)](https://www.npmjs.com/package/webpack-loader-rics)
-[![minzipped size](https://badgen.net/bundlephobia/minzip/webpack-loader-rics)](https://bundlephobia.com/package/webpack-loader-rics)
-[![downloads](https://badgen.net/npm/dm/webpack-loader-rics)](https://www.npmjs.com/package/webpack-loader-rics)
+<p align="center">
+  <a href="https://www.npmjs.com/package/webpack-loader-rics"><img src="https://badgen.net/npm/v/webpack-loader-rics" alt="npm version"></a>
+  <a href="https://bundlephobia.com/package/webpack-loader-rics"><img src="https://badgen.net/bundlephobia/minzip/webpack-loader-rics" alt="minzipped size"></a>
+  <a href="https://www.npmjs.com/package/webpack-loader-rics"><img src="https://badgen.net/npm/dm/webpack-loader-rics" alt="downloads"></a>
+</p>
 
 Webpack loader for the rics CSS preprocessor. Enables importing `.rics` files in Webpack projects.
 

@@ -1,6 +1,6 @@
 import { Token, TokenType, SourceLocation } from "./types";
 
-export class Tokenizer {
+class Tokenizer {
   private input: string;
   private pos: number = 0;
   private line: number = 1;

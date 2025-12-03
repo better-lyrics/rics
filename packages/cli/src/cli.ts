@@ -147,7 +147,7 @@ function main(): void {
   }
 }
 
-// Only run main when executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Run main when executed as CLI entry point (not in test environment)
+if (!process.env.VITEST) {
   main();
 }

@@ -16,7 +16,7 @@ const languages: SupportLanguage[] = [
 
 const parsers: Record<string, Parser<RicsNode>> = {
   rics: {
-    parse(text: string): RicsNode {
+    parse(text: string, _options: object): RicsNode {
       return { type: "root", source: text };
     },
     astFormat: "rics-ast",

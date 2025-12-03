@@ -167,7 +167,7 @@ export interface MapValue {
   entries: Map<string, Value>;
 }
 
-export interface NullValue {
+interface NullValue {
   type: "null";
 }
 

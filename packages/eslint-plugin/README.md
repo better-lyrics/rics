@@ -1,8 +1,12 @@
-# eslint-plugin-rics
+<p align="center">
+  <img src="https://raw.githubusercontent.com/better-lyrics/rics/master/images/logo.svg" alt="rics" width="96" height="96">
+</p>
 
-[![npm version](https://badgen.net/npm/v/eslint-plugin-rics)](https://www.npmjs.com/package/eslint-plugin-rics)
-[![minzipped size](https://badgen.net/bundlephobia/minzip/eslint-plugin-rics)](https://bundlephobia.com/package/eslint-plugin-rics)
-[![downloads](https://badgen.net/npm/dm/eslint-plugin-rics)](https://www.npmjs.com/package/eslint-plugin-rics)
+<p align="center">
+  <a href="https://www.npmjs.com/package/eslint-plugin-rics"><img src="https://badgen.net/npm/v/eslint-plugin-rics" alt="npm version"></a>
+  <a href="https://bundlephobia.com/package/eslint-plugin-rics"><img src="https://badgen.net/bundlephobia/minzip/eslint-plugin-rics" alt="minzipped size"></a>
+  <a href="https://www.npmjs.com/package/eslint-plugin-rics"><img src="https://badgen.net/npm/dm/eslint-plugin-rics" alt="downloads"></a>
+</p>
 
 ESLint plugin for linting rics files.
 

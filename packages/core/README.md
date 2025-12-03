@@ -1,8 +1,12 @@
-# rics
+<p align="center">
+  <img src="https://raw.githubusercontent.com/better-lyrics/rics/master/images/logo.svg" alt="rics" width="96" height="96">
+</p>
 
-[![npm version](https://badgen.net/npm/v/rics)](https://www.npmjs.com/package/rics)
-[![minzipped size](https://badgen.net/bundlephobia/minzip/rics)](https://bundlephobia.com/package/rics)
-[![downloads](https://badgen.net/npm/dm/rics)](https://www.npmjs.com/package/rics)
+<p align="center">
+  <a href="https://www.npmjs.com/package/rics"><img src="https://badgen.net/npm/v/rics" alt="npm version"></a>
+  <a href="https://bundlephobia.com/package/rics"><img src="https://badgen.net/bundlephobia/minzip/rics" alt="minzipped size"></a>
+  <a href="https://www.npmjs.com/package/rics"><img src="https://badgen.net/npm/dm/rics" alt="downloads"></a>
+</p>
 
 Core compiler for the rics CSS preprocessor. A fast, lightweight SCSS-like preprocessor that runs anywhere JavaScript runs.
 

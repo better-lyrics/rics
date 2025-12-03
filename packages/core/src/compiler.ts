@@ -6,7 +6,6 @@ import {
   CompileWarning,
   ErrorCode,
   Value,
-  Scope,
   MixinDefinition,
   FunctionDefinition,
   ParamDefinition,
@@ -16,7 +15,6 @@ import {
   createScope,
   lookupVariable,
   setVariable,
-  parseValue,
   valueToString,
   isTruthy,
   createExpressionEvaluator,
@@ -35,12 +33,14 @@ export const defaultConfig: Readonly<Required<CompilerConfig>> = {
   preserveBangComments: true,
 };
 
-export class Compiler {
+class Compiler {
   private config: Required<CompilerConfig>;
   private state!: CompilerState;
   private input: string = "";
   private pos: number = 0;
-  private evaluator = createExpressionEvaluator((error) => this.addError(error));
+  private evaluator = createExpressionEvaluator((error) =>
+    this.addError(error)
+  );
 
   constructor(config: Partial<CompilerConfig> = {}) {
     this.config = { ...defaultConfig, ...config };
@@ -48,14 +48,19 @@ export class Compiler {
 
   compile(input: string): CompileResult {
     // Check input size limit
-    if (this.config.maxInputSize > 0 && input.length > this.config.maxInputSize) {
+    if (
+      this.config.maxInputSize > 0 &&
+      input.length > this.config.maxInputSize
+    ) {
       return {
         css: "",
-        errors: [{
-          type: "error",
-          code: ErrorCode.MAX_INPUT_SIZE,
-          message: `Input exceeds maximum size of ${this.config.maxInputSize} bytes`,
-        }],
+        errors: [
+          {
+            type: "error",
+            code: ErrorCode.MAX_INPUT_SIZE,
+            message: `Input exceeds maximum size of ${this.config.maxInputSize} bytes`,
+          },
+        ],
         warnings: [],
         stats: {
           iterations: 0,
@@ -121,18 +126,41 @@ export class Compiler {
   }
 
   private checkLimits(): void {
-    if (this.config.maxIterations > 0 && this.state.iterations >= this.config.maxIterations) {
-      throw new CompilerError(ErrorCode.MAX_ITERATIONS, "Maximum iterations exceeded", this.location());
+    if (
+      this.config.maxIterations > 0 &&
+      this.state.iterations >= this.config.maxIterations
+    ) {
+      throw new CompilerError(
+        ErrorCode.MAX_ITERATIONS,
+        "Maximum iterations exceeded",
+        this.location()
+      );
     }
-    if (this.config.timeout > 0 && Date.now() - this.state.startTime >= this.config.timeout) {
-      throw new CompilerError(ErrorCode.TIMEOUT, "Compilation timeout", this.location());
+    if (
+      this.config.timeout > 0 &&
+      Date.now() - this.state.startTime >= this.config.timeout
+    ) {
+      throw new CompilerError(
+        ErrorCode.TIMEOUT,
+        "Compilation timeout",
+        this.location()
+      );
     }
-    if (this.config.maxOutputRules > 0 && this.state.rules >= this.config.maxOutputRules) {
-      throw new CompilerError(ErrorCode.MAX_OUTPUT_RULES, "Maximum output rules exceeded", this.location());
+    if (
+      this.config.maxOutputRules > 0 &&
+      this.state.rules >= this.config.maxOutputRules
+    ) {
+      throw new CompilerError(
+        ErrorCode.MAX_OUTPUT_RULES,
+        "Maximum output rules exceeded",
+        this.location()
+      );
     }
   }
 
-  private addError(error: Omit<CompileError, "type"> & { type?: "error" }): void {
+  private addError(
+    error: Omit<CompileError, "type"> & { type?: "error" }
+  ): void {
     this.state.errors.push({ type: "error", ...error } as CompileError);
     if (this.config.strictMode) {
       throw new CompilerError(error.code, error.message, error.start);
@@ -518,9 +546,14 @@ export class Compiler {
         }
       } else if (ch === "}") {
         break;
-      } else if (ch === "&" || ch === "." || ch === "[" || ch === "*" ||
-          (ch === "#" && this.peek(1) !== "{") ||
-          (ch === ":" && this.looksLikeSelector())) {
+      } else if (
+        ch === "&" ||
+        ch === "." ||
+        ch === "[" ||
+        ch === "*" ||
+        (ch === "#" && this.peek(1) !== "{") ||
+        (ch === ":" && this.looksLikeSelector())
+      ) {
         // Handle nested selectors like &:hover {}
         this.parseRuleset();
       } else {
@@ -604,7 +637,9 @@ export class Compiler {
     const rest = this.readUntil("{", false).trim();
     const loopBody = this.readBlock();
 
-    const fromMatch = rest.match(/from\s+(.+?)\s+(through|to)\s+(.+?)(?:\s+by\s+(.+))?$/i);
+    const fromMatch = rest.match(
+      /from\s+(.+?)\s+(through|to)\s+(.+?)(?:\s+by\s+(.+))?$/i
+    );
     if (!fromMatch) {
       this.addError({
         code: ErrorCode.SYNTAX_ERROR,
@@ -616,10 +651,16 @@ export class Compiler {
 
     const startVal = this.evaluateExpression(fromMatch[1]);
     const endVal = this.evaluateExpression(fromMatch[3]);
-    const stepVal = fromMatch[4] ? this.evaluateExpression(fromMatch[4]) : { type: "number" as const, value: 1, unit: "" };
+    const stepVal = fromMatch[4]
+      ? this.evaluateExpression(fromMatch[4])
+      : { type: "number" as const, value: 1, unit: "" };
     const inclusive = fromMatch[2].toLowerCase() === "through";
 
-    if (startVal.type !== "number" || endVal.type !== "number" || stepVal.type !== "number") {
+    if (
+      startVal.type !== "number" ||
+      endVal.type !== "number" ||
+      stepVal.type !== "number"
+    ) {
       this.addError({
         code: ErrorCode.TYPE_ERROR,
         message: "@for requires numeric values",
@@ -637,7 +678,15 @@ export class Compiler {
     const savedScope = this.state.scope;
 
     let i = start;
-    while (direction > 0 ? (inclusive ? i <= end : i < end) : (inclusive ? i >= end : i > end)) {
+    while (
+      direction > 0
+        ? inclusive
+          ? i <= end
+          : i < end
+        : inclusive
+          ? i >= end
+          : i > end
+    ) {
       this.state.iterations++;
       this.checkLimits();
 
@@ -699,7 +748,11 @@ export class Compiler {
         this.checkLimits();
 
         if (vars.length >= 1) {
-          setVariable(localScope, vars[0], { type: "string", value: key, quoted: false });
+          setVariable(localScope, vars[0], {
+            type: "string",
+            value: key,
+            quoted: false,
+          });
         }
         if (vars.length >= 2) {
           setVariable(localScope, vars[1], val);
@@ -739,7 +792,10 @@ export class Compiler {
       const interpolatedKeyword = this.interpolate(keyword);
       const interpolatedPrelude = this.interpolate(prelude.trim());
 
-      this.state.atRuleStack.push(`${interpolatedKeyword} ${interpolatedPrelude}`);
+      this.state.atRuleStack.push(
+        `${interpolatedKeyword} ${interpolatedPrelude}`
+      );
+      const openBraceLocation = this.location();
       this.advance();
 
       const savedOutput = this.state.output;
@@ -747,9 +803,20 @@ export class Compiler {
 
       this.parseStylesheet();
 
-      if (this.peek() === "}") this.advance();
+      if (this.peek() === "}") {
+        this.advance();
+      } else {
+        this.addError({
+          code: ErrorCode.UNCLOSED_BLOCK,
+          message: `Unclosed block: missing closing brace for "${interpolatedKeyword} ${interpolatedPrelude}"`,
+          start: openBraceLocation,
+          end: this.location(),
+        });
+      }
 
-      const innerContent = this.state.output.join(this.config.minify ? "" : "\n");
+      const innerContent = this.state.output.join(
+        this.config.minify ? "" : "\n"
+      );
       this.state.output = savedOutput;
 
       if (innerContent.trim()) {
@@ -761,7 +828,9 @@ export class Compiler {
       this.state.atRuleStack.pop();
     } else {
       if (this.peek() === ";") this.advance();
-      this.state.output.push(`${this.interpolate(keyword)} ${this.interpolate(prelude.trim())};`);
+      this.state.output.push(
+        `${this.interpolate(keyword)} ${this.interpolate(prelude.trim())};`
+      );
     }
   }
 
@@ -777,6 +846,7 @@ export class Compiler {
       return;
     }
 
+    const openBraceLocation = this.location();
     this.advance();
     this.state.rules++;
     this.checkLimits();
@@ -791,11 +861,13 @@ export class Compiler {
 
     const savedInRulesetContext = this.inRulesetContext;
     this.inRulesetContext = true;
+    let foundClosingBrace = false;
 
     while (this.pos < this.input.length) {
       this.skipWhitespace();
       if (this.peek() === "}") {
         this.advance();
+        foundClosingBrace = true;
         break;
       }
 
@@ -859,7 +931,11 @@ export class Compiler {
             }
           }
           this.state.output = savedOutput;
-        } else if (atKeyword === "@media" || atKeyword === "@supports" || atKeyword === "@container") {
+        } else if (
+          atKeyword === "@media" ||
+          atKeyword === "@supports" ||
+          atKeyword === "@container"
+        ) {
           const savedOutput = this.state.output;
           this.state.output = [];
           this.parseAtRule();
@@ -876,9 +952,15 @@ export class Compiler {
         continue;
       }
 
-      if (ch === "&" || ch === "." || ch === "[" || ch === ":" || ch === "*" ||
-          (ch === "#" && this.peek(1) !== "{") ||  // ID selector, not interpolation
-          (this.isIdentStart(ch) && this.looksLikeSelector())) {
+      if (
+        ch === "&" ||
+        ch === "." ||
+        ch === "[" ||
+        ch === ":" ||
+        ch === "*" ||
+        (ch === "#" && this.peek(1) !== "{") || // ID selector, not interpolation
+        (this.isIdentStart(ch) && this.looksLikeSelector())
+      ) {
         const savedOutput = this.state.output;
         this.state.output = [];
         this.parseRuleset();
@@ -891,6 +973,16 @@ export class Compiler {
       if (decl) {
         declarations.push(decl);
       }
+    }
+
+    // Check for unclosed brace
+    if (!foundClosingBrace) {
+      this.addError({
+        code: ErrorCode.UNCLOSED_BLOCK,
+        message: `Unclosed block: missing closing brace for "${selectorStr.trim()}"`,
+        start: openBraceLocation,
+        end: this.location(),
+      });
     }
 
     this.inRulesetContext = savedInRulesetContext;
@@ -912,7 +1004,10 @@ export class Compiler {
   private peekAtKeyword(): string {
     let i = this.pos;
     let keyword = "";
-    while (i < this.input.length && (this.input[i] === "@" || this.isIdentChar(this.input[i]))) {
+    while (
+      i < this.input.length &&
+      (this.input[i] === "@" || this.isIdentChar(this.input[i]))
+    ) {
       keyword += this.input[i];
       i++;
     }
@@ -943,9 +1038,11 @@ export class Compiler {
       if (ch === ":") {
         const next = this.input[i + 1];
         if (next === ":" || next === " " || /[a-z]/i.test(next)) {
-          if (/^:(hover|focus|active|visited|first-child|last-child|nth-child|before|after|not|where|is|has)/i.test(
-            this.input.slice(i)
-          )) {
+          if (
+            /^:(hover|focus|active|visited|first-child|last-child|nth-child|before|after|not|where|is|has)/i.test(
+              this.input.slice(i)
+            )
+          ) {
             return true;
           }
         }
@@ -985,7 +1082,10 @@ export class Compiler {
       return selectors;
     }
 
-    const parentSelectors = this.state.selectorStack[this.state.selectorStack.length - 1].split(/\s*,\s*/);
+    const parentSelectors =
+      this.state.selectorStack[this.state.selectorStack.length - 1].split(
+        /\s*,\s*/
+      );
     const resolved: string[] = [];
 
     for (const parent of parentSelectors) {
@@ -1092,10 +1192,12 @@ export class Compiler {
   private evaluateFunctionCalls(str: string): string {
     // Match function calls like darken(...), lighten(...), etc.
     // but not CSS functions like url(), var(), calc()
-    const cssOnlyFunctions = /^(url|var|calc|min|max|clamp|attr|env|linear-gradient|radial-gradient|conic-gradient|repeating-linear-gradient|repeating-radial-gradient|color|hwb|lab|lch|oklab|oklch|rgb|rgba|hsl|hsla)$/i;
+    const cssOnlyFunctions =
+      /^(url|var|calc|min|max|clamp|attr|env|linear-gradient|radial-gradient|conic-gradient|repeating-linear-gradient|repeating-radial-gradient|color|hwb|lab|lch|oklab|oklch|rgb|rgba|hsl|hsla)$/i;
 
     // Built-in SCSS-like functions that should be evaluated
-    const scssBuiltins = /^(darken|lighten|saturate|desaturate|adjust-hue|rgba|mix|complement|invert|grayscale|red|green|blue|alpha|opacity|hue|saturation|lightness|round|ceil|floor|abs|min|max|percentage|length|nth|index|map-get|map-has-key|type-of|unit|unitless|quote|unquote|str-length|str-slice|str-index|to-upper-case|to-lower-case|if)$/i;
+    const scssBuiltins =
+      /^(darken|lighten|saturate|desaturate|adjust-hue|rgba|mix|complement|invert|grayscale|red|green|blue|alpha|opacity|hue|saturation|lightness|round|ceil|floor|abs|min|max|percentage|length|nth|index|map-get|map-has-key|type-of|unit|unitless|quote|unquote|str-length|str-slice|str-index|to-upper-case|to-lower-case|if)$/i;
 
     let result = str;
     let changed = true;
@@ -1107,7 +1209,8 @@ export class Compiler {
       iterations++;
 
       // Match function calls: functionName(...)
-      const funcRegex = /([a-zA-Z_][\w-]*)\s*\(([^()]*(?:\([^()]*\)[^()]*)*)\)/g;
+      const funcRegex =
+        /([a-zA-Z_][\w-]*)\s*\(([^()]*(?:\([^()]*\)[^()]*)*)\)/g;
 
       result = result.replace(funcRegex, (match, funcName, args, offset) => {
         // Skip CSS-only functions
@@ -1197,7 +1300,11 @@ export class Compiler {
     return str.replace(/\(([^()]+)\)/g, (match, inner, offset) => {
       // Check what precedes this parenthesis to skip CSS functions
       const beforeParen = str.slice(0, offset);
-      if (/(?:calc|var|min|max|clamp|url|rgb|rgba|hsl|hsla|hwb|lab|lch|oklab|oklch|color|linear-gradient|radial-gradient|conic-gradient|attr)\s*$/i.test(beforeParen)) {
+      if (
+        /(?:calc|var|min|max|clamp|url|rgb|rgba|hsl|hsla|hwb|lab|lch|oklab|oklch|color|linear-gradient|radial-gradient|conic-gradient|attr|translateX|translateY|translateZ|translate|translate3d|rotateX|rotateY|rotateZ|rotate|rotate3d|scaleX|scaleY|scaleZ|scale|scale3d|skewX|skewY|skew|perspective|matrix|matrix3d|cubic-bezier|steps|drop-shadow|blur|brightness|contrast|grayscale|hue-rotate|invert|opacity|saturate|sepia|path|polygon|circle|ellipse|inset|rect|image-set|element|paint|cross-fade|image|symbols|counter|counters|format|local|annotation|stylistic|ornaments|styleset|character-variant|swash|leader|target-counter|target-counters|target-text)\s*$/i.test(
+          beforeParen
+        )
+      ) {
         return match;
       }
       if (this.looksLikeMath(inner)) {
@@ -1223,7 +1330,10 @@ export class Compiler {
     // Note: Don't call substituteVariables here - the evaluator handles variable lookup
     // directly, which preserves list/map types instead of converting to strings
 
-    const customFunctions = new Map<string, (...args: Value[]) => Value | string>();
+    const customFunctions = new Map<
+      string,
+      (...args: Value[]) => Value | string
+    >();
 
     this.state.functions.forEach((fn, name) => {
       customFunctions.set(name, (...args: Value[]) => {
@@ -1231,7 +1341,11 @@ export class Compiler {
       });
     });
 
-    return this.evaluator.evaluate(interpolated, this.state.scope, customFunctions);
+    return this.evaluator.evaluate(
+      interpolated,
+      this.state.scope,
+      customFunctions
+    );
   }
 
   private executeFunction(fn: FunctionDefinition, args: Value[]): Value {
@@ -1239,7 +1353,11 @@ export class Compiler {
 
     for (let i = 0; i < fn.params.length; i++) {
       const param = fn.params[i];
-      const value = args[i] || (param.defaultValue ? this.evaluateExpression(param.defaultValue) : { type: "null" as const });
+      const value =
+        args[i] ||
+        (param.defaultValue
+          ? this.evaluateExpression(param.defaultValue)
+          : { type: "null" as const });
       setVariable(localScope, param.name, value);
     }
 
@@ -1381,15 +1499,24 @@ export class Compiler {
     const rest = this.readUntil("{", false).trim();
     const loopBody = this.readBlock();
 
-    const fromMatch = rest.match(/from\s+(.+?)\s+(through|to)\s+(.+?)(?:\s+by\s+(.+))?$/i);
+    const fromMatch = rest.match(
+      /from\s+(.+?)\s+(through|to)\s+(.+?)(?:\s+by\s+(.+))?$/i
+    );
     if (!fromMatch) return null;
 
     const startVal = this.evaluateExpression(fromMatch[1]);
     const endVal = this.evaluateExpression(fromMatch[3]);
-    const stepVal = fromMatch[4] ? this.evaluateExpression(fromMatch[4]) : { type: "number" as const, value: 1, unit: "" };
+    const stepVal = fromMatch[4]
+      ? this.evaluateExpression(fromMatch[4])
+      : { type: "number" as const, value: 1, unit: "" };
     const inclusive = fromMatch[2].toLowerCase() === "through";
 
-    if (startVal.type !== "number" || endVal.type !== "number" || stepVal.type !== "number") return null;
+    if (
+      startVal.type !== "number" ||
+      endVal.type !== "number" ||
+      stepVal.type !== "number"
+    )
+      return null;
 
     const start = startVal.value;
     const end = endVal.value;
@@ -1400,7 +1527,15 @@ export class Compiler {
     const savedScope = this.state.scope;
 
     let i = start;
-    while (direction > 0 ? (inclusive ? i <= end : i < end) : (inclusive ? i >= end : i > end)) {
+    while (
+      direction > 0
+        ? inclusive
+          ? i <= end
+          : i < end
+        : inclusive
+          ? i >= end
+          : i > end
+    ) {
       this.state.iterations++;
       this.checkLimits();
 
@@ -1461,7 +1596,11 @@ export class Compiler {
         this.checkLimits();
 
         if (vars.length >= 1) {
-          setVariable(localScope, vars[0], { type: "string", value: key, quoted: false });
+          setVariable(localScope, vars[0], {
+            type: "string",
+            value: key,
+            quoted: false,
+          });
         }
         if (vars.length >= 2) {
           setVariable(localScope, vars[1], val);
@@ -1524,6 +1663,7 @@ export class Compiler {
 
   private readBlock(): string {
     if (this.peek() !== "{") return "";
+    const openBraceLocation = this.location();
     this.advance();
 
     let depth = 1;
@@ -1557,6 +1697,16 @@ export class Compiler {
       }
 
       content += this.advance();
+    }
+
+    // Check for unclosed block
+    if (depth > 0) {
+      this.addError({
+        code: ErrorCode.UNCLOSED_BLOCK,
+        message: "Unclosed block: missing closing brace",
+        start: openBraceLocation,
+        end: this.location(),
+      });
     }
 
     return content;
@@ -1657,7 +1807,12 @@ export class Compiler {
   }
 
   private isIdentStart(ch: string): boolean {
-    return (ch >= "a" && ch <= "z") || (ch >= "A" && ch <= "Z") || ch === "_" || ch === "-";
+    return (
+      (ch >= "a" && ch <= "z") ||
+      (ch >= "A" && ch <= "Z") ||
+      ch === "_" ||
+      ch === "-"
+    );
   }
 
   private isIdentChar(ch: string): boolean {
@@ -1684,7 +1839,10 @@ class CompilerError extends Error {
   }
 }
 
-export function compile(input: string, config?: Partial<CompilerConfig>): string {
+export function compile(
+  input: string,
+  config?: Partial<CompilerConfig>
+): string {
   const compiler = new Compiler(config);
   const result = compiler.compile(input);
 
@@ -1695,7 +1853,10 @@ export function compile(input: string, config?: Partial<CompilerConfig>): string
   return result.css;
 }
 
-export function compileWithDetails(input: string, config?: Partial<CompilerConfig>): CompileResult {
+export function compileWithDetails(
+  input: string,
+  config?: Partial<CompilerConfig>
+): CompileResult {
   const compiler = new Compiler(config);
   return compiler.compile(input);
 }

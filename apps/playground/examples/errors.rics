@@ -1,0 +1,20 @@
+// Errors Example
+// These will fail to compile
+
+// Unclosed brace - missing }
+.unclosed {
+  color: red;
+  background: blue;
+
+
+// Uncomment below to see other errors:
+
+// Undefined mixin
+// .box {
+//   @include non-existent-mixin();
+// }
+
+// Invalid @for syntax
+// @for $i from 1 to {
+//   .item-#{$i} { width: 10px * $i; }
+// }

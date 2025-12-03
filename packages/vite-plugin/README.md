@@ -1,8 +1,12 @@
-# vite-plugin-rics
+<p align="center">
+  <img src="https://raw.githubusercontent.com/better-lyrics/rics/master/images/logo.svg" alt="rics" width="96" height="96">
+</p>
 
-[![npm version](https://badgen.net/npm/v/vite-plugin-rics)](https://www.npmjs.com/package/vite-plugin-rics)
-[![minzipped size](https://badgen.net/bundlephobia/minzip/vite-plugin-rics)](https://bundlephobia.com/package/vite-plugin-rics)
-[![downloads](https://badgen.net/npm/dm/vite-plugin-rics)](https://www.npmjs.com/package/vite-plugin-rics)
+<p align="center">
+  <a href="https://www.npmjs.com/package/vite-plugin-rics"><img src="https://badgen.net/npm/v/vite-plugin-rics" alt="npm version"></a>
+  <a href="https://bundlephobia.com/package/vite-plugin-rics"><img src="https://badgen.net/bundlephobia/minzip/vite-plugin-rics" alt="minzipped size"></a>
+  <a href="https://www.npmjs.com/package/vite-plugin-rics"><img src="https://badgen.net/npm/dm/vite-plugin-rics" alt="downloads"></a>
+</p>
 
 Vite plugin for the rics CSS preprocessor. Enables importing `.rics` files directly in your Vite projects.
 

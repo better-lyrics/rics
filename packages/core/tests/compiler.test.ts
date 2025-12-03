@@ -378,6 +378,24 @@ describe("compiler", () => {
       const result = compileWithDetails(input);
       expect(result.errors.length).toBeGreaterThan(0);
     });
+
+    it("should error on unclosed ruleset brace", () => {
+      const result = compileWithDetails(".test { color: red;");
+      expect(result.errors.length).toBeGreaterThan(0);
+      expect(result.errors[0].code).toBe("UNCLOSED_BLOCK");
+    });
+
+    it("should error on unclosed @media brace", () => {
+      const result = compileWithDetails("@media screen { .test { color: red; }");
+      expect(result.errors.length).toBeGreaterThan(0);
+      expect(result.errors[0].code).toBe("UNCLOSED_BLOCK");
+    });
+
+    it("should error on unclosed @if block", () => {
+      const result = compileWithDetails("@if true { .test { color: red; }");
+      expect(result.errors.length).toBeGreaterThan(0);
+      expect(result.errors[0].code).toBe("UNCLOSED_BLOCK");
+    });
   });
 
   describe("minification", () => {

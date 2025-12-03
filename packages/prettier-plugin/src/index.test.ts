@@ -28,7 +28,7 @@ describe("prettier-plugin-rics", () => {
   describe("parser", () => {
     it("should parse source to AST node", () => {
       const source = ".test { color: red; }";
-      const ast = parsers.rics.parse(source);
+      const ast = parsers.rics.parse(source, {} as any) as any;
 
       expect(ast.type).toBe("root");
       expect(ast.source).toBe(source);
@@ -36,7 +36,7 @@ describe("prettier-plugin-rics", () => {
 
     it("should return correct loc positions", () => {
       const source = ".test { color: red; }";
-      const ast = parsers.rics.parse(source);
+      const ast = parsers.rics.parse(source, {} as any) as any;
 
       expect(parsers.rics.locStart(ast)).toBe(0);
       expect(parsers.rics.locEnd(ast)).toBe(source.length);
@@ -46,7 +46,7 @@ describe("prettier-plugin-rics", () => {
   describe("formatting", () => {
     it("should format basic rule", () => {
       const input = ".test{color:red;}";
-      const ast = parsers.rics.parse(input);
+      const ast = parsers.rics.parse(input, {} as any) as any;
       const path = { getValue: () => ast } as any;
 
       const output = printers["rics-ast"].print(path, {} as any, () => "");
@@ -61,7 +61,7 @@ color: red;
 color: blue;
 }
 }`;
-      const ast = parsers.rics.parse(input);
+      const ast = parsers.rics.parse(input, {} as any) as any;
       const path = { getValue: () => ast } as any;
 
       const output = printers["rics-ast"].print(path, {} as any, () => "") as string;
@@ -74,7 +74,7 @@ color: blue;
 color:red;
 padding:   10px;
 }`;
-      const ast = parsers.rics.parse(input);
+      const ast = parsers.rics.parse(input, {} as any) as any;
       const path = { getValue: () => ast } as any;
 
       const output = printers["rics-ast"].print(path, {} as any, () => "") as string;
@@ -84,7 +84,7 @@ padding:   10px;
 
     it("should end with newline", () => {
       const input = ".test { color: red; }";
-      const ast = parsers.rics.parse(input);
+      const ast = parsers.rics.parse(input, {} as any) as any;
       const path = { getValue: () => ast } as any;
 
       const output = printers["rics-ast"].print(path, {} as any, () => "") as string;

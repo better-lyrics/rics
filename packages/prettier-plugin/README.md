@@ -1,8 +1,12 @@
-# prettier-plugin-rics
+<p align="center">
+  <img src="https://raw.githubusercontent.com/better-lyrics/rics/master/images/logo.svg" alt="rics" width="96" height="96">
+</p>
 
-[![npm version](https://badgen.net/npm/v/prettier-plugin-rics)](https://www.npmjs.com/package/prettier-plugin-rics)
-[![minzipped size](https://badgen.net/bundlephobia/minzip/prettier-plugin-rics)](https://bundlephobia.com/package/prettier-plugin-rics)
-[![downloads](https://badgen.net/npm/dm/prettier-plugin-rics)](https://www.npmjs.com/package/prettier-plugin-rics)
+<p align="center">
+  <a href="https://www.npmjs.com/package/prettier-plugin-rics"><img src="https://badgen.net/npm/v/prettier-plugin-rics" alt="npm version"></a>
+  <a href="https://bundlephobia.com/package/prettier-plugin-rics"><img src="https://badgen.net/bundlephobia/minzip/prettier-plugin-rics" alt="minzipped size"></a>
+  <a href="https://www.npmjs.com/package/prettier-plugin-rics"><img src="https://badgen.net/npm/dm/prettier-plugin-rics" alt="downloads"></a>
+</p>
 
 Prettier plugin for formatting rics files.
 

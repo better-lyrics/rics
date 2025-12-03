@@ -4,12 +4,8 @@ import { EditorView } from "@codemirror/view";
 import type { CompilerConfig, CompileResult } from "rics";
 import { compileWithDetails } from "rics";
 
-export interface LinterConfig extends Partial<CompilerConfig> {
-  delay?: number;
-}
-
 export { ricsLanguage, ricsHighlighting } from "./language";
-export { ricsLinter, toDiagnostics } from "./linter";
+export { ricsLinter, toDiagnostics, type LinterConfig } from "./linter";
 
 export function onChangeCompile(
   callback: (css: string, result: CompileResult) => void,

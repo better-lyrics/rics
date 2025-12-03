@@ -129,6 +129,15 @@ function compileAndUpdate(source: string) {
       if (result.errors[0].start) {
         statusEl.textContent += ` (line ${result.errors[0].start.line})`;
       }
+    } else if (result.warnings.length > 0) {
+      statusEl.className = "status-warning";
+      statusEl.textContent = `Warning: ${result.warnings[0].message}`;
+      if (result.warnings[0].start) {
+        statusEl.textContent += ` (line ${result.warnings[0].start.line})`;
+      }
+      if (result.warnings.length > 1) {
+        statusEl.textContent += ` (+${result.warnings.length - 1} more)`;
+      }
     } else {
       statusEl.className = "status-success";
       statusEl.textContent = `Compiled successfully`;

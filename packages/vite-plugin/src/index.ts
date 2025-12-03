@@ -45,7 +45,7 @@ export function ricsPlugin(options: RicsPluginOptions = {}): Plugin {
 
   return {
     name: "vite-plugin-rics",
-    enforce: "pre",
+    enforce: "pre" as const,
 
     configResolved(resolvedConfig) {
       config = resolvedConfig;
@@ -128,5 +128,3 @@ export default css;
     },
   };
 }
-
-export default ricsPlugin;

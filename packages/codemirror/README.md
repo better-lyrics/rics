@@ -1,8 +1,12 @@
-# codemirror-lang-rics
+<p align="center">
+  <img src="https://raw.githubusercontent.com/better-lyrics/rics/master/images/logo.svg" alt="rics" width="96" height="96">
+</p>
 
-[![npm version](https://badgen.net/npm/v/codemirror-lang-rics)](https://www.npmjs.com/package/codemirror-lang-rics)
-[![minzipped size](https://badgen.net/bundlephobia/minzip/codemirror-lang-rics)](https://bundlephobia.com/package/codemirror-lang-rics)
-[![downloads](https://badgen.net/npm/dm/codemirror-lang-rics)](https://www.npmjs.com/package/codemirror-lang-rics)
+<p align="center">
+  <a href="https://www.npmjs.com/package/codemirror-lang-rics"><img src="https://badgen.net/npm/v/codemirror-lang-rics" alt="npm version"></a>
+  <a href="https://bundlephobia.com/package/codemirror-lang-rics"><img src="https://badgen.net/bundlephobia/minzip/codemirror-lang-rics" alt="minzipped size"></a>
+  <a href="https://www.npmjs.com/package/codemirror-lang-rics"><img src="https://badgen.net/npm/dm/codemirror-lang-rics" alt="downloads"></a>
+</p>
 
 CodeMirror 6 language support for rics. Provides syntax highlighting and real-time linting.
 

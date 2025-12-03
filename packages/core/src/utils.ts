@@ -6,11 +6,13 @@ export function valueToString(value: Value): string {
       if (Number.isInteger(value.value)) {
         return `${value.value}${value.unit}`;
       }
-      const str = value.value.toString();
+      // Round to 6 decimal places to avoid floating point precision issues
+      const rounded = Math.round(value.value * 1e6) / 1e6;
+      const str = rounded.toString();
       if (str.includes("e") || str.includes("E")) {
-        return `${value.value.toFixed(10).replace(/\.?0+$/, "")}${value.unit}`;
+        return `${rounded.toFixed(10).replace(/\.?0+$/, "")}${value.unit}`;
       }
-      return `${value.value}${value.unit}`;
+      return `${rounded}${value.unit}`;
 
     case "string":
       return value.quoted ? `"${value.value}"` : value.value;

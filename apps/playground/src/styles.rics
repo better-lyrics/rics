@@ -1,3 +1,4 @@
+// rics playground styles - dogfooding our own preprocessor!
 
 // Color palette
 $bg-primary: #09090b;
@@ -15,6 +16,12 @@ $accent-red: #f87171;
 $accent-blue: #60a5fa;
 $accent-yellow: #fbbf24;
 
+// Heights!
+
+$header-height:52px;
+$footer-height: 36px;
+$total-chrome: $header-height + $footer-height;
+
 // Font stacks
 $font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 $font-mono: "DM Mono", "SF Mono", Monaco, "Cascadia Code", Consolas, monospace;
@@ -29,18 +36,6 @@ $font-mono: "DM Mono", "SF Mono", Monaco, "Cascadia Code", Consolas, monospace;
   color: $text-primary;
   cursor: pointer;
   transition: all 0.15s ease;
-
-  &:hover {
-    background: $bg-elevated;
-  }
-
-  &:focus {
-    outline: none;
-  }
-
-  &:focus-visible {
-    border-color: #3f3f46;
-  }
 }
 
 @mixin status-indicator {
@@ -84,16 +79,20 @@ body {
   padding: 12px 20px;
   background: $bg-secondary;
   border-bottom: 1px solid $border-color;
-  height: 52px;
+  height: $header-height;
 
   h1 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-size: 15px;
     font-weight: 600;
     color: $text-primary;
     letter-spacing: -0.01em;
 
-    span {
-      color: $accent-primary;
+    .logo {
+      height: 24px;
+      width: auto;
     }
   }
 
@@ -101,6 +100,18 @@ body {
     @include button-base;
     font-size: 13px;
     padding: 6px 12px;
+
+    &:hover {
+      background: $bg-elevated;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:focus-visible {
+      border-color: #3f3f46;
+    }
   }
 
   button:active {
@@ -154,6 +165,10 @@ body {
   transition: all 0.15s ease;
   z-index: 100;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  display: grid;
+  grid-template-columns: repeat(4, 130px);
+  grid-template-rows: auto auto auto;
+  gap: 12px 16px;
 
   button {
     display: block;
@@ -176,14 +191,33 @@ body {
     &.active {
       background: rgba(244, 63, 94, 0.15);
       color: $accent-primary;
+
+      &:hover {
+        background: rgba(244, 63, 94, 0.2);
+      }
     }
   }
+}
+
+.dropdown-group {
+  padding: 0;
+}
+
+.dropdown-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $text-muted;
+  padding: 0 8px 6px;
+  border-bottom: 1px solid $border-color;
+  margin-bottom: 6px;
 }
 
 // Main layout
 .main {
   display: flex;
-  height: calc(100vh - 52px - 36px);
+  height: calc(100vh - #{$total-chrome});
 }
 
 .pane {
@@ -191,6 +225,116 @@ body {
   flex-direction: column;
   overflow: hidden;
   height: 100%;
+}
+
+.gutter {
+  background: $bg-secondary;
+  border-left: 1px solid $border-color;
+  border-right: 1px solid $border-color;
+  cursor: col-resize;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: $bg-elevated;
+  }
+
+  &:active {
+    background: $accent-primary;
+  }
+}
+
+.pane-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: $text-muted;
+  background: $bg-secondary;
+  border-bottom: 1px solid $border-subtle;
+
+  button {
+    @include button-base;
+    font-size: 11px;
+    text-transform: none;
+    letter-spacing: 0;
+    padding: 4px 10px;
+    border-radius: 4px;
+    color: $text-secondary;
+
+    &:hover {
+      background: $bg-elevated;
+      color: $text-primary;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:focus-visible {
+      border-color: #3f3f46;
+    }
+  }
+}
+
+.pane-header-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.editor-container {
+  flex: 1;
+  overflow: auto;
+}
+
+// CodeMirror Editor
+.cm-editor {
+  height: 100%;
+  font-size: 13px;
+  background: $bg-primary !important;
+
+  .cm-scroller {
+    font-family: $font-mono;
+    line-height: 1.6;
+  }
+
+  .cm-content {
+    padding: 16px;
+  }
+
+  .cm-gutters {
+    background: $bg-secondary !important;
+    border-right: 1px solid $border-subtle !important;
+    color: $text-muted !important;
+  }
+
+  .cm-gutter-lint {
+    width: 0.6em;
+  }
+
+  .cm-activeLineGutter {
+    background: $bg-tertiary !important;
+  }
+
+  .cm-activeLine {
+    background: rgba(244, 63, 94, 0.04) !important;
+  }
+
+  .cm-selectionBackground {
+    background: rgba(244, 63, 94, 0.15) !important;
+  }
+
+  .cm-cursor {
+    border-left-color: $accent-primary !important;
+    border-left-width: 2px !important;
+  }
+
+  .cm-line {
+    padding-left: 4px;
+  }
 }
 
 // Status bar
@@ -202,8 +346,8 @@ body {
   background: $bg-secondary;
   border-top: 1px solid $border-color;
   font-size: 12px;
-  height: 36px;
   font-family: $font-mono;
+	height: $footer-height;
 }
 
 .status-success {
@@ -216,11 +360,77 @@ body {
   @include status-indicator;
 }
 
+.status-warning {
+  color: $accent-yellow;
+  @include status-indicator;
+}
+
 .stats {
   color: $text-muted;
   font-size: 11px;
 
+  .delta {
+    font-size: 10px;
+  }
+
   .delta-positive { color: $accent-green; }
   .delta-negative { color: $accent-red; }
   .delta-neutral { color: $text-muted; }
+}
+
+// Syntax highlighting (CodeMirror theme)
+.cm-editor .ͼ1 {
+  .cm-variableName.cm-special,
+  .cm-special {
+    color: #c4b5fd !important;
+  }
+
+  .cm-keyword {
+    color: #f472b6 !important;
+  }
+
+  .cm-string {
+    color: #86efac !important;
+  }
+
+  .cm-number {
+    color: #fcd34d !important;
+  }
+
+  .cm-comment {
+    color: #52525b !important;
+    font-style: italic;
+  }
+
+  .cm-punctuation {
+    color: $text-muted !important;
+  }
+
+  .cm-operator {
+    color: #67e8f9 !important;
+  }
+
+  .cm-className {
+    color: #93c5fd !important;
+  }
+
+  .cm-tagName {
+    color: #fda4af !important;
+  }
+
+  .cm-propertyName {
+    color: #93c5fd !important;
+  }
+
+  .cm-atom {
+    color: #c4b5fd !important;
+  }
+
+  .cm-function {
+    color: #c4b5fd !important;
+  }
+
+  .cm-color {
+    color: #fcd34d !important;
+  }
 }

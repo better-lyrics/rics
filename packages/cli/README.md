@@ -1,8 +1,12 @@
-# rics-cli
+<p align="center">
+  <img src="https://raw.githubusercontent.com/better-lyrics/rics/master/images/logo.svg" alt="rics" width="96" height="96">
+</p>
 
-[![npm version](https://badgen.net/npm/v/rics-cli)](https://www.npmjs.com/package/rics-cli)
-[![minzipped size](https://badgen.net/bundlephobia/minzip/rics-cli)](https://bundlephobia.com/package/rics-cli)
-[![downloads](https://badgen.net/npm/dm/rics-cli)](https://www.npmjs.com/package/rics-cli)
+<p align="center">
+  <a href="https://www.npmjs.com/package/rics-cli"><img src="https://badgen.net/npm/v/rics-cli" alt="npm version"></a>
+  <a href="https://bundlephobia.com/package/rics-cli"><img src="https://badgen.net/bundlephobia/minzip/rics-cli" alt="minzipped size"></a>
+  <a href="https://www.npmjs.com/package/rics-cli"><img src="https://badgen.net/npm/dm/rics-cli" alt="downloads"></a>
+</p>
 
 Command-line interface for the rics CSS preprocessor.
 
