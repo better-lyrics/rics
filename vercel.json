@@ -4,6 +4,6 @@
   "buildCommand": "npx pnpm@9.15.0 -w run build",
   "outputDirectory": "./dist",
   "rewrites": [
-    { "source": "/((?!assets/).*)", "destination": "/index.html" }
+    { "source": "/:path*", "destination": "/index.html" }
   ]
 }
