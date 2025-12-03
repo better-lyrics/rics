@@ -806,7 +806,20 @@ class Compiler {
       const savedOutput = this.state.output;
       this.state.output = [];
 
-      this.parseStylesheet();
+      // Declaration-block at-rules contain declarations, not rulesets
+      const declarationBlockAtRules = [
+        "@font-face",
+        "@page",
+        "@counter-style",
+        "@font-feature-values",
+        "@property",
+      ];
+
+      if (declarationBlockAtRules.includes(keyword)) {
+        this.parseDeclarationBlock();
+      } else {
+        this.parseStylesheet();
+      }
 
       if (this.peek() === "}") {
         this.advance();
@@ -836,6 +849,29 @@ class Compiler {
       this.state.output.push(
         `${this.interpolate(keyword)} ${this.interpolate(prelude.trim())};`
       );
+    }
+  }
+
+  private parseDeclarationBlock(): void {
+    while (this.pos < this.input.length) {
+      this.skipWhitespace();
+      if (this.peek() === "}") break;
+
+      const ch = this.peek();
+
+      if (ch === "/" && this.peek(1) === "*") {
+        const comment = this.readMultiLineComment();
+        if (comment) {
+          this.state.output.push(comment);
+        }
+        continue;
+      }
+
+      // Read declaration
+      const decl = this.parseDeclaration();
+      if (decl) {
+        this.state.output.push("  " + decl + ";");
+      }
     }
   }
 
@@ -877,6 +913,12 @@ class Compiler {
       }
 
       const ch = this.peek();
+
+      // Handle comments inside rule blocks
+      if (ch === "/" && this.peek(1) === "*") {
+        this.readMultiLineComment();
+        continue;
+      }
 
       if (ch === "@") {
         const atKeyword = this.peekAtKeyword();
