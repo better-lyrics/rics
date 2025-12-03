@@ -58,6 +58,7 @@ jobs:
         run: |
           git add .
           git commit -m "chore: version packages" || echo "No changes to commit"
+          git pull --rebase
           git push
 
       - name: Publish to npm
