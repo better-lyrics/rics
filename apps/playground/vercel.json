@@ -1,4 +1,8 @@
 {
+  "framework": null,
+  "installCommand": "npx pnpm@9.15.0 install",
+  "buildCommand": "npx pnpm@9.15.0 -w run build",
+  "outputDirectory": "./dist",
   "rewrites": [
     { "source": "/:path*", "destination": "/index.html" }
   ]
