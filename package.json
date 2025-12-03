@@ -16,6 +16,7 @@
     "version": "changeset version",
     "release": "pnpm build && pnpm test && changeset publish",
     "size": "bundlesize",
+    "bench": "pnpm --filter rics build && node benchmarks/update-readme.js",
     "publish:all": "pnpm -r publish --access public",
     "knip": "knip"
   },

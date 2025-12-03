@@ -62,23 +62,23 @@ async function runBenchmarks() {
 }
 
 async function getPackageSizes() {
-  console.log("Fetching package sizes...");
+  console.log("Fetching package sizes from bundlephobia...");
 
   const packages = ["rics", "sass", "less", "stylus"];
   const results = [];
 
   for (const pkg of packages) {
     try {
-      const info = JSON.parse(
-        execSync(`npm view ${pkg} --json 2>/dev/null`, { encoding: "utf-8" })
-      );
+      const response = await fetch(`https://bundlephobia.com/api/size?package=${pkg}`);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
       results.push({
         name: pkg,
-        size: info.dist?.unpackedSize || 0,
-        deps: info.dependencies ? Object.keys(info.dependencies).length : 0,
+        size: data.gzip || 0,
+        deps: data.dependencyCount || 0,
       });
     } catch (e) {
-      console.log(`  Warning: Could not fetch ${pkg}`);
+      console.log(`  Warning: Could not fetch ${pkg} from bundlephobia`);
     }
   }
 
@@ -113,7 +113,7 @@ function generateBenchmarkMarkdown(perfResults, sizeResults) {
   }
 
   md += `
-### Package Size (unpacked, smaller is better)
+### Package Size (minzipped, smaller is better)
 
 | Package | Size | Dependencies | Comparison |
 |---------|------|--------------|------------|

@@ -17,7 +17,7 @@
 - [Table of Contents](#table-of-contents)
 - [Benchmarks](#benchmarks)
 	- [Performance (ops/sec, higher is better)](#performance-opssec-higher-is-better)
-	- [Package Size (unpacked, smaller is better)](#package-size-unpacked-smaller-is-better)
+	- [Package Size (minzipped, smaller is better)](#package-size-minzipped-smaller-is-better)
 - [Why rics?](#why-rics)
 - [Packages](#packages)
 - [Installation](#installation)
@@ -60,19 +60,19 @@
 
 | Preprocessor | ops/sec | Comparison |
 |--------------|---------|------------|
-| rics | 2,567 | **fastest** |
-| stylus | 1,122 | 2.3x slower |
-| sass | 973 | 2.6x slower |
-| less | 694 | 3.7x slower |
+| rics | 2,459 | **fastest** |
+| sass | 1,309 | 1.9x slower |
+| stylus | 1,211 | 2.0x slower |
+| less | 769 | 3.2x slower |
 
-### Package Size (unpacked, smaller is better)
+### Package Size (minzipped, smaller is better)
 
 | Package | Size | Dependencies | Comparison |
 |---------|------|--------------|------------|
-| rics | 92.1 KB | 0 | **smallest** |
-| stylus | 357.2 KB | 5 | 4x larger |
-| less | 2.8 MB | 3 | 32x larger |
-| sass | 5.5 MB | 3 | 61x larger |
+| rics | 10.5 KB | 0 | **smallest** |
+| less | 47.2 KB | 3 | 4x larger |
+| stylus | 82.8 KB | 5 | 8x larger |
+| sass | 669.8 KB | 3 | 63x larger |
 
 ## Why rics?
 
