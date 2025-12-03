@@ -566,6 +566,9 @@ class Compiler {
         const decl = this.parseDeclaration();
         if (decl) {
           this.state.output.push(decl);
+        } else {
+          // parseDeclaration returned null and reset pos - skip this character to avoid infinite loop
+          this.advance();
         }
       }
     }
@@ -871,6 +874,9 @@ class Compiler {
       const decl = this.parseDeclaration();
       if (decl) {
         this.state.output.push("  " + decl + ";");
+      } else {
+        // parseDeclaration returned null and reset pos - skip this character to avoid infinite loop
+        this.advance();
       }
     }
   }
