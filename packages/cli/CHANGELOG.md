@@ -1,5 +1,11 @@
 # rics-cli
 
+## 0.1.5
+
+### Patch Changes
+
+- 54c40b2: Fix CLI to not auto-execute when imported as module
+
 ## 0.1.2
 
 ### Patch Changes
