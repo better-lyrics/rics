@@ -1,5 +1,19 @@
 # codemirror-lang-rics
 
+## 0.3.4
+
+### Patch Changes
+
+- bbe9578: Fix CSS compatibility issues:
+  - Pass through CSS-only functions (oklch, oklab, lab, lch, hwb, color) without interpreting `%` as modulo
+  - Fix font shorthand parsing (`font: 16px/1.5`) to not interpret `/` as division
+  - Fix @font-face and other declaration-block at-rules parsing
+  - Fix inline comments in rule blocks being parsed as selectors/declarations
+  - Add position info to compiler warnings for accurate linter highlighting
+  - Fix CodeMirror tokenizer to use plain `variableName` tag (avoids Lezer modifier warning)
+- Updated dependencies [bbe9578]
+  - rics@0.3.4
+
 ## 0.3.3
 
 ### Patch Changes
