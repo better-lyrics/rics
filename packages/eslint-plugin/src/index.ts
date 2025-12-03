@@ -178,5 +178,3 @@ const plugin = {
 };
 
 export default plugin;
-export { configs, parser };
-export const rules = plugin.rules;

@@ -13,6 +13,6 @@ export default defineConfig({
     "@codemirror/state",
     "@codemirror/view",
     "@lezer/highlight",
-    "@rics/core",
+    "rics",
   ],
 });

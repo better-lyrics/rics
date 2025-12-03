@@ -7,5 +7,5 @@ export default defineConfig({
   clean: true,
   treeshake: true,
   minify: true,
-  external: ["vite", "@rics/core"],
+  external: ["vite", "rics"],
 });

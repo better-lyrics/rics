@@ -46,7 +46,11 @@ $colors: (
   fuchsia: oklch(66.7% 0.295 322.15),
   pink: oklch(65.6% 0.241 354.308),
   rose: oklch(64.5% 0.246 16.439),
-  gray: oklch(55.1% 0.027 264.364)
+  slate: oklch(55.4% 0.046 257.417),
+  gray: oklch(55.1% 0.027 264.364),
+  zinc: oklch(55.2% 0.016 285.938),
+  neutral: oklch(55.6% 0 0),
+  stone: oklch(55.3% 0.013 58.071)
 );
 
 // Generate color shades using mix with white/black

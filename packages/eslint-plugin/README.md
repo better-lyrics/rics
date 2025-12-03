@@ -49,39 +49,38 @@ export default [
 
 ## Rules
 
-### rics/no-syntax-errors
+### rics/no-compile-errors
 
-Validates rics syntax and reports compilation errors.
+Reports rics compilation errors.
 
 ```javascript
-// eslint.config.js
 {
   rules: {
-    "rics/no-syntax-errors": "error",
+    "rics/no-compile-errors": "error",
   },
 }
 ```
 
-### rics/no-unused-variables
+### rics/no-compile-warnings
 
-Warns about declared but unused variables.
+Reports rics compilation warnings.
 
 ```javascript
 {
   rules: {
-    "rics/no-unused-variables": "warn",
+    "rics/no-compile-warnings": "warn",
   },
 }
 ```
 
-### rics/no-undefined-variables
+### rics/max-nesting-depth
 
-Reports usage of undefined variables.
+Limits nesting depth in rics files.
 
 ```javascript
 {
   rules: {
-    "rics/no-undefined-variables": "error",
+    "rics/max-nesting-depth": ["warn", { max: 4 }],
   },
 }
 ```
@@ -90,9 +89,8 @@ Reports usage of undefined variables.
 
 The recommended configuration enables:
 
-- `rics/no-syntax-errors`: error
-- `rics/no-undefined-variables`: error
-- `rics/no-unused-variables`: warn
+- `rics/no-compile-errors`: error
+- `rics/no-compile-warnings`: warn
 
 ## License
 
