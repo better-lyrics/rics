@@ -1,5 +1,12 @@
 # rics
 
+## 0.3.6
+
+### Patch Changes
+
+- 5b27879: - Fix CodeMirror tokenizer to use `keyword` instead of `function` for CSS functions - `function` is a Lezer modifier
+  - Fix infinite loop in `@font-face` and `mixin` bodies with incomplete declarations
+
 ## 0.3.4
 
 ### Patch Changes
