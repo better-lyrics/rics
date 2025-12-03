@@ -1,5 +1,12 @@
 # codemirror-lang-rics
 
+## 0.3.7
+
+### Patch Changes
+
+- Updated dependencies [93d2408]
+  - rics@0.3.7
+
 ## 0.3.6
 
 ### Patch Changes
