@@ -6,6 +6,11 @@ import { compileWithDetails } from "rics";
 
 export { ricsLanguage, ricsHighlighting } from "./language";
 export { ricsLinter, toDiagnostics, type LinterConfig } from "./linter";
+export {
+  colorHighlighter,
+  colorHighlighterStyles,
+  type ColorHighlighterConfig,
+} from "./color-highlighter";
 
 export function onChangeCompile(
   callback: (css: string, result: CompileResult) => void,

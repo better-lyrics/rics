@@ -1,30 +1,46 @@
-// rics playground styles - dogfooding our own preprocessor!
+// rics playground styles - dogfooding our own preprocessor
 
-// Color palette
-$bg-primary: #09090b;
-$bg-secondary: #0f0f12;
-$bg-tertiary: #18181b;
-$bg-elevated: #1f1f23;
-$border-color: #27272a;
-$border-subtle: #1c1c1f;
-$text-primary: #fafafa;
-$text-secondary: #a1a1aa;
-$text-muted: #71717a;
-$accent-primary: #f43f5e;
-$accent-green: #4ade80;
-$accent-red: #f87171;
-$accent-blue: #60a5fa;
-$accent-yellow: #fbbf24;
+// Color palette using maps for organization
+$colors: (
+  bg-primary: #09090b,
+  bg-secondary: #0f0f12,
+  bg-tertiary: #18181b,
+  bg-elevated: #1f1f23,
+  border: #27272a,
+  border-subtle: #1c1c1f,
+  text-primary: #fafafa,
+  text-secondary: #a1a1aa,
+  text-muted: #71717a,
+  accent: #f43f5e,
+  green: #4ade80,
+  red: #f87171,
+  blue: #60a5fa,
+  yellow: #fbbf24
+);
 
-// Heights!
+// Extract commonly used colors
+$bg-primary: map-get($colors, bg-primary);
+$bg-secondary: map-get($colors, bg-secondary);
+$bg-tertiary: map-get($colors, bg-tertiary);
+$bg-elevated: map-get($colors, bg-elevated);
+$border-color: map-get($colors, border);
+$border-subtle: map-get($colors, border-subtle);
+$text-primary: map-get($colors, text-primary);
+$text-secondary: map-get($colors, text-secondary);
+$text-muted: map-get($colors, text-muted);
+$accent: map-get($colors, accent);
 
-$header-height:52px;
+// Layout dimensions
+$header-height: 52px;
 $footer-height: 36px;
 $total-chrome: $header-height + $footer-height;
 
 // Font stacks
 $font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 $font-mono: "DM Mono", "SF Mono", Monaco, "Cascadia Code", Consolas, monospace;
+
+// Transition timing
+$transition-fast: 0.15s ease;
 
 // Mixins
 @mixin button-base {
@@ -35,12 +51,16 @@ $font-mono: "DM Mono", "SF Mono", Monaco, "Cascadia Code", Consolas, monospace;
   background: $bg-tertiary;
   color: $text-primary;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all $transition-fast;
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
 }
 
 @mixin status-indicator {
-  display: flex;
-  align-items: center;
+  @include flex-center;
   gap: 6px;
 
   &::before {
@@ -73,8 +93,7 @@ body {
 
 // Header
 .header {
-  display: flex;
-  align-items: center;
+  @include flex-center;
   justify-content: space-between;
   padding: 12px 20px;
   background: $bg-secondary;
@@ -82,8 +101,7 @@ body {
   height: $header-height;
 
   h1 {
-    display: flex;
-    align-items: center;
+    @include flex-center;
     gap: 8px;
     font-size: 15px;
     font-weight: 600;
@@ -142,12 +160,11 @@ body {
 }
 
 .dropdown-trigger {
-  display: flex;
-  align-items: center;
+  @include flex-center;
   gap: 6px;
 
   svg {
-    transition: transform 0.15s ease;
+    transition: transform $transition-fast;
   }
 }
 
@@ -162,7 +179,7 @@ body {
   opacity: 0;
   visibility: hidden;
   transform: translateY(-4px);
-  transition: all 0.15s ease;
+  transition: all $transition-fast;
   z-index: 100;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   display: grid;
@@ -189,11 +206,11 @@ body {
     }
 
     &.active {
-      background: rgba(244, 63, 94, 0.15);
-      color: $accent-primary;
+      background: rgba($accent, 0.15);
+      color: $accent;
 
       &:hover {
-        background: rgba(244, 63, 94, 0.2);
+        background: rgba($accent, 0.2);
       }
     }
   }
@@ -232,20 +249,19 @@ body {
   border-left: 1px solid $border-color;
   border-right: 1px solid $border-color;
   cursor: col-resize;
-  transition: background 0.15s ease;
+  transition: background $transition-fast;
 
   &:hover {
     background: $bg-elevated;
   }
 
   &:active {
-    background: $accent-primary;
+    background: $accent;
   }
 }
 
 .pane-header {
-  display: flex;
-  align-items: center;
+  @include flex-center;
   justify-content: space-between;
   padding: 8px 20px;
   font-size: 11px;
@@ -320,15 +336,15 @@ body {
   }
 
   .cm-activeLine {
-    background: rgba(244, 63, 94, 0.04) !important;
+    background: rgba($accent, 0.04) !important;
   }
 
   .cm-selectionBackground {
-    background: rgba(244, 63, 94, 0.15) !important;
+    background: rgba($accent, 0.15) !important;
   }
 
   .cm-cursor {
-    border-left-color: $accent-primary !important;
+    border-left-color: $accent !important;
     border-left-width: 2px !important;
   }
 
@@ -339,32 +355,31 @@ body {
 
 // Status bar
 .status-bar {
-  display: flex;
-  align-items: center;
+  @include flex-center;
   justify-content: space-between;
   padding: 8px 20px;
   background: $bg-secondary;
   border-top: 1px solid $border-color;
   font-size: 12px;
   font-family: $font-mono;
-	height: $footer-height;
+  height: $footer-height;
 }
 
-.status-success {
-  color: $accent-green;
-  @include status-indicator;
+// Status indicators using @each
+$status-colors: (
+  success: map-get($colors, green),
+  error: map-get($colors, red),
+  warning: map-get($colors, yellow)
+);
+
+@each $name, $color in $status-colors {
+  .status-#{$name} {
+    color: $color;
+    @include status-indicator;
+  }
 }
 
-.status-error {
-  color: $accent-red;
-  @include status-indicator;
-}
-
-.status-warning {
-  color: $accent-yellow;
-  @include status-indicator;
-}
-
+// Stats display
 .stats {
   color: $text-muted;
   font-size: 11px;
@@ -372,33 +387,51 @@ body {
   .delta {
     font-size: 10px;
   }
+}
 
-  .delta-positive { color: $accent-green; }
-  .delta-negative { color: $accent-red; }
-  .delta-neutral { color: $text-muted; }
+// Delta indicators using @each
+$delta-types: (
+  positive: map-get($colors, green),
+  negative: map-get($colors, red),
+  neutral: $text-muted
+);
+
+@each $type, $color in $delta-types {
+  .delta-#{$type} {
+    color: $color;
+  }
 }
 
 // Syntax highlighting (CodeMirror theme)
+$syntax-colors: (
+  special: #c4b5fd,
+  keyword: #f472b6,
+  string: #86efac,
+  number: #fcd34d,
+  comment: #52525b,
+  operator: #67e8f9,
+  className: #93c5fd,
+  tagName: #fda4af,
+  propertyName: #93c5fd,
+  function: #c4b5fd,
+  color: #fcd34d
+);
+
 .cm-editor .ͼ1 {
   .cm-variableName.cm-special,
   .cm-special {
-    color: #c4b5fd !important;
+    color: map-get($syntax-colors, special) !important;
   }
 
-  .cm-keyword {
-    color: #f472b6 !important;
-  }
-
-  .cm-string {
-    color: #86efac !important;
-  }
-
-  .cm-number {
-    color: #fcd34d !important;
+  @each $token, $color in $syntax-colors {
+    @if $token != special {
+      .cm-#{$token} {
+        color: $color !important;
+      }
+    }
   }
 
   .cm-comment {
-    color: #52525b !important;
     font-style: italic;
   }
 
@@ -406,31 +439,7 @@ body {
     color: $text-muted !important;
   }
 
-  .cm-operator {
-    color: #67e8f9 !important;
-  }
-
-  .cm-className {
-    color: #93c5fd !important;
-  }
-
-  .cm-tagName {
-    color: #fda4af !important;
-  }
-
-  .cm-propertyName {
-    color: #93c5fd !important;
-  }
-
   .cm-atom {
-    color: #c4b5fd !important;
-  }
-
-  .cm-function {
-    color: #c4b5fd !important;
-  }
-
-  .cm-color {
-    color: #fcd34d !important;
+    color: map-get($syntax-colors, special) !important;
   }
 }

@@ -28,13 +28,20 @@ npm install @codemirror/language @codemirror/lint @codemirror/state @codemirror/
 
 ```typescript
 import { EditorView, basicSetup } from "codemirror";
-import { ricsLanguage, ricsLinter } from "codemirror-lang-rics";
+import {
+  ricsLanguage,
+  ricsLinter,
+  colorHighlighter,
+  colorHighlighterStyles,
+} from "codemirror-lang-rics";
 
 const editor = new EditorView({
   extensions: [
     basicSetup,
     ricsLanguage(),
     ricsLinter({ delay: 300 }),
+    colorHighlighter(),
+    colorHighlighterStyles,
   ],
   parent: document.getElementById("editor"),
 });
@@ -70,6 +77,32 @@ const extensions = [
 
 Alias for `ricsLanguage()`.
 
+### colorHighlighter(config?)
+
+Returns a CodeMirror extension that highlights color values inline with their actual color as background.
+
+```typescript
+import { colorHighlighter, colorHighlighterStyles } from "codemirror-lang-rics";
+
+const extensions = [
+  colorHighlighter({
+    className: "cm-color-preview",       // CSS class for preview (default)
+    lightClassName: "cm-color-preview-light",  // Class for light colors
+    darkClassName: "cm-color-preview-dark",    // Class for dark colors
+    luminanceThreshold: 0.35,            // Light/dark text threshold (0-1)
+  }),
+  colorHighlighterStyles,  // Include default styles
+];
+```
+
+**Supported formats:** hex, rgb, rgba, hsl, hsla, hwb, lab, lch, oklch, oklab, color()
+
+**Note:** Preprocessor variables (`$var`) and CSS custom properties (`var()`) are automatically skipped.
+
+### colorHighlighterStyles
+
+Default CodeMirror theme for color previews. Include this alongside `colorHighlighter()` or define your own styles targeting `.cm-color-preview`.
+
 ## Features
 
 - Full syntax highlighting for rics/SCSS syntax
@@ -80,6 +113,7 @@ Alias for `ricsLanguage()`.
 - Color values and functions
 - Real-time error detection
 - Inline error markers
+- Inline color previews with automatic contrast adjustment
 
 ## License
 
