@@ -1,5 +1,12 @@
 # webpack-loader-rics
 
+## 0.3.3
+
+### Patch Changes
+
+- Updated dependencies [00b64cb]
+  - rics@0.3.3
+
 ## 0.3.2
 
 ### Patch Changes
