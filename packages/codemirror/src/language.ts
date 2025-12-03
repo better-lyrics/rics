@@ -1,5 +1,9 @@
 import type { Extension } from "@codemirror/state";
-import { LanguageSupport, StreamLanguage, StringStream } from "@codemirror/language";
+import {
+  LanguageSupport,
+  StreamLanguage,
+  StringStream,
+} from "@codemirror/language";
 
 interface LexerState {
   inString: string | null;
@@ -92,7 +96,7 @@ const scssLike = StreamLanguage.define<LexerState>({
 
     // Variables: $name or $name-with-dashes (must come before other identifier matching)
     if (stream.match(/^\$[a-zA-Z_][a-zA-Z0-9_-]*/)) {
-      return "variableName";
+      return "variableName special";
     }
 
     // Interpolation start
@@ -112,7 +116,11 @@ const scssLike = StreamLanguage.define<LexerState>({
     }
 
     // At-rules
-    if (stream.match(/^@(mixin|function|include|if|else|for|each|while|return|content|extend|debug|warn|error|media|supports|keyframes|font-face|import|use|forward|charset|namespace|page|layer|container|scope|starting-style|property)\b/)) {
+    if (
+      stream.match(
+        /^@(mixin|function|include|if|else|for|each|while|return|content|extend|debug|warn|error|media|supports|keyframes|font-face|import|use|forward|charset|namespace|page|layer|container|scope|starting-style|property)\b/
+      )
+    ) {
       return "keyword";
     }
 
@@ -137,13 +145,21 @@ const scssLike = StreamLanguage.define<LexerState>({
     }
 
     // Numbers with units
-    if (stream.match(/^-?(\d+\.?\d*|\.\d+)(%|em|rem|px|pt|pc|in|cm|mm|ex|ch|vw|vh|vmin|vmax|dvh|dvw|svh|svw|lvh|lvw|deg|rad|turn|grad|s|ms|hz|khz|dpi|dpcm|dppx|fr|cqi|cqw|cqh|cqb|cqi)?/)) {
+    if (
+      stream.match(
+        /^-?(\d+\.?\d*|\.\d+)(%|em|rem|px|pt|pc|in|cm|mm|ex|ch|vw|vh|vmin|vmax|dvh|dvw|svh|svw|lvh|lvw|deg|rad|turn|grad|s|ms|hz|khz|dpi|dpcm|dppx|fr|cqi|cqw|cqh|cqb|cqi)?/
+      )
+    ) {
       return "number";
     }
 
     // Functions (only when followed by parenthesis)
-    if (stream.match(/^(rgb|rgba|hsl|hsla|hwb|lab|lch|oklch|oklab|color|color-mix|url|calc|var|env|min|max|clamp|sin|cos|tan|asin|acos|atan|atan2|pow|sqrt|hypot|log|exp|abs|sign|round|mod|rem|lighten|darken|saturate|desaturate|adjust-hue|mix|complement|invert|grayscale|fade-in|fade-out|opacify|transparentize|adjust-color|scale-color|change-color|ie-hex-str|percentage|ceil|floor|random|str-length|str-slice|str-index|str-insert|to-upper-case|to-lower-case|quote|unquote|unique-id|length|nth|set-nth|join|append|zip|index|list-separator|is-bracketed|map-get|map-merge|map-remove|map-keys|map-values|map-has-key|keywords|type-of|unit|unitless|comparable|if|feature-exists|variable-exists|global-variable-exists|function-exists|mixin-exists|content-exists|inspect|selector-nest|selector-append|selector-extend|selector-replace|selector-unify|is-superselector|simple-selectors|selector-parse|red|green|blue|alpha|hue|saturation|lightness)(?=\s*\()/)) {
-      return "function";
+    if (
+      stream.match(
+        /^(rgb|rgba|hsl|hsla|hwb|lab|lch|oklch|oklab|color|color-mix|url|calc|var|env|min|max|clamp|sin|cos|tan|asin|acos|atan|atan2|pow|sqrt|hypot|log|exp|abs|sign|round|mod|rem|lighten|darken|saturate|desaturate|adjust-hue|mix|complement|invert|grayscale|fade-in|fade-out|opacify|transparentize|adjust-color|scale-color|change-color|ie-hex-str|percentage|ceil|floor|random|str-length|str-slice|str-index|str-insert|to-upper-case|to-lower-case|quote|unquote|unique-id|length|nth|set-nth|join|append|zip|index|list-separator|is-bracketed|map-get|map-merge|map-remove|map-keys|map-values|map-has-key|keywords|type-of|unit|unitless|comparable|if|feature-exists|variable-exists|global-variable-exists|function-exists|mixin-exists|content-exists|inspect|selector-nest|selector-append|selector-extend|selector-replace|selector-unify|is-superselector|simple-selectors|selector-parse|red|green|blue|alpha|hue|saturation|lightness)(?=\s*\()/
+      )
+    ) {
+      return "keyword";
     }
 
     // Class and pseudo selectors
@@ -185,7 +201,10 @@ const scssLike = StreamLanguage.define<LexerState>({
     }
 
     // Property names (word followed by colon, but only inside braces)
-    if (state.braceDepth > 0 && stream.match(/^[a-zA-Z_-][a-zA-Z0-9_-]*(?=\s*:)/)) {
+    if (
+      state.braceDepth > 0 &&
+      stream.match(/^[a-zA-Z_-][a-zA-Z0-9_-]*(?=\s*:)/)
+    ) {
       return "propertyName";
     }
 
