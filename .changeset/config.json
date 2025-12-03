@@ -9,5 +9,5 @@
   "access": "public",
   "baseBranch": "master",
   "updateInternalDependencies": "patch",
-  "ignore": ["rics-playground", "rics-vscode"]
+  "ignore": ["rics-playground", "rics-vscode", "rics-benchmarks"]
 }

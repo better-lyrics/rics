@@ -1,0 +1,17 @@
+{
+  "name": "rics-benchmarks",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bench": "node run.js",
+    "bench:size": "node size.js",
+    "update-readme": "node update-readme.js"
+  },
+  "dependencies": {
+    "rics": "workspace:*",
+    "sass": "^1.69.0",
+    "less": "^4.2.0",
+    "stylus": "^0.63.0",
+    "tinybench": "^2.6.0"
+  }
+}

@@ -88,6 +88,28 @@ compile(input, {
 - String interpolation with `#{}`
 - Native CSS pass-through for modern features
 
+## Benchmarks
+
+> Auto-generated. Run `pnpm bench` in the benchmarks folder to regenerate.
+
+### Performance (ops/sec, higher is better)
+
+| Preprocessor | ops/sec | Comparison |
+|--------------|---------|------------|
+| rics | 2,567 | **fastest** |
+| stylus | 1,122 | 2.3x slower |
+| sass | 973 | 2.6x slower |
+| less | 694 | 3.7x slower |
+
+### Package Size (smaller is better)
+
+| Package | Size | Dependencies | Comparison |
+|---------|------|--------------|------------|
+| rics | 92.1 KB | 0 | **smallest** |
+| stylus | 357.2 KB | 5 | 4x larger |
+| less | 2.8 MB | 3 | 32x larger |
+| sass | 5.5 MB | 3 | 61x larger |
+
 ## License
 
 MIT

@@ -1,0 +1,127 @@
+// Variables
+$primary = #3b82f6
+$secondary = #64748b
+$spacing = 16px
+$border-radius = 8px
+
+// Mixins
+flex-center()
+  display flex
+  align-items center
+  justify-content center
+
+button-base()
+  padding ($spacing / 2) $spacing
+  border-radius $border-radius
+  border none
+  cursor pointer
+  font-weight 500
+  transition all 0.2s ease
+
+// Base styles
+*
+  margin 0
+  padding 0
+  box-sizing border-box
+
+body
+  font-family -apple-system, BlinkMacSystemFont, sans-serif
+  line-height 1.5
+  color $secondary
+
+// Components
+.container
+  max-width 1200px
+  margin 0 auto
+  padding 0 $spacing
+
+.button
+  button-base()
+  background $primary
+  color white
+
+  &:hover
+    background darken($primary, 10%)
+    transform translateY(-2px)
+
+  &:active
+    transform translateY(0)
+
+  &--secondary
+    background $secondary
+
+    &:hover
+      background darken($secondary, 10%)
+
+  &--outline
+    background transparent
+    border 2px solid $primary
+    color $primary
+
+    &:hover
+      background $primary
+      color white
+
+.card
+  background white
+  border-radius $border-radius
+  padding ($spacing * 1.5)
+  box-shadow 0 4px 6px rgba(0, 0, 0, 0.1)
+
+  &__header
+    flex-center()
+    justify-content space-between
+    margin-bottom $spacing
+
+  &__title
+    font-size 1.25rem
+    font-weight 600
+    color darken($secondary, 20%)
+
+  &__body
+    color $secondary
+
+  &__footer
+    margin-top $spacing
+    padding-top $spacing
+    border-top 1px solid lighten($secondary, 30%)
+
+// Grid system
+.grid
+  display grid
+  gap $spacing
+
+for $i in 1..12
+  .grid--cols-{$i}
+    grid-template-columns repeat($i, 1fr)
+
+// Utilities
+$sizes = {
+  sm: 8px,
+  md: 16px,
+  lg: 24px,
+  xl: 32px
+}
+
+for $size, $value in $sizes
+  .p-{$size}
+    padding $value
+  .m-{$size}
+    margin $value
+  .mt-{$size}
+    margin-top $value
+  .mb-{$size}
+    margin-bottom $value
+  .ml-{$size}
+    margin-left $value
+  .mr-{$size}
+    margin-right $value
+
+// Media queries
+@media (max-width 768px)
+  .container
+    padding 0 ($spacing / 2)
+
+  for $i in 1..12
+    .grid--cols-{$i}
+      grid-template-columns 1fr

@@ -8,6 +8,7 @@ import Split from "split.js";
 import { compileWithDetails } from "rics";
 import { ricsLanguage } from "codemirror-lang-rics";
 import { examples } from "./examples";
+import "./styles.rics";
 
 // Styles are loaded via CSS link in index.html to avoid FOUC
 
