@@ -1,5 +1,20 @@
 # codemirror-lang-rics
 
+## 0.3.1
+
+### Patch Changes
+
+- d16c19e: fix: CSS-only functions (oklch, oklab, lab, lch, hwb) now pass through without evaluating arguments, preventing `%` from being interpreted as modulo
+
+  fix: Font shorthand `font: 16px/1.5` no longer incorrectly interpreted as division
+
+  fix: Warnings now include position information for accurate linter highlighting
+
+  fix: Add missing named exports for prettier-plugin-rics and eslint-plugin-rics
+
+- Updated dependencies [d16c19e]
+  - rics@0.3.1
+
 ## 0.3.0
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # prettier-plugin-rics
 
+## 0.3.1
+
+### Patch Changes
+
+- 1b6b472: Remove named exports to fix CJS mixed exports warning. All exports are still accessible via the default export object (e.g., `plugin.configs`, `plugin.rules`, `plugin.parser`).
+- d16c19e: fix: CSS-only functions (oklch, oklab, lab, lch, hwb) now pass through without evaluating arguments, preventing `%` from being interpreted as modulo
+
+  fix: Font shorthand `font: 16px/1.5` no longer incorrectly interpreted as division
+
+  fix: Warnings now include position information for accurate linter highlighting
+
+  fix: Add missing named exports for prettier-plugin-rics and eslint-plugin-rics
+
 ## 0.1.6
 
 ### Patch Changes

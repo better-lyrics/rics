@@ -1,6 +1,6 @@
 {
   "name": "webpack-loader-rics",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Webpack loader for rics CSS preprocessor",
   "type": "module",
   "main": "./dist/index.cjs",
