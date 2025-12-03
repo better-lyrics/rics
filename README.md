@@ -58,21 +58,21 @@
 
 ### Performance (ops/sec, higher is better)
 
-| Preprocessor | ops/sec | Comparison |
-|--------------|---------|------------|
-| rics | 2,578 | **fastest** |
-| sass | 1,249 | 2.1x slower |
-| stylus | 1,220 | 2.1x slower |
-| less | 673 | 3.8x slower |
+| Preprocessor | ops/sec | Comparison  |
+| ------------ | ------- | ----------- |
+| rics         | 915     | **fastest** |
+| stylus       | 317     | 2.9x slower |
+| sass         | 269     | 3.4x slower |
+| less         | 209     | 4.4x slower |
 
 ### Package Size (minzipped, smaller is better)
 
-| Package | Size | Dependencies | Comparison |
-|---------|------|--------------|------------|
-| rics | 12.4 KB | 0 | **smallest** |
-| less | 49.3 KB | 0 | 4x larger |
-| stylus | 82.8 KB | 5 | 7x larger |
-| sass | 675.7 KB | 1 | 54x larger |
+| Package | Size     | Dependencies | Comparison   |
+| ------- | -------- | ------------ | ------------ |
+| rics    | 12.4 KB  | 0            | **smallest** |
+| less    | 49.3 KB  | 0            | 4x larger    |
+| stylus  | 82.8 KB  | 5            | 7x larger    |
+| sass    | 675.7 KB | 1            | 54x larger   |
 
 ## Why rics?
 

@@ -52,9 +52,9 @@ Returns full compilation result including errors, warnings, and stats.
 const result = compileWithDetails(input);
 
 console.log(result.css);
-console.log(result.errors);      // CompileError[]
-console.log(result.warnings);    // CompileWarning[]
-console.log(result.stats);       // { duration, rules, iterations, inputSize, outputSize }
+console.log(result.errors); // CompileError[]
+console.log(result.warnings); // CompileWarning[]
+console.log(result.stats); // { duration, rules, iterations, inputSize, outputSize }
 ```
 
 ### compileAsync(input, config?)
@@ -69,11 +69,11 @@ const result = await compileAsync(largeStylesheet);
 
 ```typescript
 compile(input, {
-  timeout: 5000,           // Max compilation time (ms)
-  maxIterations: 10000,    // Max loop iterations
-  maxNestingDepth: 64,     // Max selector nesting
-  minify: false,           // Minify output
-  strictMode: false,       // Throw on first error
+  timeout: 5000, // Max compilation time (ms)
+  maxIterations: 10000, // Max loop iterations
+  maxNestingDepth: 64, // Max selector nesting
+  minify: false, // Minify output
+  strictMode: false, // Throw on first error
 });
 ```
 
@@ -94,21 +94,21 @@ compile(input, {
 
 ### Performance (ops/sec, higher is better)
 
-| Preprocessor | ops/sec | Comparison |
-|--------------|---------|------------|
-| rics | 2,578 | **fastest** |
-| sass | 1,249 | 2.1x slower |
-| stylus | 1,220 | 2.1x slower |
-| less | 673 | 3.8x slower |
+| Preprocessor | ops/sec | Comparison  |
+| ------------ | ------- | ----------- |
+| rics         | 915     | **fastest** |
+| stylus       | 317     | 2.9x slower |
+| sass         | 269     | 3.4x slower |
+| less         | 209     | 4.4x slower |
 
 ### Package Size (minzipped, smaller is better)
 
-| Package | Size | Dependencies | Comparison |
-|---------|------|--------------|------------|
-| rics | 12.4 KB | 0 | **smallest** |
-| less | 49.3 KB | 0 | 4x larger |
-| stylus | 82.8 KB | 5 | 7x larger |
-| sass | 675.7 KB | 1 | 54x larger |
+| Package | Size     | Dependencies | Comparison   |
+| ------- | -------- | ------------ | ------------ |
+| rics    | 12.4 KB  | 0            | **smallest** |
+| less    | 49.3 KB  | 0            | 4x larger    |
+| stylus  | 82.8 KB  | 5            | 7x larger    |
+| sass    | 675.7 KB | 1            | 54x larger   |
 
 ## License
 
