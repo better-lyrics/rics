@@ -32,19 +32,22 @@ export function toDiagnostics(
   doc: Text
 ): Diagnostic[] {
   return issues.map((issue) => {
-    let from = 0;
-    let to = doc.length;
+    let from: number;
+    let to: number;
 
     if (issue.start) {
       from = getOffset(doc, issue.start.line, issue.start.column);
-    }
-
-    if (issue.end) {
-      to = getOffset(doc, issue.end.line, issue.end.column);
-    } else if (issue.start) {
-      to = Math.min(from + 50, doc.length);
-      const lineEnd = doc.lineAt(from).to;
-      to = Math.min(to, lineEnd);
+      if (issue.end) {
+        to = getOffset(doc, issue.end.line, issue.end.column);
+      } else {
+        to = Math.min(from + 50, doc.length);
+        const lineEnd = doc.lineAt(from).to;
+        to = Math.min(to, lineEnd);
+      }
+    } else {
+      // No position info - show at start of first line
+      from = 0;
+      to = Math.min(doc.line(1).to, doc.length);
     }
 
     if (from >= to) {

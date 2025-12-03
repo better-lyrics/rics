@@ -6,6 +6,7 @@ import * as prettier from "prettier/standalone";
 import prettierRics from "prettier-plugin-rics";
 import {
   ricsLanguage,
+  ricsLinter,
   colorHighlighter,
   colorHighlighterStyles,
 } from "codemirror-lang-rics";
@@ -46,6 +47,7 @@ const editor = new EditorView({
     extensions: [
       basicSetup,
       ricsLanguage(),
+      ricsLinter({ delay: 150 }),
       oneDark,
       colorHighlighter(),
       colorHighlighterStyles,

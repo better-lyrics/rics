@@ -38,6 +38,7 @@ class Compiler {
   private state!: CompilerState;
   private input: string = "";
   private pos: number = 0;
+  private valueStartPos: number = 0;
   private evaluator = createExpressionEvaluator((error) =>
     this.addError(error)
   );
@@ -172,9 +173,13 @@ class Compiler {
   }
 
   private location(): SourceLocation {
+    return this.locationAt(this.pos);
+  }
+
+  private locationAt(pos: number): SourceLocation {
     let line = 1;
     let column = 0;
-    for (let i = 0; i < this.pos && i < this.input.length; i++) {
+    for (let i = 0; i < pos && i < this.input.length; i++) {
       if (this.input[i] === "\n") {
         line++;
         column = 0;
@@ -182,7 +187,7 @@ class Compiler {
         column++;
       }
     }
-    return { line, column, offset: this.pos };
+    return { line, column, offset: pos };
   }
 
   private peek(offset: number = 0): string {
@@ -1141,9 +1146,11 @@ class Compiler {
 
     if (this.peek() !== ":") return null;
     this.advance();
+    this.skipWhitespace();
 
     property = this.interpolate(property.trim());
 
+    this.valueStartPos = this.pos;
     let value = "";
     let depth = 0;
     inInterp = false;
@@ -1278,14 +1285,17 @@ class Compiler {
   }
 
   private substituteVariables(str: string): string {
-    return str.replace(/\$[\w-]+/g, (match) => {
+    return str.replace(/\$[\w-]+/g, (match, offset) => {
       const value = lookupVariable(this.state.scope, match);
       if (value) {
         return valueToString(value);
       }
+      const pos = this.valueStartPos + offset;
       this.addWarning({
         code: "UNDEFINED_VARIABLE",
         message: `Undefined variable: ${match}`,
+        start: this.locationAt(pos),
+        end: this.locationAt(pos + match.length),
       });
       return match;
     });

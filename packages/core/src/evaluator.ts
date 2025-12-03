@@ -500,6 +500,19 @@ export function createExpressionEvaluator(
       const argsStart = funcName.length;
       const argsEnd = findMatchingParen(trimmed, argsStart);
       if (argsEnd !== -1) {
+        // CSS-only functions should be passed through without evaluating arguments
+        // to avoid interpreting % as modulo in oklch(63.7% 0.237 25.331) etc.
+        const cssOnlyFunctions =
+          /^(url|var|calc|clamp|attr|env|linear-gradient|radial-gradient|conic-gradient|repeating-linear-gradient|repeating-radial-gradient|color|hwb|lab|lch|oklab|oklch)$/i;
+
+        if (
+          cssOnlyFunctions.test(funcName) &&
+          !customFunctions?.has(funcName) &&
+          !builtinFunctions[funcName]
+        ) {
+          return { type: "string", value: trimmed, quoted: false };
+        }
+
         const argsStr = trimmed.slice(argsStart + 1, argsEnd);
         const args = parseArguments(argsStr, scope, customFunctions);
 
