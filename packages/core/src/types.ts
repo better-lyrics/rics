@@ -68,59 +68,6 @@ export enum ErrorCode {
   DIVISION_BY_ZERO = "DIVISION_BY_ZERO",
 }
 
-export enum TokenType {
-  EOF = "EOF",
-  WHITESPACE = "WHITESPACE",
-  NEWLINE = "NEWLINE",
-  COMMENT = "COMMENT",
-  BANG_COMMENT = "BANG_COMMENT",
-  IDENT = "IDENT",
-  VARIABLE = "VARIABLE",
-  NUMBER = "NUMBER",
-  STRING = "STRING",
-  HASH = "HASH",
-  AT_KEYWORD = "AT_KEYWORD",
-  COLON = "COLON",
-  SEMICOLON = "SEMICOLON",
-  COMMA = "COMMA",
-  LBRACE = "LBRACE",
-  RBRACE = "RBRACE",
-  LPAREN = "LPAREN",
-  RPAREN = "RPAREN",
-  LBRACKET = "LBRACKET",
-  RBRACKET = "RBRACKET",
-  PLUS = "PLUS",
-  MINUS = "MINUS",
-  STAR = "STAR",
-  SLASH = "SLASH",
-  PERCENT = "PERCENT",
-  AMPERSAND = "AMPERSAND",
-  GT = "GT",
-  LT = "LT",
-  EQ = "EQ",
-  NEQ = "NEQ",
-  GTE = "GTE",
-  LTE = "LTE",
-  AND = "AND",
-  OR = "OR",
-  NOT = "NOT",
-  DOT = "DOT",
-  TILDE = "TILDE",
-  PIPE = "PIPE",
-  CARET = "CARET",
-  INTERP_START = "INTERP_START",
-  INTERP_END = "INTERP_END",
-  IMPORTANT = "IMPORTANT",
-  UNKNOWN = "UNKNOWN",
-}
-
-export interface Token {
-  type: TokenType;
-  value: string;
-  start: SourceLocation;
-  end: SourceLocation;
-}
-
 export type Value =
   | NumberValue
   | StringValue
