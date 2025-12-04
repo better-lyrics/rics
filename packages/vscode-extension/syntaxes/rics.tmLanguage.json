@@ -173,7 +173,7 @@
           ]
         },
         {
-          "begin": "(@font-face|@layer|@scope)\\b",
+          "begin": "(@font-face|@layer|@scope)(?=\\s|\\{)",
           "beginCaptures": {
             "1": { "name": "keyword.control" }
           },
