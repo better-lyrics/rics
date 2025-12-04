@@ -3,7 +3,7 @@
   "private": true,
   "displayName": "rics",
   "description": "Syntax highlighting for rics - a lightweight SCSS-like CSS preprocessor",
-  "version": "0.1.19",
+  "version": "0.1.23",
   "publisher": "rics",
   "engines": {
     "vscode": "^1.75.0"
