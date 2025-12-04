@@ -95,8 +95,9 @@ const scssLike = StreamLanguage.define<LexerState>({
     }
 
     // Variables: $name or $name-with-dashes (must come before other identifier matching)
+    // Use "atom" for SCSS variables - it's a simple token type that works reliably
     if (stream.match(/^\$[a-zA-Z_][a-zA-Z0-9_-]*/)) {
-      return "variableName special";
+      return "atom";
     }
 
     // Interpolation start
