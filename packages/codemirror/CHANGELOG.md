@@ -1,5 +1,11 @@
 # codemirror-lang-rics
 
+## 0.3.8
+
+### Patch Changes
+
+- c818e30: Fix SCSS variable token type from invalid "variableName special" to "atom" for reliable CodeMirror highlighting.
+
 ## 0.3.7
 
 ### Patch Changes
