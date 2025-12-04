@@ -1,5 +1,11 @@
 # rics
 
+## 0.3.10
+
+### Patch Changes
+
+- b1f79fb: Remove unused tokenizer module (compiler uses inline character-based parsing).
+
 ## 0.3.7
 
 ### Patch Changes
