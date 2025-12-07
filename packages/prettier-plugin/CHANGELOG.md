@@ -1,5 +1,11 @@
 # prettier-plugin-rics
 
+## 0.3.12
+
+### Patch Changes
+
+- 97a11a9: prettier-plugin-rics: Fix formatting of comments - single-line comments (`// ...`) and inline comments (`/* ... */`) no longer affect indentation tracking or receive colon normalization.
+
 ## 0.3.11
 
 ### Patch Changes
