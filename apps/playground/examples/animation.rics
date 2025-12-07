@@ -88,8 +88,8 @@ $delays: 0, 75, 100, 150, 200, 300, 500, 700, 1000;
 
 // Animation utilities
 $animations: fade-in, fade-out, slide-in-up, slide-in-down,
-             slide-in-left, slide-in-right, scale-in,
-             bounce, pulse, spin, ping;
+slide-in-left, slide-in-right, scale-in,
+bounce, pulse, spin, ping;
 
 @each $name in $animations {
   .animate-#{$name} {

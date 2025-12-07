@@ -17,6 +17,12 @@ importers:
       knip:
         specifier: ^5.71.0
         version: 5.71.0(@types/node@20.19.25)(typescript@5.9.3)
+      prettier:
+        specifier: ^3.0.0
+        version: 3.7.3
+      prettier-plugin-rics:
+        specifier: workspace:*
+        version: link:packages/prettier-plugin
       typescript:
         specifier: ^5.0.0
         version: 5.9.3

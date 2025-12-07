@@ -69,8 +69,8 @@ function formatRics(source: string): string {
       continue;
     }
 
-    // Decrease indent for closing braces
-    if (trimmed.startsWith("}")) {
+    // Decrease indent for closing braces/parens
+    if (trimmed.startsWith("}") || trimmed.startsWith(")")) {
       indent = Math.max(0, indent - 1);
     }
 
@@ -89,8 +89,8 @@ function formatRics(source: string): string {
 
     result.push(formatted);
 
-    // Increase indent after opening braces
-    if (trimmed.endsWith("{")) {
+    // Increase indent after opening braces/parens
+    if (trimmed.endsWith("{") || trimmed.endsWith("(")) {
       indent++;
     }
   }

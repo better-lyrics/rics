@@ -182,7 +182,7 @@
           ]
         },
         {
-          "begin": "(@keyframes)\\s+([a-zA-Z_-][a-zA-Z0-9_-]*)",
+          "begin": "(@keyframes)\\s+(#\\{[^}]+\\}|[a-zA-Z_-][a-zA-Z0-9_-]*)",
           "beginCaptures": {
             "1": { "name": "keyword.control.at-rule.scss" },
             "2": { "name": "entity.name.function.scss" }
@@ -287,6 +287,7 @@
         { "include": "#at-rule" },
         { "include": "#variable-declaration" },
         { "include": "#css-variable-declaration" },
+        { "include": "#interpolation" },
         { "include": "#variable" },
         { "include": "#property" },
         { "include": "#ruleset" }

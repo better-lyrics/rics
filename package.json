@@ -62,11 +62,14 @@
     "@changesets/cli": "^2.29.8",
     "bundlesize2": "^0.0.35",
     "knip": "^5.71.0",
+    "prettier": "^3.0.0",
+    "prettier-plugin-rics": "workspace:*",
     "typescript": "^5.0.0"
   },
   "keywords": [
     "scss",
     "css",
+    "rics",
     "preprocessor",
     "codemirror",
     "lightweight",
