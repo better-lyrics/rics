@@ -263,6 +263,9 @@ class Compiler {
         }
       } else if (ch === "}") {
         break;
+      } else if (ch === ";") {
+        // Skip empty statements (e.g., stray semicolons after block definitions)
+        this.advance();
       } else {
         this.parseRuleset();
       }
@@ -556,18 +559,19 @@ class Compiler {
         ch === "." ||
         ch === "[" ||
         ch === "*" ||
-        (ch === "#" && this.peek(1) !== "{") ||
+        ch === "#" || // Both ID selectors (#foo) and interpolations (#{$sel})
         (ch === ":" && this.looksLikeSelector())
       ) {
-        // Handle nested selectors like &:hover {}
+        // Handle nested selectors like &:hover {}, #id {}, or #{$sel} {}
         this.parseRuleset();
       } else {
         // Try to parse as declaration first
         const decl = this.parseDeclaration();
         if (decl) {
           this.state.output.push(decl);
-        } else {
+        } else if (this.peek() !== "}") {
           // parseDeclaration returned null and reset pos - skip this character to avoid infinite loop
+          // But don't skip if it's a closing brace - let the loop handle it
           this.advance();
         }
       }
@@ -874,8 +878,9 @@ class Compiler {
       const decl = this.parseDeclaration();
       if (decl) {
         this.state.output.push("  " + decl + ";");
-      } else {
+      } else if (this.peek() !== "}") {
         // parseDeclaration returned null and reset pos - skip this character to avoid infinite loop
+        // But don't skip if it's a closing brace - let the loop handle it
         this.advance();
       }
     }
@@ -1027,8 +1032,9 @@ class Compiler {
       const decl = this.parseDeclaration();
       if (decl) {
         declarations.push(decl);
-      } else {
+      } else if (this.peek() !== "}") {
         // parseDeclaration returned null and reset pos - skip this character to avoid infinite loop
+        // But don't skip if it's a closing brace - let the loop handle it
         this.advance();
       }
     }
@@ -1092,6 +1098,7 @@ class Compiler {
       }
 
       if (ch === "{") return true;
+      if (ch === "}" && depth === 0) return false; // End of current block
       if (ch === ";" && depth === 0) return false;
       if (ch === ":") {
         const next = this.input[i + 1];

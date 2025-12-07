@@ -442,4 +442,79 @@ describe("compiler", () => {
       expect(result).toContain(".button{");
     });
   });
+
+  describe("edge cases", () => {
+    it("should handle @each with interpolation selector in mixin", () => {
+      const input = `
+        @mixin test($map) {
+          @each $k, $v in $map {
+            #{$k} { prop: #{$v}; }
+          }
+        }
+        @include test((a: 1, b: 2));
+      `;
+      const result = compile(input);
+      expect(result).toContain("a {");
+      expect(result).toContain("prop: 1");
+      expect(result).toContain("b {");
+      expect(result).toContain("prop: 2");
+    });
+
+    it("should handle semicolon after mixin definition", () => {
+      const input = `
+        @mixin test {
+          .inside { color: red; }
+        };
+
+        @each $item in (a, b) {
+          @include test;
+        }
+      `;
+      const result = compile(input);
+      expect(result).toContain(".inside");
+      expect(result).toContain("color: red");
+    });
+
+    it("should handle map-get in @each calling mixin", () => {
+      const input = `
+        $output: (fade, sweep);
+        $animation-groups: (
+          fade: (#button: background, #ui: opacity),
+          sweep: (#progressbar: transform, #slider: left)
+        );
+
+        @mixin output-animation($animation-map) {
+          @each $sel, $prop in $animation-map {
+            #{$sel} { transition: #{$prop} 1s; }
+          }
+        };
+
+        @each $group in $output {
+          $animation-name: map-get($animation-groups, $group);
+          @if $animation-name {
+            @include output-animation($animation-name);
+          }
+        }
+      `;
+      const result = compile(input);
+      expect(result).toContain("#button");
+      expect(result).toContain("transition: background 1s");
+      expect(result).toContain("#ui");
+      expect(result).toContain("transition: opacity 1s");
+      expect(result).toContain("#progressbar");
+      expect(result).toContain("transition: transform 1s");
+      expect(result).toContain("#slider");
+      expect(result).toContain("transition: left 1s");
+    });
+
+    it("should handle missing semicolon before closing brace", () => {
+      const input = `.a{color: white}.b{color:red;}`;
+      const result = compileWithDetails(input);
+      expect(result.css).toContain(".a");
+      expect(result.css).toContain("color: white");
+      expect(result.css).toContain(".b");
+      expect(result.css).toContain("color: red");
+      expect(result.errors.length).toBe(0);
+    });
+  });
 });

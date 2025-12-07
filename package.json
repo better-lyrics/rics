@@ -19,7 +19,8 @@
     "size": "bundlesize",
     "bench": "pnpm --filter rics build && node benchmarks/update-readme.js",
     "publish:all": "pnpm -r publish --access public",
-    "knip": "knip"
+    "knip": "knip",
+    "format": "npx prettier --plugin ./packages/prettier-plugin/dist/index.js --write **/*.rics"
   },
   "bundlesize": [
     {

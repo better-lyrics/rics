@@ -69,16 +69,26 @@ function formatRics(source: string): string {
       continue;
     }
 
-    // Decrease indent for closing braces/parens
-    if (trimmed.startsWith("}") || trimmed.startsWith(")")) {
+    // Check if this is a comment line
+    const isSingleLineComment = trimmed.startsWith("//");
+    const isInlineComment = trimmed.startsWith("/*") && trimmed.includes("*/");
+    const isComment = isSingleLineComment || isInlineComment;
+
+    // Decrease indent for closing braces/parens (but not in comments)
+    if (!isComment && (trimmed.startsWith("}") || trimmed.startsWith(")"))) {
       indent = Math.max(0, indent - 1);
     }
 
     // Format the line
     let formatted = "  ".repeat(indent) + trimmed;
 
-    // Normalize spacing around colons in declarations (but not in selectors)
-    if (trimmed.includes(":") && !trimmed.startsWith("@") && !trimmed.includes("{")) {
+    // Normalize spacing around colons in declarations (but not in selectors or comments)
+    if (
+      trimmed.includes(":") &&
+      !trimmed.startsWith("@") &&
+      !trimmed.includes("{") &&
+      !isComment
+    ) {
       const colonIndex = trimmed.indexOf(":");
       if (colonIndex > 0) {
         const prop = trimmed.slice(0, colonIndex).trim();
@@ -89,8 +99,8 @@ function formatRics(source: string): string {
 
     result.push(formatted);
 
-    // Increase indent after opening braces/parens
-    if (trimmed.endsWith("{") || trimmed.endsWith("(")) {
+    // Increase indent after opening braces/parens (but not in comments)
+    if (!isComment && (trimmed.endsWith("{") || trimmed.endsWith("("))) {
       indent++;
     }
   }

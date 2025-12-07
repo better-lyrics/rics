@@ -51,7 +51,7 @@ $transition-fast: 0.15s ease;
   background: $bg-tertiary;
   color: $text-primary;
   cursor: pointer;
-	height: 32px;
+  height: 32px;
   transition: all $transition-fast;
 }
 
@@ -148,7 +148,7 @@ body {
   @include button-base;
   @include flex-center;
   justify-content: center;
-	width: 32px;
+  width: 32px;
   padding: 6px;
 
   &:hover {

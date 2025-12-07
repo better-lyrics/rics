@@ -6,23 +6,22 @@
   color: red;
   background: blue;
 
+  // Uncomment below to see other errors:
 
-// Uncomment below to see other errors:
+  // Incomplete declarations (as if typing):
+  // .car {
+  // .car { color:
+  // .car { color: #
+  // .car { color: #5
+  // .car { color: #55
+  // .car { color: #555555
 
-// Incomplete declarations (as if typing):
-// .car {
-// .car { color:
-// .car { color: #
-// .car { color: #5
-// .car { color: #55
-// .car { color: #555555
+  // Undefined mixin
+  // .box {
+  //   @include non-existent-mixin();
+  // }
 
-// Undefined mixin
-// .box {
-//   @include non-existent-mixin();
-// }
-
-// Invalid @for syntax
-// @for $i from 1 to {
-//   .item-#{$i} { width: 10px * $i; }
-// }
+  // Invalid @for syntax
+  // @for $i from 1 to {
+  //   .item-#{$i} { width: 10px * $i; }
+  // }
