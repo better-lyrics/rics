@@ -1,5 +1,11 @@
 # prettier-plugin-rics
 
+## 0.3.11
+
+### Patch Changes
+
+- e238699: Fix indentation for maps and lists - formatter now handles `(` and `)` parentheses for proper nesting, not just `{` and `}` braces.
+
 ## 0.3.1
 
 ### Patch Changes
