@@ -13,10 +13,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - uses: pnpm/action-setup@v4
 
@@ -25,11 +32,6 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org
           cache: "pnpm"
-
-      - name: Configure git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Install dependencies
         run: pnpm install
@@ -55,11 +57,17 @@ jobs:
 
       - name: Commit version bump
         if: steps.changesets.outputs.has_changesets == 'true'
-        run: |
-          git add .
-          git commit -m "chore: version packages" || echo "No changes to commit"
-          git pull --rebase
-          git push
+        uses: planetscale/ghcommit-action@v0.2.19
+        with:
+          commit_message: "chore: version packages"
+          repo: ${{ github.repository }}
+          branch: ${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+
+      - name: Pull latest after commit
+        if: steps.changesets.outputs.has_changesets == 'true'
+        run: git pull --rebase
 
       - name: Publish to npm
         if: steps.changesets.outputs.has_changesets == 'true'
@@ -69,7 +77,7 @@ jobs:
 
       - name: Push tags
         if: steps.changesets.outputs.has_changesets == 'true'
-        run: git push --follow-tags
+        run: git push origin --tags
 
       - name: No changesets found
         if: steps.changesets.outputs.has_changesets == 'false'
