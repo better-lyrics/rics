@@ -1,5 +1,12 @@
 # rics-cli
 
+## 0.3.13
+
+### Patch Changes
+
+- Updated dependencies [0b5b356]
+  - rics@0.3.13
+
 ## 0.3.12
 
 ### Patch Changes

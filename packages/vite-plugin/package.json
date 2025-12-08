@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-rics",
-  "version": "0.3.12",
+  "version": "0.3.13",
   "description": "Vite plugin for rics CSS preprocessor",
   "type": "module",
   "main": "./dist/index.cjs",

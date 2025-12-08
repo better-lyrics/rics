@@ -1,5 +1,11 @@
 # rics
 
+## 0.3.13
+
+### Patch Changes
+
+- 0b5b356: Fix map/list parsing for quoted strings containing colons (e.g., `"#slider:not([disabled])"`)
+
 ## 0.3.12
 
 ### Patch Changes
