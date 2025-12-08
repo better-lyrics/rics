@@ -4,8 +4,8 @@ on:
   push:
     branches: [master]
     paths:
-      - 'packages/core/src/**'
-      - 'benchmarks/**'
+      - "packages/core/src/**"
+      - "benchmarks/**"
   workflow_dispatch:
 
 jobs:
@@ -28,7 +28,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install
@@ -39,13 +39,15 @@ jobs:
       - name: Run benchmarks and update README
         run: node benchmarks/update-readme.js
 
-      - name: Check for changes
-        id: git-check
+      # https://github.com/planetscale/ghcommit-action/issues/43#issuecomment-2313129696
+      - name: Stage all changes
+        id: stage
         run: |
-          git diff --exit-code packages/core/README.md README.md || echo "changed=true" >> $GITHUB_OUTPUT
+          git add .
+          git diff --staged --quiet || echo "changes_exist=true" >> $GITHUB_OUTPUT
 
-      - name: Commit and push if changed
-        if: steps.git-check.outputs.changed == 'true'
+      - name: Commit changes
+        if: steps.stage.outputs.changes_exist == 'true'
         uses: planetscale/ghcommit-action@v0.2.19
         with:
           commit_message: "docs: update benchmark results [skip ci]"
