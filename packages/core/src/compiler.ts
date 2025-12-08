@@ -20,6 +20,7 @@ import {
   createExpressionEvaluator,
   parseMap,
   parseList,
+  findCharOutsideStrings,
 } from "./evaluator";
 
 export const defaultConfig: Readonly<Required<CompilerConfig>> = {
@@ -743,7 +744,10 @@ class Compiler {
     const listExpr = inMatch[1].trim();
     let collection: Value;
 
-    if (listExpr.startsWith("(") && listExpr.includes(":")) {
+    if (
+      listExpr.startsWith("(") &&
+      findCharOutsideStrings(listExpr.slice(1), ":") > 0
+    ) {
       collection = parseMap(listExpr);
     } else if (listExpr.startsWith("$")) {
       collection = this.evaluateExpression(listExpr);
@@ -1685,7 +1689,10 @@ class Compiler {
     const listExpr = inMatch[1].trim();
     let collection: Value;
 
-    if (listExpr.startsWith("(") && listExpr.includes(":")) {
+    if (
+      listExpr.startsWith("(") &&
+      findCharOutsideStrings(listExpr.slice(1), ":") > 0
+    ) {
       collection = parseMap(listExpr);
     } else if (listExpr.startsWith("$")) {
       collection = this.evaluateExpression(listExpr);

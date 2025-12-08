@@ -14,6 +14,31 @@ import { builtinFunctions } from "./functions";
 export { valueToString } from "./utils";
 import { valueToString, parseColor } from "./utils";
 
+export function findCharOutsideStrings(input: string, char: string): number {
+  let inString: string | null = null;
+  for (let i = 0; i < input.length; i++) {
+    const ch = input[i];
+    if (inString) {
+      if (ch === inString && input[i - 1] !== "\\") {
+        inString = null;
+      }
+      continue;
+    }
+    if (ch === '"' || ch === "'") {
+      inString = ch;
+      continue;
+    }
+    if (ch === char) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+function containsOutsideStrings(input: string, char: string): boolean {
+  return findCharOutsideStrings(input, char) !== -1;
+}
+
 const UNIT_CONVERSIONS: Record<string, Record<string, number>> = {
   px: { px: 1, em: 16, rem: 16, pt: 0.75, pc: 9, in: 96, cm: 37.8, mm: 3.78 },
   em: { px: 1 / 16, em: 1, rem: 1 },
@@ -142,8 +167,9 @@ function parseValue(input: string): Value {
   // Check for list or map in parentheses
   if (trimmed.startsWith("(") && trimmed.endsWith(")")) {
     const inner = trimmed.slice(1, -1).trim();
-    // Check if it's a map (has key: value pairs)
-    if (inner.includes(":") && !inner.startsWith(":")) {
+    // Check if it's a map (has key: value pairs outside of strings)
+    const colonIdx = findCharOutsideStrings(inner, ":");
+    if (colonIdx > 0) {
       return parseMap(trimmed);
     }
     // Otherwise treat as list
@@ -387,7 +413,7 @@ export function parseMap(input: string): MapValue {
 
   const pairs = splitList(inner, ",");
   for (const pair of pairs) {
-    const colonIdx = pair.indexOf(":");
+    const colonIdx = findCharOutsideStrings(pair, ":");
     if (colonIdx === -1) continue;
 
     const key = pair.slice(0, colonIdx).trim();
@@ -721,8 +747,11 @@ export function createExpressionEvaluator(
 
     if (expr.startsWith("(") && expr.endsWith(")")) {
       const inner = expr.slice(1, -1).trim();
-      // Check if this is a list or map (contains comma but no math operators at top level)
-      if (inner.includes(",") || (inner.includes(":") && !inner.startsWith(":"))) {
+      // Check if this is a list or map (contains comma/colon outside strings)
+      if (
+        containsOutsideStrings(inner, ",") ||
+        findCharOutsideStrings(inner, ":") > 0
+      ) {
         // Parse as list or map
         return parseValue(expr);
       }

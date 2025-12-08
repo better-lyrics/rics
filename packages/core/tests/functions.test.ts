@@ -211,6 +211,21 @@ describe("built-in functions", () => {
       const result = compile(input);
       expect(result).toContain("filter: blur(4px)");
     });
+
+    it("should parse lists with colons in quoted strings", () => {
+      const input = `
+        $selectors: ("#button:hover", "#link:active");
+        @each $sel in $selectors {
+          #{unquote($sel)} {
+            color: red;
+          }
+        }
+      `;
+      const result = compile(input);
+      expect(result).toContain("#button:hover");
+      expect(result).toContain("#link:active");
+      expect(result).toContain("color: red");
+    });
   });
 
   describe("map functions", () => {
@@ -234,6 +249,25 @@ describe("built-in functions", () => {
       `;
       const result = compile(input);
       expect(result).toContain("width: 100px");
+    });
+
+    it("should handle quoted keys with colons", () => {
+      const input = `
+        $selectors: (
+          "#button": "background",
+          "#slider:not([disabled])": "left"
+        );
+        @each $sel, $prop in $selectors {
+          #{unquote($sel)} {
+            transition: #{unquote($prop)} 1s;
+          }
+        }
+      `;
+      const result = compile(input);
+      expect(result).toContain("#button");
+      expect(result).toContain("transition: background 1s");
+      expect(result).toContain("#slider:not([disabled])");
+      expect(result).toContain("transition: left 1s");
     });
   });
 
