@@ -1,5 +1,13 @@
 # webpack-loader-rics
 
+## 0.3.14
+
+### Patch Changes
+
+- 93e800d: Add proper npm metadata fields (author, repository, homepage, bugs, engines, sideEffects).
+- Updated dependencies [93e800d]
+  - rics@0.3.14
+
 ## 0.3.13
 
 ### Patch Changes

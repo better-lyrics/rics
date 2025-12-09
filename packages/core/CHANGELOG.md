@@ -1,5 +1,11 @@
 # rics
 
+## 0.3.14
+
+### Patch Changes
+
+- 93e800d: Add proper npm metadata fields (author, repository, homepage, bugs, engines, sideEffects).
+
 ## 0.3.13
 
 ### Patch Changes
