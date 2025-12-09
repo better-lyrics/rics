@@ -75,7 +75,9 @@ jobs:
 
       - name: Pull latest after commit
         if: steps.changesets.outputs.has_changesets == 'true'
-        run: git pull --rebase
+        run: |
+          git reset --hard HEAD
+          git pull --rebase
 
       - name: Publish to npm
         if: steps.changesets.outputs.has_changesets == 'true'
