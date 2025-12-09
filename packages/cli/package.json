@@ -29,7 +29,21 @@
     "scss",
     "css",
     "preprocessor",
-    "cli"
+    "cli",
+    "command-line"
   ],
-  "license": "MIT"
+  "author": "Boidushya",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/better-lyrics/rics.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://rics.boidu.dev",
+  "bugs": {
+    "url": "https://github.com/better-lyrics/rics/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }

@@ -16,6 +16,7 @@
   "files": [
     "dist"
   ],
+  "sideEffects": false,
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -31,7 +32,22 @@
     "scss",
     "css",
     "preprocessor",
-    "lightweight"
+    "lightweight",
+    "browser",
+    "zero-dependencies"
   ],
-  "license": "MIT"
+  "author": "Boidushya",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/better-lyrics/rics.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://rics.boidu.dev",
+  "bugs": {
+    "url": "https://github.com/better-lyrics/rics/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }
