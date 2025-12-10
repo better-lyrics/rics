@@ -83,8 +83,12 @@ function formatRics(source: string): string {
     let formatted = "  ".repeat(indent) + trimmed;
 
     // Normalize spacing around colons in declarations (but not in selectors or comments)
+    // Skip lines with :: (pseudo-elements), lines ending with , (multi-line selectors),
+    // or lines where the part before : contains selector characters
     if (
       trimmed.includes(":") &&
+      !trimmed.includes("::") &&
+      !trimmed.endsWith(",") &&
       !trimmed.startsWith("@") &&
       !trimmed.includes("{") &&
       !isComment
@@ -92,8 +96,11 @@ function formatRics(source: string): string {
       const colonIndex = trimmed.indexOf(":");
       if (colonIndex > 0) {
         const prop = trimmed.slice(0, colonIndex).trim();
-        const value = trimmed.slice(colonIndex + 1).trim();
-        formatted = "  ".repeat(indent) + prop + ": " + value;
+        // Only normalize if prop looks like a CSS property (no selector chars)
+        if (!/[#.\[\]>+~]/.test(prop)) {
+          const value = trimmed.slice(colonIndex + 1).trim();
+          formatted = "  ".repeat(indent) + prop + ": " + value;
+        }
       }
     }
 

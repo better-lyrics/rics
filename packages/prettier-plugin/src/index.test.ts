@@ -90,5 +90,19 @@ padding:   10px;
       const output = printers["rics-ast"].print(path, {} as any, () => "") as string;
       expect(output.endsWith("\n")).toBe(true);
     });
+
+    it("should preserve double colons in pseudo-elements", () => {
+      const input = `#browse-page::before,
+#search-page::before {
+  content: "";
+}`;
+      const ast = parsers.rics.parse(input, {} as any) as any;
+      const path = { getValue: () => ast } as any;
+
+      const output = printers["rics-ast"].print(path, {} as any, () => "") as string;
+      expect(output).toContain("#browse-page::before");
+      expect(output).toContain("#search-page::before");
+      expect(output).not.toContain(": :before");
+    });
   });
 });
