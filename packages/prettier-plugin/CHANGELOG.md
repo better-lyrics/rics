@@ -1,5 +1,11 @@
 # prettier-plugin-rics
 
+## 0.3.15
+
+### Patch Changes
+
+- bb79518: Fix formatter incorrectly adding space after double colons in pseudo-elements (e.g., `::before` becoming `: :before`)
+
 ## 0.3.14
 
 ### Patch Changes
