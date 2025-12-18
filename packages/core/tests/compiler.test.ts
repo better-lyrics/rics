@@ -517,4 +517,72 @@ describe("compiler", () => {
       expect(result.errors.length).toBe(0);
     });
   });
+
+  describe("list and append operations", () => {
+    it("should handle empty list initialization", () => {
+      const input = `
+        $list: ();
+        .test { content: "#{length($list)}"; }
+      `;
+      const result = compile(input);
+      expect(result).toContain('content: "0"');
+    });
+
+    it("should handle variadic mixin parameters", () => {
+      const input = `
+        @mixin test($items...) {
+          @each $item in $items {
+            content: $item;
+          }
+        }
+        .test { @include test(a, b, c); }
+      `;
+      const result = compile(input);
+      expect(result).toContain("content: a");
+      expect(result).toContain("content: b");
+      expect(result).toContain("content: c");
+    });
+
+    it("should handle space-separated variable expressions", () => {
+      const input = `
+        $timing: 0.3s ease;
+        $prop: opacity;
+        .test { transition: $prop $timing; }
+      `;
+      const result = compile(input);
+      expect(result).toContain("transition: opacity 0.3s ease");
+    });
+
+    it("should handle @each over single values", () => {
+      const input = `
+        $single: test;
+        @each $item in $single {
+          .#{$item} { color: red; }
+        }
+      `;
+      const result = compile(input);
+      expect(result).toContain(".test");
+      expect(result).toContain("color: red");
+    });
+
+    it("should handle mixin with append in loop", () => {
+      const input = `
+        $hover-fade-timing: 0.3s ease;
+
+        @mixin hover-fade($props...) {
+          $transition: ();
+          @each $prop in $props {
+            $transition: append($transition, $prop $hover-fade-timing, comma);
+          }
+          transition: $transition;
+        }
+
+        .test {
+          @include hover-fade(opacity, background);
+        }
+      `;
+      const result = compile(input);
+      expect(result).toContain("transition: opacity 0.3s ease, background 0.3s ease");
+    });
+  });
 });

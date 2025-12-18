@@ -424,6 +424,14 @@ class Compiler {
       const paramName = this.readVariable();
       this.skipWhitespace();
 
+      // Check for variadic parameter ($param...)
+      let variadic = false;
+      if (this.peek() === "." && this.peek(1) === "." && this.peek(2) === ".") {
+        variadic = true;
+        this.advance(3);
+        this.skipWhitespace();
+      }
+
       let defaultValue: string | undefined;
       if (this.peek() === ":") {
         this.advance();
@@ -431,7 +439,7 @@ class Compiler {
         defaultValue = this.readParamDefault();
       }
 
-      params.push({ name: paramName, defaultValue });
+      params.push({ name: paramName, defaultValue, variadic });
 
       this.skipWhitespace();
       if (this.peek() === ",") this.advance();
@@ -498,6 +506,21 @@ class Compiler {
 
     for (let i = 0; i < mixin.params.length; i++) {
       const param = mixin.params[i];
+
+      if (param.variadic) {
+        // Collect all remaining args into a list
+        const remainingArgs = args.slice(i);
+        const values: Value[] = remainingArgs.map((arg) =>
+          this.evaluateExpression(arg)
+        );
+        setVariable(localScope, param.name, {
+          type: "list",
+          values,
+          separator: ",",
+        });
+        break;
+      }
+
       const argValue = args[i] || param.defaultValue || "";
       const value = this.evaluateExpression(argValue);
       setVariable(localScope, param.name, value);
@@ -793,6 +816,13 @@ class Compiler {
         this.state.scope = localScope;
         this.executeBlock(loopBody);
       }
+    } else {
+      // Treat single value as single-item iteration
+      this.state.iterations++;
+      this.checkLimits();
+      setVariable(localScope, vars[0], collection);
+      this.state.scope = localScope;
+      this.executeBlock(loopBody);
     }
 
     this.state.scope = savedScope;

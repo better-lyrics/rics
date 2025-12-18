@@ -604,6 +604,17 @@ export function createExpressionEvaluator(
     const addSubResult = evaluateAddSub(trimmed, scope, customFunctions);
     if (addSubResult) return addSubResult;
 
+    // Handle space-separated expressions containing variables
+    if (trimmed.includes(" ") && trimmed.includes("$")) {
+      const parts = splitList(trimmed, " ");
+      if (parts.length > 1) {
+        const values = parts.map((part) =>
+          evaluate(part.trim(), scope, customFunctions)
+        );
+        return { type: "list", values, separator: " " };
+      }
+    }
+
     return parseValue(trimmed);
   }
 
@@ -747,6 +758,10 @@ export function createExpressionEvaluator(
 
     if (expr.startsWith("(") && expr.endsWith(")")) {
       const inner = expr.slice(1, -1).trim();
+      // Empty parens = empty list
+      if (!inner) {
+        return { type: "list", values: [], separator: " " };
+      }
       // Check if this is a list or map (contains comma/colon outside strings)
       if (
         containsOutsideStrings(inner, ",") ||

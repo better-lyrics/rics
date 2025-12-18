@@ -138,6 +138,7 @@ export interface FunctionDefinition {
 export interface ParamDefinition {
   name: string;
   defaultValue?: string;
+  variadic?: boolean;
 }
 
 export interface Scope {
