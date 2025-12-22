@@ -1,6 +1,6 @@
 {
   "name": "prettier-plugin-rics",
-  "version": "0.3.15",
+  "version": "0.3.17",
   "description": "Prettier plugin for rics CSS preprocessor",
   "type": "module",
   "main": "./dist/index.cjs",

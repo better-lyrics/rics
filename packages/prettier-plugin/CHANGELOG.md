@@ -1,5 +1,11 @@
 # prettier-plugin-rics
 
+## 0.3.17
+
+### Patch Changes
+
+- b3b740b: Fix formatter adding space after colon in pseudo-class selectors on multi-line selectors
+
 ## 0.3.15
 
 ### Patch Changes
