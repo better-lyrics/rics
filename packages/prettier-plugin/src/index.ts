@@ -96,9 +96,14 @@ function formatRics(source: string): string {
       const colonIndex = trimmed.indexOf(":");
       if (colonIndex > 0) {
         const prop = trimmed.slice(0, colonIndex).trim();
+        const value = trimmed.slice(colonIndex + 1).trim();
         // Only normalize if prop looks like a CSS property (no selector chars)
-        if (!/[#.\[\]>+~]/.test(prop)) {
-          const value = trimmed.slice(colonIndex + 1).trim();
+        // and value doesn't look like a pseudo-class function
+        const isPseudoClass =
+          /^(not|has|is|where|nth-child|nth-last-child|nth-of-type|nth-last-of-type|first-child|last-child|first-of-type|last-of-type|only-child|only-of-type|empty|root|host|host-context|hover|focus|focus-within|focus-visible|active|visited|link|target|lang|dir|enabled|disabled|checked|indeterminate|default|valid|invalid|in-range|out-of-range|required|optional|read-only|read-write|placeholder-shown|autofill)\b/i.test(
+            value
+          );
+        if (!/[#.\[\]>+~]/.test(prop) && !isPseudoClass) {
           formatted = "  ".repeat(indent) + prop + ": " + value;
         }
       }

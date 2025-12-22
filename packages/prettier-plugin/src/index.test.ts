@@ -104,5 +104,37 @@ padding:   10px;
       expect(output).toContain("#search-page::before");
       expect(output).not.toContain(": :before");
     });
+
+    it("should preserve pseudo-class selectors on multi-line selectors", () => {
+      const input = `ytmusic-player-page:not([is-mweb-modernization-enabled])
+#player.ytmusic-player-page {
+  max-width: 600px !important;
+}`;
+      const ast = parsers.rics.parse(input, {} as any) as any;
+      const path = { getValue: () => ast } as any;
+
+      const output = printers["rics-ast"].print(path, {} as any, () => "") as string;
+      expect(output).toContain(":not([is-mweb-modernization-enabled])");
+      expect(output).not.toContain(": not(");
+    });
+
+    it("should preserve various pseudo-class selectors", () => {
+      const input = `div:hover { color: red; }
+a:focus { outline: none; }
+li:nth-child(2n) { background: gray; }
+input:disabled { opacity: 0.5; }`;
+      const ast = parsers.rics.parse(input, {} as any) as any;
+      const path = { getValue: () => ast } as any;
+
+      const output = printers["rics-ast"].print(path, {} as any, () => "") as string;
+      expect(output).toContain(":hover");
+      expect(output).toContain(":focus");
+      expect(output).toContain(":nth-child(2n)");
+      expect(output).toContain(":disabled");
+      expect(output).not.toContain(": hover");
+      expect(output).not.toContain(": focus");
+      expect(output).not.toContain(": nth-child");
+      expect(output).not.toContain(": disabled");
+    });
   });
 });
