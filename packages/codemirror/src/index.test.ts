@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { EditorState } from "@codemirror/state";
 import { ricsLanguage, ricsHighlighting } from "./language";
 import { ricsLinter } from "./linter";
 
@@ -7,6 +8,22 @@ describe("codemirror-lang-rics", () => {
     it("should return an extension", () => {
       const ext = ricsLanguage();
       expect(ext).toBeDefined();
+    });
+
+    it("should provide commentTokens for line and block comments", () => {
+      const state = EditorState.create({
+        doc: "$color: red;",
+        extensions: [ricsLanguage()],
+      });
+
+      const commentTokens = state.languageDataAt<{
+        line?: string;
+        block?: { open: string; close: string };
+      }>("commentTokens", 0);
+
+      expect(commentTokens).toHaveLength(1);
+      expect(commentTokens[0].line).toBe("//");
+      expect(commentTokens[0].block).toEqual({ open: "/*", close: "*/" });
     });
   });
 

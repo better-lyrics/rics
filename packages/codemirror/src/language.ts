@@ -15,6 +15,13 @@ interface LexerState {
 const scssLike = StreamLanguage.define<LexerState>({
   name: "rics",
 
+  languageData: {
+    commentTokens: {
+      line: "//",
+      block: { open: "/*", close: "*/" },
+    },
+  },
+
   startState(): LexerState {
     return {
       inString: null,
