@@ -1,5 +1,11 @@
 # codemirror-lang-rics
 
+## 0.3.18
+
+### Patch Changes
+
+- cd51220: Add commentTokens languageData for CodeMirror toggle comment support
+
 ## 0.3.16
 
 ### Patch Changes
