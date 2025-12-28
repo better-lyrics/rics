@@ -1344,13 +1344,14 @@ class Compiler {
         /([a-zA-Z_][\w-]*)\s*\(([^()]*(?:\([^()]*\)[^()]*)*)\)/g;
 
       result = result.replace(funcRegex, (match, funcName, args, offset) => {
-        // Skip CSS-only functions entirely
+        // Skip CSS-only functions entirely (unless they're also SCSS builtins)
         if (cssOnlyFunctions.test(funcName) && !scssBuiltins.test(funcName)) {
           return match;
         }
 
-        // Check if this is a known SCSS function
-        if (scssBuiltins.test(funcName)) {
+        // Check if this is a custom user-defined function or a known SCSS builtin
+        const isCustomFunction = this.state.functions.has(funcName);
+        if (isCustomFunction || scssBuiltins.test(funcName)) {
           try {
             const evaluated = this.evaluateExpression(match);
             if (evaluated.type !== "null") {
@@ -1362,9 +1363,9 @@ class Compiler {
           }
         }
 
-        // For non-builtin functions (like CSS blur(), drop-shadow(), etc.),
+        // For non-builtin/non-custom functions (like CSS blur(), drop-shadow(), etc.),
         // recursively process the args to evaluate any inner SCSS functions
-        if (!scssBuiltins.test(funcName)) {
+        if (!scssBuiltins.test(funcName) && !isCustomFunction) {
           const processedArgs = this.evaluateFunctionCalls(args);
           if (processedArgs !== args) {
             changed = true;

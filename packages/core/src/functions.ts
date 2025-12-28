@@ -399,9 +399,13 @@ export const builtinFunctions: Record<string, BuiltinFunction> = {
 
   nth(args) {
     const list = args[0];
-    const n = Math.floor(ensureNumber(args[1], 1));
-    if (list.type === "list" && n >= 1 && n <= list.values.length) {
-      return list.values[n - 1];
+    let n = Math.floor(ensureNumber(args[1], 1));
+    if (list.type === "list") {
+      // Support negative indices: -1 = last, -2 = second-to-last, etc.
+      if (n < 0) n = list.values.length + n + 1;
+      if (n >= 1 && n <= list.values.length) {
+        return list.values[n - 1];
+      }
     }
     return { type: "null" };
   },

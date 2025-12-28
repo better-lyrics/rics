@@ -212,6 +212,24 @@ describe("built-in functions", () => {
       expect(result).toContain("filter: blur(4px)");
     });
 
+    it("nth should get last item with negative index", () => {
+      const input = `
+        $list: (10px, 20px, 30px);
+        .box { width: nth($list, -1); }
+      `;
+      const result = compile(input);
+      expect(result).toContain("width: 30px");
+    });
+
+    it("nth should get second-to-last item with negative index", () => {
+      const input = `
+        $list: (a, b, c, d);
+        .box { content: nth($list, -2); }
+      `;
+      const result = compile(input);
+      expect(result).toContain("content: c");
+    });
+
     it("should parse lists with colons in quoted strings", () => {
       const input = `
         $selectors: ("#button:hover", "#link:active");

@@ -185,6 +185,17 @@ describe("compiler", () => {
       expect(result).toContain("width: 100px");
     });
 
+    it("should call custom functions directly without interpolation", () => {
+      const input = `
+        @function double($n) {
+          @return $n * 2;
+        }
+        .box { width: double(50px); }
+      `;
+      const result = compile(input);
+      expect(result).toContain("width: 100px");
+    });
+
     it("should handle string concatenation in functions", () => {
       const input = `
         @function prefix($name) {
