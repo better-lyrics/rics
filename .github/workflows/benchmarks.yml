@@ -8,6 +8,10 @@ on:
       - "benchmarks/**"
   workflow_dispatch:
 
+concurrency:
+  group: master-commits
+  cancel-in-progress: false
+
 jobs:
   benchmark:
     runs-on: ubuntu-latest
@@ -38,6 +42,13 @@ jobs:
 
       - name: Run benchmarks and update README
         run: node benchmarks/update-readme.js
+
+      - name: Pull latest changes
+        run: |
+          git stash --include-untracked
+          git fetch origin master
+          git reset --hard origin/master
+          git stash pop || true
 
       # https://github.com/planetscale/ghcommit-action/issues/43#issuecomment-2313129696
       - name: Stage all changes

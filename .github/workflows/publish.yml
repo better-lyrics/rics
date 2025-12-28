@@ -8,6 +8,10 @@ on:
       - ".changeset/**"
   workflow_dispatch:
 
+concurrency:
+  group: master-commits
+  cancel-in-progress: false
+
 jobs:
   publish:
     runs-on: ubuntu-latest
