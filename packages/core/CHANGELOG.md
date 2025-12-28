@@ -1,5 +1,11 @@
 # rics
 
+## 0.3.20
+
+### Patch Changes
+
+- 59cd92e: Fix custom @function calls in CSS declarations (no longer requires interpolation) and add negative index support to nth() function
+
 ## 0.3.19
 
 ### Patch Changes
