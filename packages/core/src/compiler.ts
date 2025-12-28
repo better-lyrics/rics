@@ -471,14 +471,26 @@ class Compiler {
     const name = this.readIdent();
     this.skipWhitespace();
 
-    const args: string[] = [];
+    const positionalArgs: string[] = [];
+    const namedArgs = new Map<string, string>();
+
     if (this.peek() === "(") {
       this.advance();
       while (this.pos < this.input.length && this.peek() !== ")") {
         this.skipWhitespace();
         if (this.peek() === ")") break;
 
-        args.push(this.readArgument());
+        const arg = this.readArgument();
+        const trimmed = arg.trim();
+
+        // Check if this is a named argument ($name: value)
+        const namedMatch = trimmed.match(/^(\$[\w-]+)\s*:\s*(.+)$/s);
+        if (namedMatch) {
+          namedArgs.set(namedMatch[1], namedMatch[2]);
+        } else {
+          positionalArgs.push(arg);
+        }
+
         this.skipWhitespace();
         if (this.peek() === ",") this.advance();
       }
@@ -498,18 +510,23 @@ class Compiler {
       return;
     }
 
-    this.executeMixin(mixin, args);
+    this.executeMixin(mixin, positionalArgs, namedArgs);
   }
 
-  private executeMixin(mixin: MixinDefinition, args: string[]): void {
+  private executeMixin(
+    mixin: MixinDefinition,
+    positionalArgs: string[],
+    namedArgs: Map<string, string> = new Map()
+  ): void {
     const localScope = createScope(this.state.scope);
+    let positionalIdx = 0;
 
     for (let i = 0; i < mixin.params.length; i++) {
       const param = mixin.params[i];
 
       if (param.variadic) {
-        // Collect all remaining args into a list
-        const remainingArgs = args.slice(i);
+        // Collect all remaining positional args into a list
+        const remainingArgs = positionalArgs.slice(positionalIdx);
         const values: Value[] = remainingArgs.map((arg) =>
           this.evaluateExpression(arg)
         );
@@ -521,7 +538,15 @@ class Compiler {
         break;
       }
 
-      const argValue = args[i] || param.defaultValue || "";
+      // Check if this param was provided as a named argument
+      if (namedArgs.has(param.name)) {
+        const value = this.evaluateExpression(namedArgs.get(param.name)!);
+        setVariable(localScope, param.name, value);
+        continue;
+      }
+
+      // Otherwise use positional argument or default
+      const argValue = positionalArgs[positionalIdx++] || param.defaultValue || "";
       const value = this.evaluateExpression(argValue);
       setVariable(localScope, param.name, value);
     }
@@ -836,7 +861,9 @@ class Compiler {
 
     if (this.peek() === "{") {
       const interpolatedKeyword = this.interpolate(keyword);
-      const interpolatedPrelude = this.interpolate(prelude.trim());
+      const interpolatedPrelude = this.substituteVariables(
+        this.interpolate(prelude.trim())
+      );
 
       this.state.atRuleStack.push(
         `${interpolatedKeyword} ${interpolatedPrelude}`
@@ -888,7 +915,7 @@ class Compiler {
     } else {
       if (this.peek() === ";") this.advance();
       this.state.output.push(
-        `${this.interpolate(keyword)} ${this.interpolate(prelude.trim())};`
+        `${this.interpolate(keyword)} ${this.substituteVariables(this.interpolate(prelude.trim()))};`
       );
     }
   }

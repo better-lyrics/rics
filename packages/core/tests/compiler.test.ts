@@ -153,6 +153,24 @@ describe("compiler", () => {
       expect(result).toContain(".link");
       expect(result).toContain(".link:hover");
     });
+
+    it("should handle named mixin arguments", () => {
+      const input = `
+        @mixin button($bg: blue, $color: white, $radius: 4px) {
+          background: $bg;
+          color: $color;
+          border-radius: $radius;
+        }
+        .btn-named { @include button($color: yellow); }
+        .btn-mixed { @include button(red, $radius: 8px); }
+      `;
+      const result = compile(input);
+      expect(result).toContain("background: blue");
+      expect(result).toContain("color: yellow");
+      expect(result).toContain("border-radius: 4px");
+      expect(result).toContain("background: red");
+      expect(result).toContain("border-radius: 8px");
+    });
   });
 
   describe("functions", () => {
@@ -305,6 +323,18 @@ describe("compiler", () => {
       const result = compile(input);
       expect(result).toContain("line-height: 1.5");
     });
+
+    it("should handle mixed unit math with correct em/px conversion", () => {
+      const input = `
+        .test {
+          a: 16px + 1em;
+          b: 1em + 16px;
+        }
+      `;
+      const result = compile(input);
+      expect(result).toContain("a: 32px");
+      expect(result).toContain("b: 2em");
+    });
   });
 
   describe("interpolation", () => {
@@ -346,6 +376,18 @@ describe("compiler", () => {
       const result = compile(input);
       expect(result).toContain("@media (min-width: 768px)");
       expect(result).toContain(".container");
+    });
+
+    it("should resolve variables in @media queries", () => {
+      const input = `
+        $breakpoint: 768px;
+        @media (min-width: $breakpoint) {
+          .container { max-width: 720px; }
+        }
+      `;
+      const result = compile(input);
+      expect(result).toContain("@media (min-width: 768px)");
+      expect(result).not.toContain("$breakpoint");
     });
 
     it("should pass through @keyframes", () => {

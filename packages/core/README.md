@@ -81,7 +81,7 @@ compile(input, {
 
 - Variables and math operations
 - Nesting with `&` parent selector
-- Mixins with parameters and `@content`
+- Mixins with parameters, default values, and named arguments
 - Custom functions with `@function` and `@return`
 - Control flow: `@if`, `@else`, `@for`, `@each`, `@while`
 - Color functions: `darken`, `lighten`, `mix`, `saturate`, and more

@@ -40,9 +40,9 @@ function containsOutsideStrings(input: string, char: string): boolean {
 }
 
 const UNIT_CONVERSIONS: Record<string, Record<string, number>> = {
-  px: { px: 1, em: 16, rem: 16, pt: 0.75, pc: 9, in: 96, cm: 37.8, mm: 3.78 },
-  em: { px: 1 / 16, em: 1, rem: 1 },
-  rem: { px: 1 / 16, rem: 1, em: 1 },
+  px: { px: 1, em: 1 / 16, rem: 1 / 16, pt: 0.75, pc: 9, in: 96, cm: 37.8, mm: 3.78 },
+  em: { px: 16, em: 1, rem: 1 },
+  rem: { px: 16, rem: 1, em: 1 },
   pt: { px: 4 / 3, pt: 1 },
   pc: { px: 1 / 9, pc: 1 },
   in: { px: 1 / 96, in: 1, cm: 2.54, mm: 25.4 },
