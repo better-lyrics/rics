@@ -448,6 +448,109 @@ describe("compiler", () => {
       const result = compile(input, { minify: true });
       expect(result).toContain("/*! Important comment */");
     });
+
+    it("should strip inline // comments inside map literals", () => {
+      const input = `
+        $blur-lines: (
+          previous: true,           // Blur lines that have passed
+          current: true,             // Blur the line currently playing
+          upcoming: true             // Blur the lines coming up next
+        );
+        $blur-amount: 6px;
+        .a { filter: if(map-get($blur-lines, previous), blur($blur-amount), none); }
+        .b { filter: if(map-get($blur-lines, current), blur($blur-amount), none); }
+        .c { filter: if(map-get($blur-lines, upcoming), blur($blur-amount), none); }
+      `;
+      const result = compile(input);
+      expect(result).toContain(".a");
+      expect(result).toContain(".b");
+      expect(result).toContain(".c");
+      const filterMatches = result.match(/filter:\s*[^;]+;/g) ?? [];
+      expect(filterMatches).toHaveLength(3);
+      filterMatches.forEach((f) => expect(f).toContain("blur(6px)"));
+      expect(result).not.toContain("Blur lines");
+      expect(result).not.toContain("Blur the line");
+      expect(result).not.toContain("coming up next");
+    });
+
+    it("should strip inline // comments between list items", () => {
+      const input = `
+        $colors: red, // primary
+          blue, green;
+        .a { color: nth($colors, 2); }
+      `;
+      const result = compile(input);
+      expect(result).toContain("color: blue");
+      expect(result).not.toContain("primary");
+    });
+
+    it("should strip trailing // comment before semicolon in variable", () => {
+      const input = `
+        $size: 6px // intensity
+        ;
+        .a { width: $size; }
+      `;
+      const result = compile(input);
+      expect(result).toContain("width: 6px");
+      expect(result).not.toContain("intensity");
+    });
+
+    it("should strip trailing // comment in property value", () => {
+      const input = `
+        .a { width: 6px // hello
+        ; }
+      `;
+      const result = compile(input);
+      expect(result).toContain("width: 6px");
+      expect(result).not.toContain("hello");
+    });
+
+    it("should preserve url() with absolute https URL containing //", () => {
+      const input = `
+        $bg: url(https://example.com/image.png);
+        .a { background-image: $bg; }
+      `;
+      const result = compile(input);
+      expect(result).toContain("url(https://example.com/image.png)");
+    });
+
+    it("should preserve url() with protocol-relative URL", () => {
+      const input = `
+        $bg: url(//cdn.example.com/image.png);
+        .a { background-image: $bg; }
+      `;
+      const result = compile(input);
+      expect(result).toContain("url(//cdn.example.com/image.png)");
+    });
+
+    it("should match no-comment behavior on full lyric blur repro", () => {
+      const input = `
+        $lyrics-blur-lines: (
+          previous: true,           // Blur lines that have passed
+          current: true,             // Blur the line currently playing
+          upcoming: true             // Blur the lines coming up next
+        );
+        $lyrics-blur-amount: 6px;     // Intensity of the lyric blur
+
+        .blyrics--line {
+          filter: if(map-get($lyrics-blur-lines, previous), blur($lyrics-blur-amount), none);
+        }
+        .blyrics-container .blyrics--active ~ .blyrics--line {
+          filter: if(map-get($lyrics-blur-lines, upcoming), blur($lyrics-blur-amount), none);
+        }
+        .blyrics-container .blyrics--line.blyrics--pre-animating {
+          filter: if(map-get($lyrics-blur-lines, current), blur($lyrics-blur-amount), none);
+        }
+        .blyrics--line.blyrics--active.blyrics--animating {
+          filter: if(map-get($lyrics-blur-lines, current), blur($lyrics-blur-amount), none);
+        }
+      `;
+      const result = compile(input);
+      const filterMatches = result.match(/filter:\s*[^;]+;/g) ?? [];
+      expect(filterMatches).toHaveLength(4);
+      filterMatches.forEach((f) => expect(f).toContain("blur(6px)"));
+      expect(result).not.toContain("none");
+    });
   });
 
   describe("error handling", () => {

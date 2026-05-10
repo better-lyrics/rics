@@ -1294,6 +1294,16 @@ class Compiler {
         continue;
       }
 
+      if (ch === "/" && this.peek(1) === "/") {
+        const last = value.length > 0 ? value[value.length - 1] : "";
+        if (last === "" || last === " " || last === "\t" || last === "\n" || last === "\r") {
+          while (this.pos < this.input.length && this.peek() !== "\n") {
+            this.advance();
+          }
+          continue;
+        }
+      }
+
       if (ch === "(" || ch === "[") depth++;
       if (ch === ")" || ch === "]") depth--;
 
@@ -1916,6 +1926,16 @@ class Compiler {
           result += this.advance();
         }
         continue;
+      }
+
+      if (ch === "/" && this.peek(1) === "/") {
+        const last = result.length > 0 ? result[result.length - 1] : "";
+        if (last === "" || last === " " || last === "\t" || last === "\n" || last === "\r") {
+          while (this.pos < this.input.length && this.peek() !== "\n") {
+            this.advance();
+          }
+          continue;
+        }
       }
 
       if (allowNested) {
