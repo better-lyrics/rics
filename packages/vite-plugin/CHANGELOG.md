@@ -1,5 +1,12 @@
 # vite-plugin-rics
 
+## 0.3.21
+
+### Patch Changes
+
+- Updated dependencies [3a8e0b8]
+  - rics@0.3.21
+
 ## 0.3.20
 
 ### Patch Changes
