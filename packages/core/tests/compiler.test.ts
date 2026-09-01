@@ -553,6 +553,99 @@ describe("compiler", () => {
     });
   });
 
+  describe("block-boundary comments (issue #1)", () => {
+    it("should not break @if block on comment with an apostrophe", () => {
+      const { css, errors } = compileWithDetails(`
+        $mode: on;
+        @if $mode == on {
+          /* the cat's toy fell */
+          .a { color: red; }
+          .b { color: blue; }
+        }
+      `);
+      expect(errors).toEqual([]);
+      expect(css).toContain(".a");
+      expect(css).toContain(".b");
+      expect(css).toContain("/* the cat's toy fell */");
+    });
+
+    it("should not break @mixin block on comment with an apostrophe", () => {
+      const { css, errors } = compileWithDetails(`
+        @mixin extras() {
+          /* the cat's toy fell */
+          .a { color: red; }
+          .b { color: blue; }
+        }
+        @include extras();
+      `);
+      expect(errors).toEqual([]);
+      expect(css).toContain(".a");
+      expect(css).toContain(".b");
+    });
+
+    it("should not swallow rules when a block comment contains a brace", () => {
+      const { css, errors } = compileWithDetails(`
+        @mixin m() {
+          /* use } carefully */
+          .a { color: red; }
+        }
+        @include m();
+      `);
+      expect(errors).toEqual([]);
+      expect(css).toContain(".a");
+      expect(css).toContain("color: red");
+      expect(css).toContain("/* use } carefully */");
+    });
+
+    it("should not break @for block on comment with an apostrophe and brace", () => {
+      const { css, errors } = compileWithDetails(`
+        @for $i from 1 through 2 {
+          /* it's item #{$i} { row } */
+          .col-#{$i} { width: $i; }
+        }
+      `);
+      expect(errors).toEqual([]);
+      expect(css).toContain(".col-1");
+      expect(css).toContain(".col-2");
+    });
+
+    it("should not break @each block on comment with an apostrophe", () => {
+      const { css, errors } = compileWithDetails(`
+        @each $c in red, blue {
+          /* author's note */
+          .#{$c} { color: $c; }
+        }
+      `);
+      expect(errors).toEqual([]);
+      expect(css).toContain(".red");
+      expect(css).toContain(".blue");
+    });
+
+    it("should not break @mixin block on a // line comment with apostrophe and brace", () => {
+      const { css, errors } = compileWithDetails(`
+        @mixin m() {
+          // it's a { comment
+          .a { color: red; }
+        }
+        @include m();
+      `);
+      expect(errors).toEqual([]);
+      expect(css).toContain(".a");
+      expect(css).toContain("color: red");
+      expect(css).not.toContain("comment");
+    });
+
+    it("should not desync a value on a block comment containing a brace or apostrophe", () => {
+      const { css, errors } = compileWithDetails(`
+        .a { margin: 1px /* it's } here */ 2px; }
+        .b { color: green; }
+      `);
+      expect(errors).toEqual([]);
+      expect(css).toContain(".b");
+      expect(css).toContain("color: green");
+    });
+  });
+
   describe("error handling", () => {
     it("should report undefined variables", () => {
       const input = `.box { color: $undefined; }`;
