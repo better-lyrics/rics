@@ -245,6 +245,23 @@ class Compiler {
     return "";
   }
 
+  private readRawComment(): string {
+    const start = this.pos;
+    if (this.peek() === "/" && this.peek(1) === "*") {
+      this.advance(2);
+      while (this.pos < this.input.length && !(this.peek() === "*" && this.peek(1) === "/")) {
+        this.advance();
+      }
+      if (this.pos < this.input.length) this.advance(2);
+    } else {
+      this.advance(2);
+      while (this.pos < this.input.length && this.peek() !== "\n") {
+        this.advance();
+      }
+    }
+    return this.input.slice(start, this.pos);
+  }
+
   private parseStylesheet(): void {
     while (this.pos < this.input.length) {
       this.checkLimits();
@@ -1862,6 +1879,19 @@ class Compiler {
         continue;
       }
 
+      if (ch === "/" && this.peek(1) === "*") {
+        content += this.readRawComment();
+        continue;
+      }
+
+      if (ch === "/" && this.peek(1) === "/") {
+        const last = content.length > 0 ? content[content.length - 1] : "";
+        if (last === "" || last === " " || last === "\t" || last === "\n" || last === "\r") {
+          content += this.readRawComment();
+          continue;
+        }
+      }
+
       if (ch === '"' || ch === "'") {
         inString = ch;
         content += this.advance();
@@ -1925,6 +1955,11 @@ class Compiler {
           if (ic === "}") interpDepth--;
           result += this.advance();
         }
+        continue;
+      }
+
+      if (ch === "/" && this.peek(1) === "*") {
+        result += this.readRawComment();
         continue;
       }
 
